@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "601564224740",
+    "firebase_url": "https://mobileusoz.firebaseio.com",
+    "project_id": "mobileusoz",
+    "storage_bucket": "mobileusoz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601564224740:android:7c213e867a3a02e2",
+        "android_client_info": {
+          "package_name": "com.mobile.usoz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601564224740-u1bufe7lq5rjcb7lh9b61o7hmprbe6gu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhCD87em-FMOyrewN-VNykH63_5uwyKRw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
