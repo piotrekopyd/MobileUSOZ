@@ -18,6 +18,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private Button createAccountButton, logInButton;
     private static final int RC_SIGN_IN = 123;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
