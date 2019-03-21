@@ -98,8 +98,13 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.registerButton:
-                progressBar.setVisibility(View.VISIBLE);
-                createAccount(emailTextView.getText().toString(),pswdTextView.getText().toString());
+                if(!emailTextView.getText().toString().equals("")  && !pswdTextView.getText().toString().equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
+                }else{
+                    Toast.makeText(CreateAccountActivity.this, "E-mail or password field is empty!",
+                            Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
