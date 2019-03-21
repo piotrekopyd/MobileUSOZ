@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MobileUSOZ</string>
+    <string name="e_mail">e-mail</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="password">password</string>
+    <string name="register">Register</string>
+
+    <string name="facebook_application_id" translatable="false">com.mobile.usoz</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbcom.mobile.usoz</string>
+
+
 </resources>
