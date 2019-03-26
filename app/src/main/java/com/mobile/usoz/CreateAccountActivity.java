@@ -91,7 +91,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             pswdTextView.setError(null);
         }
 
-        return valid;
+            return valid;
     }
 
     @Override
