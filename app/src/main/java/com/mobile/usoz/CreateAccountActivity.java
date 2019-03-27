@@ -1,7 +1,5 @@
 package com.mobile.usoz;
 
-import android.app.ProgressDialog;
-import android.inputmethodservice.Keyboard;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +31,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         registerButton = (Button) findViewById(R.id.registerButton);
         emailTextView = (TextView) findViewById(R.id.createEmailTextView);
-        pswdTextView = (TextView) findViewById(R.id.createPswdTextView);
+        pswdTextView = (TextView) findViewById(R.id.PswdTextView);
         progressBar = (ProgressBar) findViewById(R.id.circleProgressBar);
         registerButton.setOnClickListener(this);
 

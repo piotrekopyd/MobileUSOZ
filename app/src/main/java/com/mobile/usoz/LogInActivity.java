@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -34,14 +37,17 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private CallbackManager mCallbackManager;
     private static final String TAG = "FacebookLogin";
     private FirebaseAuth mAuth;
-
-
+    private TextView loginTextView, passwordTextView;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         createAccountButton = (Button)findViewById(R.id.createAccountButton);
         logInButton = (Button)findViewById(R.id.logInButton);
+        loginTextView = (TextView)findViewById(R.id.loginTextView);
+        passwordTextView = (TextView)findViewById(R.id.PswdTextView) ;
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
 
         createAccountButton.setOnClickListener(this);
         logInButton.setOnClickListener(this);
@@ -77,7 +83,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.logInButton :
-                //TODO: Add login activity
+                signIn(loginTextView.getText().toString(),passwordTextView.getText().toString());
                 break;
             case R.id.createAccountButton :
                 openCreateAccountActivity();
@@ -95,8 +101,6 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         }
     }
-
-
 
 
     private void openCreateAccountActivity(){
@@ -119,6 +123,10 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
     private void updateUI(FirebaseUser currentUser) {
         Toast.makeText(LogInActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
+
+        Intent mainIntent = new Intent(LogInActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
     }
 
     @Override
@@ -143,6 +151,42 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         }
     }
 
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+        if (!validateForm()) {
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        // [START sign_in_with_email]
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LogInActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
+
+                        // [START_EXCLUDE]
+//                        if (!task.isSuccessful()) {
+//                            mStatusTextView.setText(R.string.auth_failed);
+//                        }
+                       progressBar.setVisibility(View.GONE);
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END sign_in_with_email]
+    }
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -170,4 +214,25 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                 });
     }
 
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = loginTextView.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            loginTextView.setError("Required.");
+            valid = false;
+        } else {
+            loginTextView.setError(null);
+        }
+
+        String password = passwordTextView.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            passwordTextView.setError("Required.");
+            valid = false;
+        } else {
+            passwordTextView.setError(null);
+        }
+
+        return valid;
+    }
 }
