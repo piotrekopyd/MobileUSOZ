@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity  {
                         Toast.makeText(MainActivity.this, "Note saved", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
+                .   addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
