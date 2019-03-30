@@ -3,7 +3,11 @@ package com.mobile.usoz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
+    private DrawerLayout drawer;
     Button logOutButton;
     TextView userTextView;
     private FirebaseAuth mAuth;
@@ -50,25 +55,45 @@ public class MainActivity extends AppCompatActivity  {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //FIREBASE LOG OUT
+                //FIREBASE LOG OUT
                 mAuth.signOut();
                 // FB LOG OUT
                 LoginManager.getInstance().logOut();
                 UpdateUI();
             }
         });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser == null){
+        if (currentUser == null) {
             UpdateUI();
-        }else{
+        } else {
             userTextView.setText(mAuth.getCurrentUser().toString());
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
 
     private void UpdateUI() {
         Toast.makeText(MainActivity.this, "You're logged out", Toast.LENGTH_LONG).show();
@@ -94,7 +119,7 @@ public class MainActivity extends AppCompatActivity  {
                         Toast.makeText(MainActivity.this, "Note saved", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .   addOnFailureListener(new OnFailureListener() {
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
