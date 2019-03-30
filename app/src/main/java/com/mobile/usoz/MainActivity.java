@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.GregorianCalendar;
 
@@ -19,8 +20,7 @@ public class MainActivity extends AppCompatActivity  {
     Button logOutButton;
     TextView userTextView;
     private FirebaseAuth mAuth;
-
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
