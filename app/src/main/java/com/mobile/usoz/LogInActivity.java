@@ -1,9 +1,9 @@
 package com.mobile.usoz;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +39,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private FirebaseAuth mAuth;
     private TextView loginTextView, passwordTextView;
     private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +102,6 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         }
     }
-
 
     private void openCreateAccountActivity(){
         Intent intent = new Intent(this, CreateAccountActivity.class);

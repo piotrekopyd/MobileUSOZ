@@ -9,7 +9,7 @@
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,7 +27,8 @@
             android:id="@+id/edit_text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginTop="34dp"
             android:hint="Title"
             android:inputType="text"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,17 +38,19 @@
             android:id="@+id/edit_text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_below="@+id/edit_text_title"
+            android:layout_marginTop="22dp"
             android:hint="Description"
             android:inputType="text"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_title"
             tools:layout_editor_absoluteX="0dp" />
 
-
         <Button
+            android:id="@+id/save_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_below="@+id/edit_text_description"
+            android:layout_marginTop="96dp"
             android:onClick="saveNote"
             android:text="Save"
             app:layout_constraintTop_toBottomOf="@+id/edit_text_description"
@@ -55,31 +58,27 @@
 
         <TextView
             android:id="@+id/usernameTextView"
-            android:layout_width="334dp"
-            android:layout_height="49dp"
+            android:layout_width="198dp"
+            android:layout_height="55dp"
+            android:layout_below="@+id/save_button"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="103dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/logOutButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.787" />
 
-        <Button
-            android:id="@+id/logOutButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="324dp"
-            android:text="LogOut"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/usernameTextView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/usernameTextView" />
+    </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
-    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -87,6 +86,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu"></android.support.design.widget.NavigationView>
+        app:menu="@menu/drawer_menu">
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
