@@ -70,6 +70,22 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 });
     }
 
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.registerButton:
+                if(!emailTextView.getText().toString().equals("")  && !pswdTextView.getText().toString().equals("")) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
+                }else{
+                    Toast.makeText(CreateAccountActivity.this, "E-mail or password field is empty!",
+                            Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
     private boolean validateForm() {
         boolean valid = true;
 
@@ -89,22 +105,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             pswdTextView.setError(null);
         }
 
-            return valid;
+        return valid;
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.registerButton:
-                if(!emailTextView.getText().toString().equals("")  && !pswdTextView.getText().toString().equals("")) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
-                }else{
-                    Toast.makeText(CreateAccountActivity.this, "E-mail or password field is empty!",
-                            Toast.LENGTH_SHORT).show();
-                }
-        }
-    }
-
 
 }
