@@ -38,14 +38,11 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         mAuth = FirebaseAuth.getInstance();
     }
 
-
     private void createAccount(String email, String password){
-
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
         }
-
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

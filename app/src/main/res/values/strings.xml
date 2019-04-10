@@ -9,5 +9,11 @@
     <string name="fb_login_protocol_scheme">fb391138904773778</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="fragment_name">Hello</string>
+    <string name="title_activity_calendar">Calendar</string>
+    <string name="title_activity_forum">Forum</string>
+    <string name="title_activity_lecturers">Lecturers</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_notes">Notes</string>
+    <string name="nav_header_title">MobileUSOZ</string>
+    <string name="nav_header_subtitle">projectio2019@gmail.com</string>
 </resources>
