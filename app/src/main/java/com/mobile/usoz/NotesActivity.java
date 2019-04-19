@@ -131,8 +131,8 @@ public class NotesActivity extends AppCompatActivity
             case R.id.nav_lecturers:
                 intent = new Intent(NotesActivity.this, LecturersActivity.class);
                 break;
-            case R.id.nav_map:
-                intent = new Intent(NotesActivity.this, MapActivity.class);
+            case R.id.nav_maps:
+                intent = new Intent(NotesActivity.this, MapsActivity.class);
                 break;
             case R.id.nav_notes:
                 intent = new Intent(NotesActivity.this, NotesActivity.class);

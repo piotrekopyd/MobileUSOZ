@@ -1,9 +1,10 @@
 package com.mobile.usoz;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,30 +14,38 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MapActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MapsActivity extends AppCompatActivity
+        implements OnMapReadyCallback,
+        NavigationView.OnNavigationItemSelectedListener {
 
-    //Zmienne do layoutu
+    //Layouts
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
 
     private FirebaseAuth mAuth;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_maps);
 
         mAuth = FirebaseAuth.getInstance();
 
-        /** inicjalizacja layoutu
-         * */
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,8 +58,30 @@ public class MapActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_map);
+        navigationView.setCheckedItem(R.id.nav_maps);
     }
+
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng cracow = new LatLng(50.06, 19.944);
+        mMap.addMarker(new MarkerOptions().position(cracow).title("Marker in Cracow"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(cracow));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -67,19 +98,19 @@ public class MapActivity extends AppCompatActivity
         Intent intent = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_calendar:
-                intent = new Intent(MapActivity.this, CalendarActivity.class);
+                intent = new Intent(MapsActivity.this, CalendarActivity.class);
                 break;
             case R.id.nav_forum:
-                intent = new Intent(MapActivity.this, ForumActivity.class);
+                intent = new Intent(MapsActivity.this, ForumActivity.class);
                 break;
             case R.id.nav_lecturers:
-                intent = new Intent(MapActivity.this, LecturersActivity.class);
+                intent = new Intent(MapsActivity.this, LecturersActivity.class);
                 break;
-            case R.id.nav_map:
-                intent = new Intent(MapActivity.this, MapActivity.class);
+            case R.id.nav_maps:
+                intent = new Intent(MapsActivity.this, MapsActivity.class);
                 break;
             case R.id.nav_notes:
-                intent = new Intent(MapActivity.this, NotesActivity.class);
+                intent = new Intent(MapsActivity.this, NotesActivity.class);
                 break;
             case R.id.nav_log_out:
                 logOut();
@@ -102,9 +133,10 @@ public class MapActivity extends AppCompatActivity
     }
 
     private void UpdateUI() {
-        Toast.makeText(MapActivity.this, "You're logged out", Toast.LENGTH_LONG).show();
-        Intent loginIntent = new Intent(MapActivity.this, LogInActivity.class);
+        Toast.makeText(MapsActivity.this, "You're logged out", Toast.LENGTH_LONG).show();
+        Intent loginIntent = new Intent(MapsActivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();
     }
+
 }

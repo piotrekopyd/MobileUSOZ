@@ -75,8 +75,8 @@ public class CalendarActivity extends AppCompatActivity
             case R.id.nav_lecturers:
                 intent = new Intent(CalendarActivity.this, LecturersActivity.class);
                 break;
-            case R.id.nav_map:
-                intent = new Intent(CalendarActivity.this, MapActivity.class);
+            case R.id.nav_maps:
+                intent = new Intent(CalendarActivity.this, MapsActivity.class);
                 break;
             case R.id.nav_notes:
                 intent = new Intent(CalendarActivity.this, NotesActivity.class);
