@@ -26,8 +26,6 @@ public class ForumActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +73,7 @@ public class ForumActivity extends AppCompatActivity
             case R.id.nav_lecturers:
                 intent = new Intent(ForumActivity.this, LecturersActivity.class);
                 break;
-            case R.id.nav_maps:
+            case R.id.nav_maps :
                 intent = new Intent(ForumActivity.this, MapsActivity.class);
                 break;
             case R.id.nav_notes:

@@ -16,5 +16,13 @@
     <string name="title_activity_notes">Notes</string>
     <string name="nav_header_title">MobileUSOZ</string>
     <string name="nav_header_subtitle">projectio2019@gmail.com</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="save_marker">Save Marker</string>
+
+    <string-array name="colors">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Brown</item>
+        <item>Green</item>
+    </string-array>
+
 </resources>

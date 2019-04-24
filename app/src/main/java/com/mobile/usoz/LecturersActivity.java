@@ -26,8 +26,6 @@ public class LecturersActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "601564224740-lsnd9q7qh8q84u8u54ab7gmv5ua15drh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.usoz",
+            "certificate_hash": "0ee7b163343b75f59a25da687a1295d0200692e1"
+          }
+        },
+        {
           "client_id": "601564224740-u1bufe7lq5rjcb7lh9b61o7hmprbe6gu.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -33,20 +41,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "601564224740-u1bufe7lq5rjcb7lh9b61o7hmprbe6gu.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

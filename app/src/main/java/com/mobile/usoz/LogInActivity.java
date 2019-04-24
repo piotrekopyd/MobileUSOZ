@@ -114,7 +114,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private void updateUI(FirebaseUser currentUser) {
         Toast.makeText(LogInActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
 
-        Intent mainIntent = new Intent(LogInActivity.this, NotesActivity.class);
+        Intent mainIntent = new Intent(LogInActivity.this, CalendarActivity.class);
         startActivity(mainIntent);
         finish();
     }
