@@ -33,6 +33,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -114,7 +115,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private void updateUI(FirebaseUser currentUser) {
         Toast.makeText(LogInActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
 
-        Intent mainIntent = new Intent(LogInActivity.this, CalendarActivity.class);
+        Intent mainIntent = new Intent(LogInActivity.this, UserProfileAcitivity.class);
         startActivity(mainIntent);
         finish();
     }
