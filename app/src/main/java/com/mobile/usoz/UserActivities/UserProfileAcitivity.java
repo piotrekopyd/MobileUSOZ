@@ -1,8 +1,11 @@
 package com.mobile.usoz.UserActivities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.usoz.CreateAccountActivity;
 import com.mobile.usoz.R;
 
 public class UserProfileAcitivity extends AppCompatActivity {
@@ -32,6 +36,7 @@ public class UserProfileAcitivity extends AppCompatActivity {
     private TextView passionsTextView;
     private TextView nameTextView;
     private TextView universityTextView;
+    private ImageView editUserDataIV;
     private FirebaseUser user;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -42,6 +47,13 @@ public class UserProfileAcitivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_acitivity);
         setupActivity();
 
+        editUserDataIV.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent newIntent = new Intent(UserProfileAcitivity.this, EditUserDataActivity.class);
+                startActivity(newIntent);
+                finish();
+            }
+        });
 
     }
 
@@ -53,6 +65,7 @@ public class UserProfileAcitivity extends AppCompatActivity {
         passionsTextView = findViewById(R.id.userPassionsTextView);
         nameTextView = findViewById(R.id.userName_label);
         universityTextView = findViewById(R.id.university_label);
+        editUserDataIV = (ImageView) findViewById(R.id.editProfile_image);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
