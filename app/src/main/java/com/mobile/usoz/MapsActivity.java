@@ -34,10 +34,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import org.apache.commons.lang3.SerializationUtils;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 public class MapsActivity extends AppCompatActivity
@@ -58,6 +61,8 @@ public class MapsActivity extends AppCompatActivity
     private EditText titleText;
     private EditText snippetText;
     private Button saveButton;
+    private Button deleteButton;
+
     private Spinner spinner;
     private int mSelectedIndex = 0;
     private LinkedList<MyMarker> myMarkersCollection;
@@ -72,6 +77,7 @@ public class MapsActivity extends AppCompatActivity
         titleText = findViewById(R.id.map_marker_title);
         snippetText = findViewById(R.id.map_marker_snippet);
         saveButton = findViewById(R.id.map_marker_save);
+        deleteButton = findViewById(R.id.map_marker_delete);
         spinner = findViewById(R.id.map_color_spinner);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(MapsActivity.this,
                 R.layout.map_spinner, getResources().getTextArray(R.array.colors)) {
@@ -103,7 +109,7 @@ public class MapsActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        hideEditTextAndButton();
+        hideEditTextAndButtons();
         myMarkersCollection = new LinkedList<MyMarker>();
 
         try {
@@ -122,7 +128,7 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                hideEditTextAndButton();
+                hideEditTextAndButtons();
             }
         };
 
@@ -145,19 +151,27 @@ public class MapsActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case (R.id.map_settings_hide) :
-                hideEditTextAndButton();
+                hideEditTextAndButtons();
                 googleMap.clear();
                 break;
             case (R.id.map_settings_show) :
                 for (MyMarker e:
                         myMarkersCollection) {
                     MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(e.latLng);
-                    markerOptions.title(e.title);
-                    markerOptions.snippet(e.snippet);
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(e.color));
+                    markerOptions.position(new LatLng(e.getLatitude(), e.getLongitude()));
+                    markerOptions.title(e.getTitle());
+                    markerOptions.snippet(e.getSnippet());
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(e.getColor()));
                     googleMap.addMarker(markerOptions);
                 }
+                break;
+            case (R.id.map_settings_send) :
+                try  { //UPLOAD MARKERS TO FIREBASE
+                    byte[] myBytes = SerializationUtils.serialize(myMarkersCollection);
+                    firebaseStorage = FirebaseStorage.getInstance();
+                    storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
+                    storageReference.putBytes(myBytes);
+                } catch (Exception e) {}
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -181,7 +195,7 @@ public class MapsActivity extends AppCompatActivity
         googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                MyMarker myMarker = new MyMarker(latLng,"", "", 0);
+                MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
                 myMarkersCollection.addLast(myMarker);
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.addMarker(myMarker.getMarkerOptions());
@@ -192,7 +206,7 @@ public class MapsActivity extends AppCompatActivity
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                hideEditTextAndButton();
+                hideEditTextAndButtons();
                 googleMap.clear();
                 for (MyMarker e:
                         myMarkersCollection) {
@@ -223,12 +237,13 @@ public class MapsActivity extends AppCompatActivity
                                 break;
                             }
                         }
-                        MyMarker myMarker = new MyMarker(latLng, t, s, 0);
+                        MyMarker myMarker = new MyMarker(latLng.latitude, latLng
+                                .longitude, t, s, 0);
 
                         marker.setTitle(t);
                         marker.setSnippet(s);
                         marker.hideInfoWindow();
-                        hideEditTextAndButton();
+                        hideEditTextAndButtons();
                         marker.showInfoWindow();
                         switch (spinner.getSelectedItemPosition()) {
                             case 0:
@@ -258,7 +273,38 @@ public class MapsActivity extends AppCompatActivity
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
                     }
                 });
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        LatLng latLng = marker.getPosition();
+
+                        for (int i=0; i<myMarkersCollection.size(); i++) {
+                            MyMarker ll = myMarkersCollection.get(i);
+                            if(ll.getPosition().equals(latLng)) {
+                                myMarkersCollection.remove(i);
+                                break;
+                            }
+                        }
+                        marker.remove();
+                        hideEditTextAndButtons();
+                    }
+                });
                 return true;
+            }
+        });
+
+
+        //DOWNLOAD MARKERS FROM FIREBASE
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
+        storageReference.getBytes(100*1028*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                myMarkersCollection = SerializationUtils.deserialize(bytes);
+                for (MyMarker e:
+                        myMarkersCollection) {
+                    googleMap.addMarker(e.getMarkerOptions());
+                }
             }
         });
 
@@ -269,52 +315,6 @@ public class MapsActivity extends AppCompatActivity
                 .build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 1100, null);
-
-
-        /*storageReference = firebaseStorage.getInstance().getReference();
-        StorageReference ref = storageReference.child("downloadTest.txt");
-
-        try {
-            final File file = File.createTempFile("downloadTest", "txt");
-            ref.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    List<String> list = new ArrayList<String>();
-                    BufferedReader reader = null;
-
-                    try {
-                        reader = new BufferedReader(new FileReader(file));
-                        String text = null;
-
-                        while ((text = reader.readLine()) != null) {
-                            list.add(text);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        try {
-                            if (reader != null) {
-                                reader.close();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    System.out.println(list);
-                    Toast.makeText(MapsActivity.this, "Success (:", Toast.LENGTH_LONG).show();
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-
-        } catch (Exception e) {
-
-        }*/
     }
 
     @Override
@@ -362,14 +362,16 @@ public class MapsActivity extends AppCompatActivity
         snippetText.setVisibility(View.VISIBLE);
         saveButton.setVisibility(View.VISIBLE);
         spinner.setVisibility(View.VISIBLE);
+        deleteButton.setVisibility(View.VISIBLE);
     }
 
-    private void hideEditTextAndButton() {
+    private void hideEditTextAndButtons() {
         titleText.setText("");
         snippetText.setText("");
         titleText.setVisibility(View.INVISIBLE);
         snippetText.setVisibility(View.INVISIBLE);
         saveButton.setVisibility(View.INVISIBLE);
+        deleteButton.setVisibility(View.INVISIBLE);
         spinner.setVisibility(View.INVISIBLE);
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.map_frame_layout).getWindowToken(), 0);
@@ -392,25 +394,45 @@ public class MapsActivity extends AppCompatActivity
     }
 }
 
-class MyMarker {
-    public LatLng latLng;
-    public String title;
-    public String snippet;
-    public float color;
-    public MyMarker(LatLng l, String ti, String sn, float co) {
-        latLng = new LatLng(l.latitude, l.longitude);
+final class MyMarker implements Serializable {
+    private double latitude;
+    private double longitude;
+    private String title;
+    private String snippet;
+    private float color;
+    public MyMarker(double la, double lo, String ti, String sn, float co) {
+        latitude = la;
+        longitude = lo;
         title = ti;
         snippet = sn;
         color = co;
     }
     public MarkerOptions getMarkerOptions() {
         MarkerOptions markerOptions = new MarkerOptions();
-        return markerOptions.position(latLng).title(title).snippet(snippet).icon(BitmapDescriptorFactory.defaultMarker(color));
+        return markerOptions.position(new LatLng(latitude, longitude)).title(title).snippet(snippet).icon(BitmapDescriptorFactory.defaultMarker(color));
     }
+
     public LatLng getPosition() {
-        return latLng;
+        return new LatLng(latitude, longitude);
     }
+
     public void setColor(float c) {
         color = c;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+    public double getLongitude() {
+        return longitude;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public String getSnippet() {
+        return snippet;
+    }
+    public float getColor() {
+        return color;
     }
 }

@@ -8,4 +8,8 @@
         android:id="@+id/map_settings_show"
         android:title="Show Markers"
         ></item>
+    <item
+        android:id="@+id/map_settings_send"
+        android:title="Send Markers"
+        ></item>
 </menu>

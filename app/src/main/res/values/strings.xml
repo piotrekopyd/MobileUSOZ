@@ -17,6 +17,7 @@
     <string name="nav_header_title">MobileUSOZ</string>
     <string name="nav_header_subtitle">projectio2019@gmail.com</string>
     <string name="save_marker">Save Marker</string>
+    <string name="delete_marker">Delete</string>
 
     <string-array name="colors">
         <item>Red</item>
