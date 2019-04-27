@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mobile.usoz.CreateAccountActivity;
 import com.mobile.usoz.R;
 
 public class UserProfileAcitivity extends AppCompatActivity {
@@ -44,7 +42,7 @@ public class UserProfileAcitivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile_acitivity);
+        setContentView(R.layout.activity_user_profile);
         setupActivity();
 
         editUserDataIV.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +75,7 @@ public class UserProfileAcitivity extends AppCompatActivity {
     }
     private void retrieveUserData(){
         //TODO: retrieve photos
-        db.collection("User data").document(user.toString()).get()
+        db.collection("User data").document(user.getUid().toString()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -86,7 +84,7 @@ public class UserProfileAcitivity extends AppCompatActivity {
                         nameTextView.setText(name);
                         universityTextView.setText(documentSnapshot.getString(KEY_UNIVERSITY));
                         birthdayTextView.setText(documentSnapshot.getString(KEY_DATEOFBIRTH));
-                        emailTextView.setText(documentSnapshot.getString(KEY_EMAIL));
+                        emailTextView.setText(user.getEmail().toString());
                         passionsTextView.setText(documentSnapshot.getString(KEY_PASSIONS));
                         }else{
                             Toast.makeText(UserProfileAcitivity.this,"Document does not exists", Toast.LENGTH_SHORT).show();
