@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,13 +41,14 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     private static final String KEY_LASTNAME = "last_name";
     private static final String KEY_UNIVERSITY = "university";
     private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_EMAIL = "email";
+    //    private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSIONS = "passions";
 
     private TextView nameTextView,lastNameTextView,emailTextView,birthdayTextView,universityTextView,passionsTextView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button saveButton,uploadProfileImageButton, uploadBackgroundImageButton;
 
+    private ImageView imageView;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private Uri mImageUri;
@@ -56,6 +58,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_data);
+        imageView = findViewById(R.id.testerImageView);
         setupActivity();
     }
     private void setupActivity(){
@@ -80,17 +83,18 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.registerButton:
+            case R.id.saveUserDataButton:
                 if(isCorrect()) {
                     saveData();
+                    updateUI();
                     //TODO: DATA IS CORRECT
-//                    progressBar.setVisibility(View.VISIBLE);
                 }else{
                     Toast.makeText(EditUserDataActivity.this, "Data is incorrect!",
                             Toast.LENGTH_SHORT).show();
                 }
             case R.id.upload_profile_image_button:
                 openFileChooser();
+
         }
     }
 
@@ -99,12 +103,12 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
         newUserData.put(KEY_NAME, nameTextView.getText().toString());
         newUserData.put(KEY_LASTNAME, lastNameTextView.getText().toString());
         newUserData.put(KEY_UNIVERSITY, universityTextView.getText().toString());
-        newUserData.put(KEY_EMAIL, emailTextView.getText().toString());
         newUserData.put(KEY_DATEOFBIRTH, birthdayTextView.getText().toString());
         newUserData.put(KEY_PASSIONS, passionsTextView.getText().toString());
 
 
-        db.collection("User data").document(user.toString()).set(newUserData)
+        uploadFile(user.getUid());
+        db.collection("User data").document(user.getUid().toString()).set(newUserData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -119,6 +123,11 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
                 });
     }
 
+    private void updateUI(){
+        Intent intent = new Intent(EditUserDataActivity.this, UserProfileAcitivity.class);
+        startActivity(intent);
+        finish();
+    }
     private boolean isCorrect(){
         if(nameTextView.getText().toString().equals(""))
             return false;
@@ -141,10 +150,10 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && requestCode == RESULT_OK && data!= null && data.getData() != null){
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             mImageUri = data.getData();
 
-            //Picasso.with(this).load(mImageUri).into();
+            Picasso.with(this).load(mImageUri).into(imageView);
         }
     }
     private String getFileExtension(Uri uri){
@@ -158,12 +167,12 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
             fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
-                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(EditUserDataActivity.this, "Upload succesful", Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(name, taskSnapshot.getUploadSessionUri().toString());
 
                         }
-                     })
+                    })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
