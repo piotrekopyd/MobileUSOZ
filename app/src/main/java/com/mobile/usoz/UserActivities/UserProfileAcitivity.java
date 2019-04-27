@@ -2,24 +2,36 @@ package com.mobile.usoz.UserActivities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.usoz.CalendarActivity;
+import com.mobile.usoz.ForumActivity;
+import com.mobile.usoz.LecturersActivity;
+import com.mobile.usoz.LogInActivity;
+import com.mobile.usoz.MapsActivity;
+import com.mobile.usoz.NotesActivity;
 import com.mobile.usoz.R;
 
-public class UserProfileAcitivity extends AppCompatActivity {
+public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
 
+    private DrawerLayout drawer;
     private static final String KEY_NAME = "name";
     private static final String KEY_LASTNAME = "last_name";
     private static final String KEY_UNIVERSITY = "university";
@@ -99,5 +111,49 @@ public class UserProfileAcitivity extends AppCompatActivity {
                     }
                 });
     }
+    private void updateLogOutUI() {
+        Toast.makeText(UserProfileAcitivity.this, "You're logged out", Toast.LENGTH_LONG).show();
+        Intent loginIntent = new Intent(UserProfileAcitivity.this, LogInActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
 
+    private void logOut() {
+        //FIREBASE LOG OUT
+        mAuth.signOut();
+
+        // FB LOG OUT
+        LoginManager.getInstance().logOut();
+        updateLogOutUI();
+    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Intent intent = null;
+        switch (menuItem.getItemId()) {
+            case R.id.nav_calendar:
+                intent = new Intent(UserProfileAcitivity.this, CalendarActivity.class);
+                break;
+            case R.id.nav_forum:
+                intent = new Intent(UserProfileAcitivity.this, ForumActivity.class);
+                break;
+            case R.id.nav_lecturers:
+                intent = new Intent(UserProfileAcitivity.this, LecturersActivity.class);
+                break;
+            case R.id.nav_maps:
+                intent = new Intent(UserProfileAcitivity.this, MapsActivity.class);
+                break;
+            case R.id.nav_notes:
+                intent = new Intent(UserProfileAcitivity.this, NotesActivity.class);
+                break;
+            case R.id.nav_log_out:
+                logOut();
+                break;
+        }
+        if(intent!=null) {
+            startActivity(intent);
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }
+
