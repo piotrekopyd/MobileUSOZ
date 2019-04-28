@@ -36,7 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
@@ -146,7 +145,11 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.map_settings_menu, menu);
+        if(mAuth.getUid().equals("86dXmf6RNwRPsoD3nm982tJfDzl1")) {
+            inflater.inflate(R.menu.map_settings_menu, menu);
+        } else {
+            inflater.inflate(R.menu.map_settings_user_menu, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -194,107 +197,109 @@ public class MapsActivity extends AppCompatActivity
         googleMap = googleMap1;
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
-                myMarkersCollection.addLast(myMarker);
-                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                googleMap.addMarker(myMarker.getMarkerOptions());
-                Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
-            }
-        });
 
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                hideEditTextAndButtons();
-                googleMap.clear();
-                for (MyMarker e:
-                        myMarkersCollection) {
-                    googleMap.addMarker(e.getMarkerOptions());
+        if(mAuth.getUid().equals("86dXmf6RNwRPsoD3nm982tJfDzl1")) {
+            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
+                    myMarkersCollection.addLast(myMarker);
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    googleMap.addMarker(myMarker.getMarkerOptions());
+                    Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
 
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
-                marker.showInfoWindow();
-                showEditTextAndButton();
-                titleText.setText(marker.getTitle());
-                snippetText.setText(marker.getSnippet());
-                saveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        LatLng latLng = marker.getPosition();
-
-                        String t = titleText.getText().toString();
-                        String s = snippetText.getText().toString();
-
-                        for (int i=0; i<myMarkersCollection.size(); i++) {
-                            MyMarker ll = myMarkersCollection.get(i);
-                            if(ll.getPosition().equals(latLng)) {
-                                myMarkersCollection.remove(i);
-                                break;
-                            }
-                        }
-                        MyMarker myMarker = new MyMarker(latLng.latitude, latLng
-                                .longitude, t, s, 0);
-
-                        marker.setTitle(t);
-                        marker.setSnippet(s);
-                        marker.hideInfoWindow();
-                        hideEditTextAndButtons();
-                        marker.showInfoWindow();
-                        switch (spinner.getSelectedItemPosition()) {
-                            case 0:
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
-                                break;
-                            case 1:
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                                myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
-                                break;
-                            case 2: //BROWN
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
-                                myMarker.setColor(26);
-                                break;
-                            case 3:
-                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                                myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
-                                break;
-                        }
-                        myMarkersCollection.add(myMarker);
-
-                        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
-                                .zoom(14.5f)
-                                .bearing(0)
-                                .tilt(0)
-                                .build();
-                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    hideEditTextAndButtons();
+                    googleMap.clear();
+                    for (MyMarker e:
+                            myMarkersCollection) {
+                        googleMap.addMarker(e.getMarkerOptions());
                     }
-                });
-                deleteButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        LatLng latLng = marker.getPosition();
+                }
+            });
 
-                        for (int i=0; i<myMarkersCollection.size(); i++) {
-                            MyMarker ll = myMarkersCollection.get(i);
-                            if(ll.getPosition().equals(latLng)) {
-                                myMarkersCollection.remove(i);
-                                break;
+            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
+                    marker.showInfoWindow();
+                    showEditTextAndButton();
+                    titleText.setText(marker.getTitle());
+                    snippetText.setText(marker.getSnippet());
+                    saveButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LatLng latLng = marker.getPosition();
+
+                            String t = titleText.getText().toString();
+                            String s = snippetText.getText().toString();
+
+                            for (int i=0; i<myMarkersCollection.size(); i++) {
+                                MyMarker ll = myMarkersCollection.get(i);
+                                if(ll.getPosition().equals(latLng)) {
+                                    myMarkersCollection.remove(i);
+                                    break;
+                                }
                             }
-                        }
-                        marker.remove();
-                        hideEditTextAndButtons();
-                    }
-                });
-                return true;
-            }
-        });
+                            MyMarker myMarker = new MyMarker(latLng.latitude, latLng
+                                    .longitude, t, s, 0);
 
+                            marker.setTitle(t);
+                            marker.setSnippet(s);
+                            marker.hideInfoWindow();
+                            hideEditTextAndButtons();
+                            marker.showInfoWindow();
+                            switch (spinner.getSelectedItemPosition()) {
+                                case 0:
+                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                    myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
+                                    break;
+                                case 1:
+                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                                    myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
+                                    break;
+                                case 2: //BROWN
+                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
+                                    myMarker.setColor(26);
+                                    break;
+                                case 3:
+                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                    myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
+                                    break;
+                            }
+                            myMarkersCollection.add(myMarker);
+
+                            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
+                                    .zoom(14.5f)
+                                    .bearing(0)
+                                    .tilt(0)
+                                    .build();
+                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
+                        }
+                    });
+                    deleteButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            LatLng latLng = marker.getPosition();
+
+                            for (int i=0; i<myMarkersCollection.size(); i++) {
+                                MyMarker ll = myMarkersCollection.get(i);
+                                if(ll.getPosition().equals(latLng)) {
+                                    myMarkersCollection.remove(i);
+                                    break;
+                                }
+                            }
+                            marker.remove();
+                            hideEditTextAndButtons();
+                        }
+                    });
+                    return true;
+                }
+            });
+        }
 
         //DOWNLOAD MARKERS FROM FIREBASE
         firebaseStorage = FirebaseStorage.getInstance();
