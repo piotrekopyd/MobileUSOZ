@@ -36,8 +36,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
+
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
@@ -180,8 +183,7 @@ public class MapsActivity extends AppCompatActivity
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -331,6 +333,9 @@ public class MapsActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
         switch (menuItem.getItemId()) {
+            case R.id.nav_profile:
+                intent = new Intent(MapsActivity.this, UserProfileAcitivity.class);
+                break;
             case R.id.nav_calendar:
                 intent = new Intent(MapsActivity.this, CalendarActivity.class);
                 break;

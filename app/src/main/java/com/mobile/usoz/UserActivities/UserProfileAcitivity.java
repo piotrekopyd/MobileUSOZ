@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +33,11 @@ import com.mobile.usoz.R;
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
 
+    //Layouts
     private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
+
     private static final String KEY_NAME = "name";
     private static final String KEY_LASTNAME = "last_name";
     private static final String KEY_UNIVERSITY = "university";
@@ -51,10 +57,27 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_profile);
+
         setupActivity();
 
         editUserDataIV.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +153,9 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
         switch (menuItem.getItemId()) {
+            case R.id.nav_profile:
+                intent = new Intent(UserProfileAcitivity.this, UserProfileAcitivity.class);
+                break;
             case R.id.nav_calendar:
                 intent = new Intent(UserProfileAcitivity.this, CalendarActivity.class);
                 break;

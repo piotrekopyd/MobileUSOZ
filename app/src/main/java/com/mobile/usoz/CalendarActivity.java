@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -82,6 +83,9 @@ public class CalendarActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
         switch (menuItem.getItemId()) {
+            case R.id.nav_profile:
+                intent = new Intent(CalendarActivity.this, UserProfileAcitivity.class);
+                break;
             case R.id.nav_calendar:
                 intent = new Intent(CalendarActivity.this, CalendarActivity.class);
                 break;

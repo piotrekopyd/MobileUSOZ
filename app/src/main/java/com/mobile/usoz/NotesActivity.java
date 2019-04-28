@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android.view.inputmethod.InputMethodManager;
 import android.content.*;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 public class NotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,6 +123,9 @@ public class NotesActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
         switch (menuItem.getItemId()) {
+            case R.id.nav_profile:
+                intent = new Intent(NotesActivity.this, UserProfileAcitivity.class);
+                break;
             case R.id.nav_calendar:
                 intent = new Intent(NotesActivity.this, CalendarActivity.class);
                 break;
