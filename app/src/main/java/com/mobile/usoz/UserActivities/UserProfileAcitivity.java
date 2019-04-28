@@ -45,6 +45,8 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSIONS = "passions";
 
+
+
     private ImageView profilePicture;
     private ImageView backgroundImage;
     private TextView birthdayTextView;
@@ -102,7 +104,12 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+
+
         updateUI();
+
+    }
+    private void setupNavigation(){
 
     }
     private void updateUI(){
@@ -174,6 +181,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
             case R.id.nav_log_out:
                 logOut();
                 break;
+             //TODO: ADD  USER PROFILE TO NAVIGATION
         }
         if(intent!=null) {
             startActivity(intent);
