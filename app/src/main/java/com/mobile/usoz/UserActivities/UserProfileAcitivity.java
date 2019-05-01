@@ -1,5 +1,6 @@
 package com.mobile.usoz.UserActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,13 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
 import com.facebook.login.LoginManager;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
 import com.mobile.usoz.LecturersActivity;
@@ -29,6 +38,10 @@ import com.mobile.usoz.LogInActivity;
 import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.NotesActivity;
 import com.mobile.usoz.R;
+import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
+import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditUserDataActivity;
+
+import java.io.InputStream;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;
@@ -42,7 +55,6 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private static final String KEY_LASTNAME = "last_name";
     private static final String KEY_UNIVERSITY = "university";
     private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSIONS = "passions";
 
 
@@ -57,7 +69,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private ImageView editUserDataIV;
     private FirebaseUser user;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private StorageReference storageReference;
 
 
     @Override
@@ -84,7 +96,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
 
         editUserDataIV.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent newIntent = new Intent(UserProfileAcitivity.this, EditUserDataActivity.class);
+                Intent newIntent = new Intent(UserProfileAcitivity.this, EditDataMenu.class);
                 startActivity(newIntent);
                 finish();
             }
@@ -100,24 +112,24 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         passionsTextView = findViewById(R.id.userPassionsTextView);
         nameTextView = findViewById(R.id.userName_label);
         universityTextView = findViewById(R.id.university_label);
-        editUserDataIV = (ImageView) findViewById(R.id.editProfile_image);
+        editUserDataIV = findViewById(R.id.editProfile_image);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        storageReference = FirebaseStorage.getInstance().getReference("uploads/" + user.getUid().toString() + ".jpg");
 
 
         updateUI();
 
     }
-    private void setupNavigation(){
-
-    }
+//    private void setupNavigation(){
+//
+//    }
     private void updateUI(){
         retrieveUserData();
     }
     private void retrieveUserData(){
-        //TODO: retrieve photos
-        db.collection("User data").document(user.getUid().toString()).get()
+        db.collection ("User data").document(user.getUid().toString()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -126,8 +138,13 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                             nameTextView.setText(name);
                             universityTextView.setText(documentSnapshot.getString(KEY_UNIVERSITY));
                             birthdayTextView.setText(documentSnapshot.getString(KEY_DATEOFBIRTH));
-                            emailTextView.setText(user.getEmail().toString());
+                            emailTextView.setText(user.getEmail());
                             passionsTextView.setText(documentSnapshot.getString(KEY_PASSIONS));
+//                            System.out.print(storageReference);
+//
+//                            Glide.with(UserProfileAcitivity.this)
+//                                    .load(storageReference)
+//                                    .into(profilePicture);
                         }else{
                             Toast.makeText(UserProfileAcitivity.this,"Document does not exists", Toast.LENGTH_SHORT).show();
                         }
@@ -181,13 +198,13 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
             case R.id.nav_log_out:
                 logOut();
                 break;
-             //TODO: ADD  USER PROFILE TO NAVIGATION
         }
-        if(intent!=null) {
+        if(intent != null) {
             startActivity(intent);
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
+
 

@@ -2,16 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mobile.usoz">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -21,13 +18,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".UserActivities.EdutUserDataActivities.EditDataMenu"></activity>
+        <activity android:name=".UserActivities.EdutUserDataActivities.ChangeUserBackgroundPhoto" />
+        <activity android:name=".UserActivities.EdutUserDataActivities.ChangeUserProfilePhoto" />
         <activity
-            android:name=".UserActivities.EditUserDataActivity"
+            android:name=".UserActivities.EdutUserDataActivities.EditUserDataActivity"
             android:label="EditUserData"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".UserActivities.UserProfileAcitivity"
             android:label="Profile"
@@ -54,7 +52,6 @@
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".CalendarActivity"
             android:label="@string/title_activity_calendar"
@@ -82,7 +79,6 @@
             tools:replace="android:value" />
 
         <activity android:name=".CreateAccountActivity" />
-
         <activity
             android:name=".LogInActivity"
             android:screenOrientation="portrait">
@@ -92,7 +88,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

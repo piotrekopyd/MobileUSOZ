@@ -20,7 +20,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mobile.usoz.UserActivities.EditUserDataActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.HashMap;
@@ -31,7 +30,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private static final String KEY_LASTNAME = "last_name";
     private static final String KEY_UNIVERSITY = "university";
     private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSIONS = "passions";
 
     private Button registerButton ;
@@ -75,7 +73,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                             user = mAuth.getCurrentUser();
                             db = FirebaseFirestore.getInstance();
                             saveDefaultData();
-                            updateUI();
+                            goToUserProfileActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -125,7 +123,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         return valid;
     }
-    private void updateUI(){
+    private void goToUserProfileActivity(){
         Intent mainIntent = new Intent(CreateAccountActivity.this, UserProfileAcitivity.class);
         startActivity(mainIntent);
         finish();
@@ -135,7 +133,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         newUserData.put(KEY_NAME, "Name");
         newUserData.put(KEY_LASTNAME, "Last name");
         newUserData.put(KEY_UNIVERSITY, "University");
-        newUserData.put(KEY_EMAIL,"E-mail");
         newUserData.put(KEY_DATEOFBIRTH, "Birthday");
         newUserData.put(KEY_PASSIONS, "Describe your passions");
 
