@@ -9,6 +9,7 @@
     tools:openDrawer="start">
 
     <RelativeLayout
+        android:id="@+id/lecturers_relative_layout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,11 +19,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!--
+        <ScrollView
+            android:id="@+id/lecturers_scroll_view"
+            android:layout_below="@+id/included_drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        !!!!!!!!!!!!!! TUTAJ JEST MIESCJE NA DODANIE OBIEKTOW W LAYOUCIE
+            <LinearLayout
+                android:id="@+id/lecturers_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:clipChildren="true"
+                android:clickable="true">
 
-        -->
+            </LinearLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+        android:id="@+id/lecturers_frame_layout"
+        android:layout_width="273dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/included_drawer_layout"
+        android:layout_alignStart="@+id/included_drawer_layout"
+        android:layout_alignEnd="@+id/included_drawer_layout"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="65dp">
+
+            <EditText
+                android:id="@+id/lecturers_text_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="0dp"
+                android:autofillHints=""
+                android:hint="Name" />
+
+            <EditText
+                android:id="@+id/lecturers_text_surname"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="50dp"
+                android:autofillHints=""
+                android:gravity="bottom|left"
+                android:hint="Surname" />
+
+            <EditText
+                android:id="@+id/lecturers_text_description"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="100dp"
+                android:autofillHints=""
+                android:gravity="bottom|left"
+                android:hint="University" />
+
+            <Button
+            android:id="@+id/lecturers_button_save"
+            android:layout_width="110dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="180dp"
+            android:layout_gravity="center_horizontal"
+            android:typeface="sans"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:background="@drawable/spinner_shape"
+            android:text="Add" />
+    </FrameLayout>
 
     </RelativeLayout>
 

@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -94,7 +95,7 @@ public class MapsActivity extends AppCompatActivity
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
                 tv.setTextColor(Color.GRAY);
-                if(position == mSelectedIndex){
+                if(position == mSelectedIndex) {
                     tv.setTextColor(Color.BLACK);
                 }
                 return tv;

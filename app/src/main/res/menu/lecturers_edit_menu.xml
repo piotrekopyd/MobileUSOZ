@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/lecturers_settings_add"
+        android:title="Add Lecturer"
+        ></item>
+    <item
+        android:id="@+id/lecturers_settings_send"
+        android:title="Send"
+        ></item>
+</menu>

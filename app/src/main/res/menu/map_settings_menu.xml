@@ -10,6 +10,6 @@
         ></item>
     <item
         android:id="@+id/map_settings_send"
-        android:title="Send Markers"
+        android:title="Send"
         ></item>
 </menu>

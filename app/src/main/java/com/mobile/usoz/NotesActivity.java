@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import android.view.inputmethod.InputMethodManager;
 import android.content.*;
 import com.google.firebase.auth.FirebaseUser;
+import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 public class NotesActivity extends AppCompatActivity
