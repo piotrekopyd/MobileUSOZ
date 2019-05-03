@@ -301,6 +301,7 @@ class Lecturer implements Serializable {
     public String getFirstName() {
         return firstName;
     }
+
     public String getSurname() {
         return surname;
     }
