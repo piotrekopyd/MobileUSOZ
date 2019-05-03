@@ -298,6 +298,7 @@ class Lecturer implements Serializable {
         this.surname = surname;
         this.university = university;
     }
+
     public String getFirstName() {
         return firstName;
     }
