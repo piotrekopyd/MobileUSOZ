@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
-import com.mobile.usoz.LecturersActivity;
+import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.LogInActivity;
 import com.mobile.usoz.R;
 
