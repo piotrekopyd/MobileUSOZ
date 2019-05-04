@@ -59,8 +59,6 @@ public class LecturersActivity extends AppCompatActivity
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
 
-    public static final String EXTRA_STRING1 = "com.mobile.usoz.LecturersActivities.EXTRA_STRING1";
-
     private LinkedList<Lecturer> lectutersCollection;
 
     @Override
@@ -98,7 +96,7 @@ public class LecturersActivity extends AppCompatActivity
                 if(name.equals("") || university.equals("") || surname.equals("")) {
                     Toast.makeText(LecturersActivity.this, "Some fields are empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    lectutersCollection.add(new Lecturer(lectutersCollection.size() ,name, surname, university));
+                    lectutersCollection.add(new Lecturer(name, surname, university));
                     addLecturer(name, surname, university);
                     nameTextView.setText("");
                     surnameTextView.setText("");
@@ -171,11 +169,19 @@ public class LecturersActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(LecturersActivity.this, LecturerPageActivity.class);
 
-                TextView textView = (TextView) linearLayout.getChildAt(0);
+                TextView tv1 = (TextView) linearLayout.getChildAt(0);
 
-                intent.putExtra(EXTRA_STRING1, textView.getText().toString());
+                Lecturer lecturer;
 
-                startActivity(intent);
+                String str =  tv1.getText().toString();
+
+                for(int i=0; i<lectutersCollection.size(); i++) {
+                    lecturer = lectutersCollection.get(i);
+                    if((lecturer.getFirstName() + " " + lecturer.getSurname()).equals(str)) {
+                        intent.putExtra("serialized_lecturer", lecturer);
+                        startActivityForResult(intent,1);
+                    }
+                }
             }
         });
 
@@ -237,6 +243,23 @@ public class LecturersActivity extends AppCompatActivity
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                if(data.getBooleanExtra("deleteLecturer", false)) {
+                    String name = data.getStringExtra("lecturerName");
+                    String surname = data.getStringExtra("lecturerSurname");
+                    int i = deleteLecturer(name, surname);
+                    if(i!=(-1)) {
+                        LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
+                        linearLayout1.removeViewAt(i);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
@@ -285,24 +308,32 @@ public class LecturersActivity extends AppCompatActivity
         startActivity(loginIntent);
         finish();
     }
+
+    private int deleteLecturer(String name, String surname) {
+        Lecturer l;
+        for (int i=0; i<lectutersCollection.size(); i++) {
+            l = lectutersCollection.get(i);
+            if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
+                lectutersCollection.remove(i);
+                return i;
+            }
+        }
+        return -1;
+    }
 }
 
 class Lecturer implements Serializable {
-    private int id;
     private String firstName;
     private String surname;
     private String university;
-    public Lecturer(int id, String firstName, String surname, String university) {
-        this.id = id;
+    public Lecturer(String firstName, String surname, String university) {
         this.firstName = firstName;
         this.surname = surname;
         this.university = university;
     }
-
     public String getFirstName() {
         return firstName;
     }
-
     public String getSurname() {
         return surname;
     }

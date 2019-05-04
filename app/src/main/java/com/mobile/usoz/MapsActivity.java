@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity
         deleteButton = findViewById(R.id.map_marker_delete);
         spinner = findViewById(R.id.map_color_spinner);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(MapsActivity.this,
-                R.layout.map_spinner, getResources().getTextArray(R.array.colors)) {
+                R.layout.map_spinner, getResources().getTextArray(R.array.map_spinner_colors)) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
