@@ -1,5 +1,6 @@
 package com.mobile.usoz;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -95,7 +97,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                     progressBar.setVisibility(View.VISIBLE);
                     createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
 
-                }else{
+                    //HIDE KEYBOARD WHILE PROGRESSBAR IS LOADING
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } else {
                     Toast.makeText(CreateAccountActivity.this, "E-mail or password field is empty!",
                             Toast.LENGTH_SHORT).show();
                 }

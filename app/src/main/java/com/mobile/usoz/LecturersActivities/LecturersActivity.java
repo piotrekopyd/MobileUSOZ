@@ -40,7 +40,9 @@ import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import org.apache.commons.lang3.SerializationUtils;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class LecturersActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,7 +54,7 @@ public class LecturersActivity extends AppCompatActivity
 
     private TextView nameTextView;
     private TextView surnameTextView;
-    private TextView descriptionTextView;
+    private TextView universityTextView;
     private Button saveButton;
 
     private FirebaseAuth mAuth;
@@ -85,14 +87,14 @@ public class LecturersActivity extends AppCompatActivity
 
         nameTextView = findViewById(R.id.lecturers_text_name);
         surnameTextView = findViewById(R.id.lecturers_text_surname);
-        descriptionTextView = findViewById(R.id.lecturers_text_description);
+        universityTextView = findViewById(R.id.lecturers_text_university);
         saveButton = findViewById(R.id.lecturers_button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = nameTextView.getText().toString();
                 String surname = surnameTextView.getText().toString();
-                String university = descriptionTextView.getText().toString();
+                String university = universityTextView.getText().toString();
                 if(name.equals("") || university.equals("") || surname.equals("")) {
                     Toast.makeText(LecturersActivity.this, "Some fields are empty", Toast.LENGTH_SHORT).show();
                 } else {
@@ -100,7 +102,7 @@ public class LecturersActivity extends AppCompatActivity
                     addLecturer(name, surname, university);
                     nameTextView.setText("");
                     surnameTextView.setText("");
-                    descriptionTextView.setText("");
+                    universityTextView.setText("");
                     hideEditField();
                 }
              }
@@ -193,14 +195,14 @@ public class LecturersActivity extends AppCompatActivity
     private void showEditField() {
         nameTextView.setVisibility(View.VISIBLE);
         surnameTextView.setVisibility(View.VISIBLE);
-        descriptionTextView.setVisibility(View.VISIBLE);
+        universityTextView.setVisibility(View.VISIBLE);
         saveButton.setVisibility(View.VISIBLE);
     }
 
     private void hideEditField() {
         nameTextView.setVisibility(View.INVISIBLE);
         surnameTextView.setVisibility(View.INVISIBLE);
-        descriptionTextView.setVisibility(View.INVISIBLE);
+        universityTextView.setVisibility(View.INVISIBLE);
         saveButton.setVisibility(View.INVISIBLE);
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.lecturers_frame_layout).getWindowToken(), 0);
@@ -222,17 +224,20 @@ public class LecturersActivity extends AppCompatActivity
                 showEditField();
                 break;
             case (R.id.lecturers_settings_send) :
-                try  {
-                    byte[] myBytes = SerializationUtils.serialize(lectutersCollection);
-                    firebaseStorage = FirebaseStorage.getInstance();
-                    storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
-                    storageReference.putBytes(myBytes);
-                } catch (Exception e) {}
+                sendDataToFirebase();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void sendDataToFirebase() {
+        try {
+            byte[] myBytes = SerializationUtils.serialize(lectutersCollection);
+            firebaseStorage = FirebaseStorage.getInstance();
+            storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
+            storageReference.putBytes(myBytes);
+        } catch (Exception e) {}
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -242,7 +247,11 @@ public class LecturersActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
@@ -254,6 +263,46 @@ public class LecturersActivity extends AppCompatActivity
                     if(i!=(-1)) {
                         LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
                         linearLayout1.removeViewAt(i);
+                    }
+                } else if(data.getBooleanExtra("updateLecturer", false)) {
+                    Lecturer lecturer = (Lecturer) data.getSerializableExtra("lecturer");
+                    String name = lecturer.getFirstName();
+                    String surname = lecturer.getSurname();
+                    Lecturer l;
+                    for (int i=0; i<lectutersCollection.size(); i++) {
+                        l = lectutersCollection.get(i);
+                        if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
+                            l.setUniversity(lecturer.getUniversity());
+                            l.setLectures(lecturer.getLectures());
+                            l.setGradesMap(lecturer.getGradesMap());
+
+                            LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
+
+                            for (int j=i; j<lectutersCollection.size(); j++) {
+                                linearLayout1.removeViewAt(i);
+                            }
+
+                            for (int j=i; j<lectutersCollection.size(); j++) {
+                                l = lectutersCollection.get(j);
+                                addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
+                            }
+
+                            break;
+                        }
+                    }
+                } else if(data.getBooleanExtra("updateLecturerOnBackPressed", false)) {
+                    Lecturer lecturer = (Lecturer) data.getSerializableExtra("lecturer1");
+                    String name = lecturer.getFirstName();
+                    String surname = lecturer.getSurname();
+                    Lecturer l;
+                    for (int i=0; i<lectutersCollection.size(); i++) {
+                        l = lectutersCollection.get(i);
+                        if (l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
+                            l.setGradesMap(lecturer.getGradesMap());
+                            l.setGrade(lecturer.getGrade());
+                            sendDataToFirebase();
+                            break;
+                        }
                     }
                 }
             }
@@ -326,10 +375,15 @@ class Lecturer implements Serializable {
     private String firstName;
     private String surname;
     private String university;
+    private String[] lectures;
+    private Map<String, Double> gradesMap;
+    private double grade;
     public Lecturer(String firstName, String surname, String university) {
         this.firstName = firstName;
         this.surname = surname;
         this.university = university;
+        this.grade = 0;
+        this.gradesMap = new HashMap<String, Double>();
     }
     public String getFirstName() {
         return firstName;
@@ -339,5 +393,50 @@ class Lecturer implements Serializable {
     }
     public String getUniversity() {
         return university;
+    }
+    public String[] getLectures() {
+        return lectures;
+    }
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+    public void setLectures(String[] lectures) {
+        this.lectures = lectures;
+    }
+    public void updateGrade(String UID, double g) {
+        if(gradesMap==null) {
+            gradesMap = new HashMap<>();
+        }
+        if(gradesMap.get(UID)==null) {
+            double d = gradesMap.size()*grade;
+            d+=g;
+            gradesMap.put(UID, g);
+            grade = d/gradesMap.size();
+        } else {
+            double d = gradesMap.size()*grade;
+            d -= gradesMap.get(UID);
+            d+=g;
+            grade = d/gradesMap.size();
+            gradesMap.remove(UID);
+            gradesMap.put(UID, g);
+        }
+    }
+
+    public Map<String, Double> getGradesMap() {
+        return gradesMap;
+    }
+    public void setGradesMap(Map<String, Double> gradesMap) {
+        this.gradesMap = gradesMap;
+    }
+    public double getGrade() {
+        return grade;
+    }
+    public double getGradeUID(String UID) {
+        if(gradesMap==null) return 0;
+        if(gradesMap.get(UID)==null) return 0;
+        return gradesMap.get(UID);
+    }
+    public void setGrade(double grade) {
+        this.grade = grade;
     }
 }
