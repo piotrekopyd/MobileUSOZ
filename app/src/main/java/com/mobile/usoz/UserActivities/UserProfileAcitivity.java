@@ -1,6 +1,5 @@
 package com.mobile.usoz.UserActivities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,32 +15,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.Registry;
-import com.bumptech.glide.annotation.GlideModule;
-import com.bumptech.glide.module.AppGlideModule;
 import com.facebook.login.LoginManager;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.mobile.usoz.CalendarActivity;
+import com.mobile.usoz.Calendar.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.LogInActivity;
 import com.mobile.usoz.MapsActivity;
-import com.mobile.usoz.NotesActivity;
+import com.mobile.usoz.Calendar.NotesActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
-import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditUserDataActivity;
-
-import java.io.InputStream;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth mAuth;

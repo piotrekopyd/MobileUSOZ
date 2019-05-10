@@ -38,6 +38,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.usoz.Calendar.CalendarActivity;
+import com.mobile.usoz.Calendar.NotesActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 

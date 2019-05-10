@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mobile.usoz.Calendar.CalendarActivity;
+import com.mobile.usoz.Calendar.NotesActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
