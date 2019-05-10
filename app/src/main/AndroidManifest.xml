@@ -18,6 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Calendar.Notes.SaveNoteActivity"></activity>
+        <activity android:name=".Calendar.Notes.DisplayNotesActivity" />
         <activity
             android:name=".UserActivities.EditUserDataActivity"
             android:label="EditUserData"
@@ -50,7 +52,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Calendar.CalendarActivity"
+            android:name=".Calendar.Calendar.CalendarActivity"
             android:label="@string/title_activity_calendar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -70,7 +72,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Calendar.NotesActivity"
+            android:name=".Calendar.Notes.NotesActivity"
             android:label="@string/title_activity_notes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

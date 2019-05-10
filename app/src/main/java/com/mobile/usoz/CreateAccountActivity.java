@@ -142,7 +142,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         newUserData.put(KEY_PASSIONS, "Describe your passions");
 
 
-        db.collection("User data").document(user.toString()).set(newUserData)
+        db.collection("User data").document(user.getUid().toString()).set(newUserData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
