@@ -26,10 +26,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.firestore.Transaction;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
 import com.mobile.usoz.LogInActivity;
@@ -39,7 +47,7 @@ import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import org.apache.commons.lang3.SerializationUtils;
-import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -61,34 +69,28 @@ public class LecturersActivity extends AppCompatActivity
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
 
-    private LinkedList<Lecturer> lectutersCollection;
+    private static LinkedList<Lecturer> lectutersCollection;
+    private double grade;
+    private double gradeUID;
+    private int gradesMapSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lectutersCollection = new LinkedList<Lecturer>();
 
-        firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
-        storageReference.getBytes(100*1028*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                lectutersCollection = SerializationUtils.deserialize(bytes);
-                for (Lecturer l:
-                        lectutersCollection) {
-                    addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
-                }
-            }
-        });
+        addLecturers();
 
         setContentView(R.layout.activity_lecturers);
 
         mAuth = FirebaseAuth.getInstance();
 
+        lectutersCollection = new LinkedList<Lecturer>();
+
         nameTextView = findViewById(R.id.lecturers_text_name);
         surnameTextView = findViewById(R.id.lecturers_text_surname);
         universityTextView = findViewById(R.id.lecturers_text_university);
         saveButton = findViewById(R.id.lecturers_button_save);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,7 +142,75 @@ public class LecturersActivity extends AppCompatActivity
                 hideEditField();
             }
         });
-}
+    }
+
+    public void addLecturers() {
+        firebaseStorage = FirebaseStorage.getInstance();
+
+        storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
+        storageReference.getBytes(100*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                lectutersCollection = SerializationUtils.deserialize(bytes);
+                for (Lecturer l:
+                        lectutersCollection) {
+                    addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
+                }
+            }
+        });
+    }
+
+    public static synchronized void updateGrade(final String UID, final String lecturer, final double grade1) {
+
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final DocumentReference documentReference = db.collection("Lecturers").document(lecturer);
+
+        db.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(documentReference);
+
+                Map<String, Number> map;
+
+                if(!snapshot.exists()) {
+                    map = new HashMap<String, Number>();
+                    map.put(UID, grade1);
+
+                    Map<String, Map<String, Number>> tmpMap = new HashMap<>();
+                    tmpMap.put("grades", map);
+
+                    db.collection("Lecturers").document(lecturer).set(tmpMap);
+                } else {
+                    map = (Map<String, Number>) snapshot.get("grades");
+
+                    if(map == null) {
+                        map = new HashMap<String, Number>();
+                        map.put(UID, grade1);
+                    } else {
+                        Number n = map.get(UID);
+
+                        if(n!=null) {
+                            if(n.doubleValue()!=0) {
+                                return null;
+                            }
+                        }
+
+                        map.put(UID, grade1);
+                    }
+
+                    transaction.update(documentReference, "grades", map);
+                }
+                // Success
+                return null;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
     private void addLecturer(String name, String surname, String university) {
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout
@@ -169,21 +239,70 @@ public class LecturersActivity extends AppCompatActivity
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LecturersActivity.this, LecturerPageActivity.class);
 
                 TextView tv1 = (TextView) linearLayout.getChildAt(0);
 
-                Lecturer lecturer;
+                final String lecturerName =  tv1.getText().toString();
 
-                String str =  tv1.getText().toString();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final DocumentReference documentReference = db.collection("Lecturers").document(lecturerName);
 
-                for(int i=0; i<lectutersCollection.size(); i++) {
-                    lecturer = lectutersCollection.get(i);
-                    if((lecturer.getFirstName() + " " + lecturer.getSurname()).equals(str)) {
-                        intent.putExtra("serialized_lecturer", lecturer);
-                        startActivityForResult(intent,1);
+                grade = 0;
+                gradeUID = 0;
+                gradesMapSize = 0;
+
+                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Number> gradesMap = new HashMap<>();
+
+                                gradesMap = (Map<String, Number>) document.get("grades");
+
+                                grade = 0;
+                                gradeUID = 0;
+                                gradesMapSize = 0;
+
+                                if(gradesMap!=null) {
+                                    gradesMapSize = gradesMap.size();
+
+                                    if(gradesMap.containsKey(mAuth.getUid())) {
+                                        gradeUID = gradesMap.get(mAuth.getUid()).doubleValue();
+                                    }
+
+                                    Collection<Number> collection = gradesMap.values();
+
+                                    for(Number n : collection) {
+                                        grade += n.doubleValue();
+                                    }
+                                    grade /= gradesMap.size();
+                                }
+                            }
+                        }
                     }
-                }
+                }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Intent intent = new Intent(LecturersActivity.this, LecturerPageActivity.class);
+
+                        Lecturer lecturer;
+
+                        for(int i=0; i<lectutersCollection.size(); i++) {
+                            lecturer = lectutersCollection.get(i);
+                            if((lecturer.getFirstName() + " " + lecturer.getSurname()).equals(lecturerName)) {
+                                intent.putExtra("serialized_lecturer", lecturer);
+                                intent.putExtra("lecturer_grade", grade);
+                                intent.putExtra("grade_UID", gradeUID);
+                                intent.putExtra("gradesMapSize", gradesMapSize);
+
+                                startActivityForResult(intent,1);
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -238,43 +357,46 @@ public class LecturersActivity extends AppCompatActivity
             storageReference.putBytes(myBytes);
         } catch (Exception e) {}
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
-    @Override
-    public void onResume() {
-        super.onResume();
 
-    }
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 if(data.getBooleanExtra("deleteLecturer", false)) {
+
                     String name = data.getStringExtra("lecturerName");
                     String surname = data.getStringExtra("lecturerSurname");
+
                     int i = deleteLecturer(name, surname);
+
                     if(i!=(-1)) {
                         LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
                         linearLayout1.removeViewAt(i);
                     }
+
                 } else if(data.getBooleanExtra("updateLecturer", false)) {
                     Lecturer lecturer = (Lecturer) data.getSerializableExtra("lecturer");
+
                     String name = lecturer.getFirstName();
                     String surname = lecturer.getSurname();
+
                     Lecturer l;
+
                     for (int i=0; i<lectutersCollection.size(); i++) {
                         l = lectutersCollection.get(i);
                         if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
+
                             l.setUniversity(lecturer.getUniversity());
                             l.setLectures(lecturer.getLectures());
-                            l.setGradesMap(lecturer.getGradesMap());
 
                             LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
 
@@ -286,21 +408,6 @@ public class LecturersActivity extends AppCompatActivity
                                 l = lectutersCollection.get(j);
                                 addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
                             }
-
-                            break;
-                        }
-                    }
-                } else if(data.getBooleanExtra("updateLecturerOnBackPressed", false)) {
-                    Lecturer lecturer = (Lecturer) data.getSerializableExtra("lecturer1");
-                    String name = lecturer.getFirstName();
-                    String surname = lecturer.getSurname();
-                    Lecturer l;
-                    for (int i=0; i<lectutersCollection.size(); i++) {
-                        l = lectutersCollection.get(i);
-                        if (l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
-                            l.setGradesMap(lecturer.getGradesMap());
-                            l.setGrade(lecturer.getGrade());
-                            sendDataToFirebase();
                             break;
                         }
                     }
@@ -312,6 +419,7 @@ public class LecturersActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
+
         switch (menuItem.getItemId()) {
             case R.id.nav_profile:
                 intent = new Intent(LecturersActivity.this, UserProfileAcitivity.class);
@@ -335,10 +443,13 @@ public class LecturersActivity extends AppCompatActivity
                 logOut();
                 break;
         }
+
         if(intent!=null) {
             startActivity(intent);
         }
+
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -359,84 +470,19 @@ public class LecturersActivity extends AppCompatActivity
     }
 
     private int deleteLecturer(String name, String surname) {
+        //TODO: delete from database
         Lecturer l;
+
         for (int i=0; i<lectutersCollection.size(); i++) {
             l = lectutersCollection.get(i);
+
             if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
                 lectutersCollection.remove(i);
                 return i;
             }
         }
+
         return -1;
     }
 }
 
-class Lecturer implements Serializable {
-    private String firstName;
-    private String surname;
-    private String university;
-    private String[] lectures;
-    private Map<String, Double> gradesMap;
-    private double grade;
-    public Lecturer(String firstName, String surname, String university) {
-        this.firstName = firstName;
-        this.surname = surname;
-        this.university = university;
-        this.grade = 0;
-        this.gradesMap = new HashMap<String, Double>();
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public String getSurname() {
-        return surname;
-    }
-    public String getUniversity() {
-        return university;
-    }
-    public String[] getLectures() {
-        return lectures;
-    }
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-    public void setLectures(String[] lectures) {
-        this.lectures = lectures;
-    }
-    public void updateGrade(String UID, double g) {
-        if(gradesMap==null) {
-            gradesMap = new HashMap<>();
-        }
-        if(gradesMap.get(UID)==null) {
-            double d = gradesMap.size()*grade;
-            d+=g;
-            gradesMap.put(UID, g);
-            grade = d/gradesMap.size();
-        } else {
-            double d = gradesMap.size()*grade;
-            d -= gradesMap.get(UID);
-            d+=g;
-            grade = d/gradesMap.size();
-            gradesMap.remove(UID);
-            gradesMap.put(UID, g);
-        }
-    }
-
-    public Map<String, Double> getGradesMap() {
-        return gradesMap;
-    }
-    public void setGradesMap(Map<String, Double> gradesMap) {
-        this.gradesMap = gradesMap;
-    }
-    public double getGrade() {
-        return grade;
-    }
-    public double getGradeUID(String UID) {
-        if(gradesMap==null) return 0;
-        if(gradesMap.get(UID)==null) return 0;
-        return gradesMap.get(UID);
-    }
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
-}
