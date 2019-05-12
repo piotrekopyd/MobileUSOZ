@@ -22,17 +22,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValuesInterface;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String KEY_NAME = "name";
-    private static final String KEY_LASTNAME = "last_name";
-    private static final String KEY_UNIVERSITY = "university";
-    private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_PASSIONS = "passions";
+public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener, UserDataDatabaseKeyValuesInterface {
+
 
     private Button registerButton ;
     private TextView emailTextView, pswdTextView;

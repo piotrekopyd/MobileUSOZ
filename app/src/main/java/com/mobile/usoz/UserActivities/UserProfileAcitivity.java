@@ -26,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
+import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValuesInterface;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.LogInActivity;
 import com.mobile.usoz.MapsActivity;
@@ -33,20 +34,13 @@ import com.mobile.usoz.Calendar.Notes.NotesActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
 
-public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValuesInterface {
     private FirebaseAuth mAuth;
 
     //Layouts
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-    private static final String KEY_NAME = "name";
-    private static final String KEY_LASTNAME = "last_name";
-    private static final String KEY_UNIVERSITY = "university";
-    private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_PASSIONS = "passions";
-
 
 
     private ImageView profilePicture;

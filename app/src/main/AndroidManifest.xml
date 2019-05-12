@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Calendar.Notes.SaveNoteActivity"></activity>
+        <activity android:name=".Calendar.Calendar.DatesActivity"></activity>
+        <activity android:name=".Calendar.Notes.AddNewNoteActivity" />
         <activity android:name=".Calendar.Notes.DisplayNotesActivity" />
         <activity
             android:name=".UserActivities.EditUserDataActivity"

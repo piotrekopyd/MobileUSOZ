@@ -15,19 +15,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValuesInterface;
 import com.mobile.usoz.R;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditUserDataActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditUserDataActivity extends AppCompatActivity implements View.OnClickListener, UserDataDatabaseKeyValuesInterface {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private static final String KEY_NAME = "name";
-    private static final String KEY_LASTNAME = "last_name";
-    private static final String KEY_UNIVERSITY = "university";
-    private static final String KEY_DATEOFBIRTH = "date";
-    private static final String KEY_PASSIONS = "passions";
+;
 
     private TextView nameTextView,lastNameTextView,emailTextView,birthdayTextView,universityTextView,passionsTextView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
