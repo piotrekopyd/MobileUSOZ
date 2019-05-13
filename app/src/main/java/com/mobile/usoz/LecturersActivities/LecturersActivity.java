@@ -82,7 +82,7 @@ public class LecturersActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_lecturers);
 
-        findViewById(R.id.lecturers_relative_layout2).setVisibility(View.INVISIBLE);
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -314,17 +314,19 @@ public class LecturersActivity extends AppCompatActivity
     }
 
     private void showEditField() {
-        nameTextView.setVisibility(View.VISIBLE);
-        surnameTextView.setVisibility(View.VISIBLE);
-        universityTextView.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.VISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setClickable(true);
+
+        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.lecturers_relative_layout1).getForeground().setAlpha(180);
     }
 
     private void hideEditField() {
-        nameTextView.setVisibility(View.INVISIBLE);
-        surnameTextView.setVisibility(View.INVISIBLE);
-        universityTextView.setVisibility(View.INVISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setClickable(false);
+
+        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.lecturers_frame_layout).getWindowToken(), 0);
     }
@@ -370,21 +372,21 @@ public class LecturersActivity extends AppCompatActivity
         findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
         findViewById(R.id.lecturers_relative_layout1).getForeground().setAlpha(180);
 
-        findViewById(R.id.lecturers_relative_layout2).setVisibility(View.VISIBLE);
-        findViewById(R.id.lecturers_relative_layout2).setClickable(true);
+        findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(true);
 
-        Button button = findViewById(R.id.lecturers_relative_layout2_reject_button);
+        Button button = findViewById(R.id.exit_reject_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
 
-                findViewById(R.id.lecturers_relative_layout2).setVisibility(View.INVISIBLE);
-                findViewById(R.id.lecturers_relative_layout2).setClickable(false);
+                findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                findViewById(R.id.included_exit_layout).setClickable(false);
             }
         });
 
-        button = findViewById(R.id.lecturers_relative_layout2_confirm_button);
+        button = findViewById(R.id.exit_confirm_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

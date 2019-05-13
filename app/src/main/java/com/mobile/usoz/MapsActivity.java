@@ -78,9 +78,7 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
-        findViewById(R.id.maps_relative_layout2).setVisibility(View.INVISIBLE);
-        findViewById(R.id.maps_relative_layout2).setClickable(false);
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -332,6 +330,7 @@ public class MapsActivity extends AppCompatActivity
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -342,21 +341,21 @@ public class MapsActivity extends AppCompatActivity
         findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
         findViewById(R.id.maps_relative_layout1).getForeground().setAlpha(180);
 
-        findViewById(R.id.maps_relative_layout2).setVisibility(View.VISIBLE);
-        findViewById(R.id.maps_relative_layout2).setClickable(true);
+        findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(true);
 
-        Button button = findViewById(R.id.maps_relative_layout2_reject_button);
+        Button button = findViewById(R.id.exit_reject_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
 
-                findViewById(R.id.maps_relative_layout2).setVisibility(View.INVISIBLE);
-                findViewById(R.id.maps_relative_layout2).setClickable(false);
+                findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                findViewById(R.id.included_exit_layout).setClickable(false);
             }
         });
 
-        button = findViewById(R.id.maps_relative_layout2_confirm_button);
+        button = findViewById(R.id.exit_confirm_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
