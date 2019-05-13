@@ -25,7 +25,7 @@ import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 
 public class CalendarActivity extends AppCompatActivity
-//        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener
     {
 
         private CalendarModel model;
@@ -53,10 +53,12 @@ public class CalendarActivity extends AppCompatActivity
         //setupNavigation();
 
         model = new CalendarModel();
+
+        setupNavigation();
+
         // recycle view
         setupRecycleView();
     }
-
 
     // ------------- CALENDAR ----------------------------
 
@@ -68,15 +70,6 @@ public class CalendarActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
-
-
-
-
-
-
-//     --------------- NAVIGATION ----------------------
-/**
     public void setupNavigation(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +84,7 @@ public class CalendarActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_calendar);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -142,5 +136,5 @@ public class CalendarActivity extends AppCompatActivity
         Intent loginIntent = new Intent(CalendarActivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();
-    }*/
+    }
 }

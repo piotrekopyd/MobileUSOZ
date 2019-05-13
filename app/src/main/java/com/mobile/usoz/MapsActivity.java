@@ -3,6 +3,7 @@ package com.mobile.usoz;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
@@ -76,6 +77,10 @@ public class MapsActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+        findViewById(R.id.maps_relative_layout2).setVisibility(View.INVISIBLE);
+        findViewById(R.id.maps_relative_layout2).setClickable(false);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -324,7 +329,7 @@ public class MapsActivity extends AppCompatActivity
                 .tilt(0)
                 .build();
 
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 1100, null);
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
 
     @Override
@@ -332,9 +337,37 @@ public class MapsActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+
+        findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.maps_relative_layout1).getForeground().setAlpha(180);
+
+        findViewById(R.id.maps_relative_layout2).setVisibility(View.VISIBLE);
+        findViewById(R.id.maps_relative_layout2).setClickable(true);
+
+        Button button = findViewById(R.id.maps_relative_layout2_reject_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+                findViewById(R.id.maps_relative_layout2).setVisibility(View.INVISIBLE);
+                findViewById(R.id.maps_relative_layout2).setClickable(false);
+            }
+        });
+
+        button = findViewById(R.id.maps_relative_layout2_confirm_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeApplication();
+            }
+        });
+    }
+
+    private void closeApplication() {
+        finishAffinity();
+        System.exit(0);
     }
 
     @Override
