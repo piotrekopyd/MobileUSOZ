@@ -2,13 +2,14 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/lecturer_page_activity_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
         <RelativeLayout
+            android:id="@+id/lecturer_page_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -32,7 +33,7 @@
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
                     android:id="@+id/textViewUniversity"
@@ -128,16 +129,20 @@
                     android:layout_marginTop="30dp"
                     android:text="Oceń Prowadzącego" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lecturer_page_edit_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
                 <FrameLayout
-                    android:id="@+id/lecturers_frame_layout"
+                    android:id="@+id/lecturer_page_frame_layout"
                     android:layout_width="273dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/included_drawer_layout"
-                    android:layout_alignStart="@+id/included_drawer_layout"
-                    android:layout_alignEnd="@+id/included_drawer_layout"
                     android:layout_marginStart="65dp"
                     android:layout_marginTop="145dp"
-                    android:layout_marginEnd="65dp">
+                    android:layout_marginEnd="65dp"
+                    android:background="@color/com_facebook_button_background_color_focused">
 
                         <EditText
                             android:id="@+id/lecturer_page_text_university"
@@ -162,6 +167,7 @@
                             android:layout_width="110dp"
                             android:layout_height="50dp"
                             android:layout_marginTop="225dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_gravity="center_horizontal"
                             android:typeface="sans"
                             android:textSize="17sp"
@@ -172,6 +178,71 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/lecturer_page_confirm_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/lecturer_page_confirm_frame_layout"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/com_facebook_button_background_color_focused">
+
+                        <TextView
+                            android:id="@+id/lecturer_page_confirm_frame_layout_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60dp"
+                            android:layout_gravity="top|center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:text="Zapisac zmiany?"
+                            android:textAlignment="center"
+                            android:textSize="17sp" />
+
+
+                        <Button
+                            android:id="@+id/lecturer_page_confirm_frame_layout_accept_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="left|top"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/spinner_shape"
+                            android:text="Tak"
+                            android:textAllCaps="false"
+                            android:textSize="17sp"
+                            android:typeface="sans" />
+
+                        <Button
+                            android:id="@+id/lecturer_page_confirm_frame_layout_reject_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center|top"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/spinner_shape"
+                            android:text="Nie"
+                            android:textAllCaps="false"
+                            android:textSize="17sp"
+                            android:typeface="sans" />
+                        <Button
+                            android:id="@+id/lecturer_page_confirm_frame_layout_cancel_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="right|top"
+                            android:layout_marginTop="60dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/spinner_shape"
+                            android:text="Anuluj"
+                            android:textAllCaps="false"
+                            android:textSize="17sp"
+                            android:typeface="sans" />
+
+                </FrameLayout>
+        </RelativeLayout>
 
 
 </android.support.v4.widget.DrawerLayout>

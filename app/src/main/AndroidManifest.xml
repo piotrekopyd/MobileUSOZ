@@ -58,11 +58,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ForumActivity"
-            android:label="@string/title_activity_forum"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".LecturersActivities.LecturersActivity"
             android:label="@string/title_activity_lecturers"
             android:screenOrientation="portrait"

@@ -25,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.ForumActivity;
 import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValues;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
@@ -165,9 +164,6 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                 break;
             case R.id.nav_calendar:
                 intent = new Intent(UserProfileAcitivity.this, CalendarActivity.class);
-                break;
-            case R.id.nav_forum:
-                intent = new Intent(UserProfileAcitivity.this, ForumActivity.class);
                 break;
             case R.id.nav_lecturers:
                 intent = new Intent(UserProfileAcitivity.this, LecturersActivity.class);

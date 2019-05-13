@@ -347,9 +347,6 @@ public class MapsActivity extends AppCompatActivity
             case R.id.nav_calendar:
                 intent = new Intent(MapsActivity.this, CalendarActivity.class);
                 break;
-            case R.id.nav_forum:
-                intent = new Intent(MapsActivity.this, ForumActivity.class);
-                break;
             case R.id.nav_lecturers:
                 intent = new Intent(MapsActivity.this, LecturersActivity.class);
                 break;
