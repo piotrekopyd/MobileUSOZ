@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,8 +17,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.usoz.Interfaces.NoteDataDatabaseKeyValues;
 import com.mobile.usoz.R;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.mobile.usoz.Interfaces.NoteDataDatabaseKeyValues.KEY_DOCUMENT;
 
@@ -42,6 +45,7 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
         mAuth = FirebaseAuth.getInstance();
         model = new DatesModel();
         getDataFromCalendarActivity();
+        retreiveDatesFromFirebase();
         setupRecyclerView();
     }
 
@@ -52,8 +56,8 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
         model.month = intent.getStringExtra(RecyclerViewAdapter.CALENDAR_EXTRA_TEXT);
     }
 
-    private void retreiveDataFromFirebase(){
-        db.collection ("NoteData").document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
+    private void retreiveDatesFromFirebase(){
+        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -64,7 +68,7 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
