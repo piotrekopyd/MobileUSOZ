@@ -1,6 +1,8 @@
 package com.mobile.usoz.UserActivities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +61,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -155,6 +159,45 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         LoginManager.getInstance().logOut();
         updateLogOutUI();
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+
+        findViewById(R.id.user_profile_relative_layout_1).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.user_profile_relative_layout_1).getForeground().setAlpha(180);
+
+        findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(true);
+
+        Button button = findViewById(R.id.exit_reject_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.user_profile_relative_layout_1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+                findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                findViewById(R.id.included_exit_layout).setClickable(false);
+            }
+        });
+
+        button = findViewById(R.id.exit_confirm_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeApplication();
+            }
+        });
+    }
+
+    private void closeApplication() {
+        finishAffinity();
+        System.exit(0);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;

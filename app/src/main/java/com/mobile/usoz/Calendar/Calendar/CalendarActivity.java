@@ -1,6 +1,8 @@
 package com.mobile.usoz.Calendar.Calendar;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -42,6 +46,7 @@ public class CalendarActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         setupActivity();
     }
@@ -85,15 +90,43 @@ public class CalendarActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_calendar);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        @Override
+        public void onBackPressed() {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+
+            findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.BLACK));
+            findViewById(R.id.calendar_relative_layout_1).getForeground().setAlpha(180);
+
+            findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.included_exit_layout).setClickable(true);
+
+            Button button = findViewById(R.id.exit_reject_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+                    findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.included_exit_layout).setClickable(false);
+                }
+            });
+
+            button = findViewById(R.id.exit_confirm_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    closeApplication();
+                }
+            });
         }
-    }
+
+        private void closeApplication() {
+            finishAffinity();
+            System.exit(0);
+        }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
