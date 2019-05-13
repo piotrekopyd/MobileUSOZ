@@ -1,9 +1,13 @@
 package com.mobile.usoz;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,7 +40,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.common.collect.Maps;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -118,7 +126,6 @@ public class MapsActivity extends AppCompatActivity
         spinner.setAdapter(adapter);
 
         hideEditTextAndButtons();
-        myMarkersCollection = new LinkedList<MyMarker>();
 
         try {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -146,6 +153,9 @@ public class MapsActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_maps);
+        if(isNetworkAvailable()) {
+            downloadMarkers();
+        }
     }
 
     @Override
@@ -307,7 +317,49 @@ public class MapsActivity extends AppCompatActivity
             });
         }
 
-        //DOWNLOAD MARKERS FROM FIREBASE
+        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944))
+                .zoom(12.5f)
+                .bearing(0)
+                .tilt(0)
+                .build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
+    }
+
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(isNetworkAvailable()) {
+                if(myMarkersCollection==null) {
+                    Toast.makeText(MapsActivity.this, "Sieć znów działa" ,Toast.LENGTH_LONG).show();
+                    downloadMarkers();
+                }
+            } else if(myMarkersCollection==null) {
+                Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę" ,Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        if(isNetworkAvailable()) {
+            downloadMarkers();
+        }
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+    private void downloadMarkers() {
+        myMarkersCollection = new LinkedList<MyMarker>();
+
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
         storageReference.getBytes(100*1028*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -320,16 +372,14 @@ public class MapsActivity extends AppCompatActivity
                 }
             }
         });
-
-        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944))
-                .zoom(12.5f)
-                .bearing(0)
-                .tilt(0)
-                .build();
-
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
     @Override
     public void onBackPressed() {

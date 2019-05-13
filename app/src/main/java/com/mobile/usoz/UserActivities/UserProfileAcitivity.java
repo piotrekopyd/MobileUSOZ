@@ -35,6 +35,8 @@ import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
 
+import org.w3c.dom.Text;
+
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValues {
     private FirebaseAuth mAuth;
 
@@ -126,12 +128,16 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                             birthdayTextView.setText(documentSnapshot.getString(KEY_DATEOFBIRTH));
                             emailTextView.setText(user.getEmail());
                             passionsTextView.setText(documentSnapshot.getString(KEY_PASSIONS));
+
+                            TextView textView = findViewById(R.id.email_text_view1);
+                            textView.setText(user.getEmail());
+
 //                            System.out.print(storageReference);
 //
 //                            Glide.with(UserProfileAcitivity.this)
 //                                    .load(storageReference)
 //                                    .into(profilePicture);
-                        }else{
+                        } else {
                             Toast.makeText(UserProfileAcitivity.this,"Document does not exists", Toast.LENGTH_SHORT).show();
                         }
                     }
