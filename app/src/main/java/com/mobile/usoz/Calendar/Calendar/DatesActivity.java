@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,9 +60,8 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
         db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult();
-                        model.mDates = (ArrayList<String>) document.get("dates");
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        model.mDates = (ArrayList<String>) documentSnapshot.get("dates");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
