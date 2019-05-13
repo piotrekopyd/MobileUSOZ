@@ -1,6 +1,8 @@
 *.iml
 /local.properties
 /.idea/caches
+/.idea/workspace.xml
+/.idea/libraries
 .DS_Store
 /build
 /captures
