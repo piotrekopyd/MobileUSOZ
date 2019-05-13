@@ -78,9 +78,9 @@
             android:value="@string/facebook_app_id"
             tools:replace="android:value" />
 
-        <activity android:name=".CreateAccountActivity" />
+        <activity android:name=".UserAccount.CreateAccountActivity" />
         <activity
-            android:name=".LogInActivity"
+            android:name=".UserAccount.LogInActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

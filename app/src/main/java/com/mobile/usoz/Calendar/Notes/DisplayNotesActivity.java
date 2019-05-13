@@ -25,9 +25,7 @@ import java.util.ArrayList;
 
 public class DisplayNotesActivity extends AppCompatActivity implements NotesDatabaseKeyValues {
 
-    private ArrayList<String> mNotes= new ArrayList<>();
-    private String month;
-    private String day;
+    private DisplayNotesModel model;
     private Button mAddNoteButton;
 
     private FirebaseAuth mAuth;
@@ -48,7 +46,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-
+        model = new DisplayNotesModel();
         initDates();
         setupRecyclerView();
 
@@ -60,8 +58,8 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DisplayNotesActivity.this, AddNewNoteActivity.class);
-                intent.putExtra(NOTES_MONTHS_EXTRA_TEXT, month);
-                intent.putExtra(NOTES_DAYS_EXTRA_TEXT, day);
+                intent.putExtra(NOTES_MONTHS_EXTRA_TEXT, model.month);
+                intent.putExtra(NOTES_DAYS_EXTRA_TEXT, model.day);
                 startActivity(intent);
             }
         });
@@ -75,20 +73,20 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
     private void retreiveDataFromPreviousActivity(){
         Intent intent = getIntent();
-        month = intent.getStringExtra(RecyclerViewAdapter.DATES_EXTRA_TEXT);
-        day = intent.getStringExtra(RecyclerViewAdapter.DATES_DAYS_EXTRA_TEXT);
+        model.month = intent.getStringExtra(RecyclerViewAdapter.DATES_EXTRA_TEXT);
+        model.day = intent.getStringExtra(RecyclerViewAdapter.DATES_DAYS_EXTRA_TEXT);
     }
 
     // ----------------------------- Fetch data from database ---------------------
 
 
     private void fetchDataFromFirebase(){
-        db.collection (NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(day).get()
+        db.collection (NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
-                        mNotes = (ArrayList<String>) document.get(KEY_NOTE);
+                        model.mNotes = (ArrayList<String>) document.get(KEY_NOTE);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -102,7 +100,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
     private void setupRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.notes_recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,mNotes);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,model.mNotes);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
+import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import org.apache.commons.lang3.SerializationUtils;

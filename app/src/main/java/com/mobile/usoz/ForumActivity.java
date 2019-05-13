@@ -16,6 +16,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
+import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 public class ForumActivity extends AppCompatActivity

@@ -36,9 +36,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
     private FirebaseUser user;
     private FirebaseFirestore db ;
 
-    private String month;
-    private String day;
-    private List<String> list = new ArrayList<String>();
+    private AddNewNoteModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +46,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
     }
 
     private void setup(){
+        model = new AddNewNoteModel();
         mDateEditText = findViewById(R.id.saveNoteDataTextView);
         mNoteContentEditText = findViewById(R.id.saveNoteNoteTextView);
         mSaveButton = findViewById(R.id.saveNoteSaveButton);
@@ -62,8 +61,8 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
         setupDatabaseAuth();
 
         Intent intent = getIntent();
-        month = intent.getStringExtra(DisplayNotesActivity.NOTES_MONTHS_EXTRA_TEXT);
-        day = intent.getStringExtra(DisplayNotesActivity.NOTES_DAYS_EXTRA_TEXT);
+        model.month = intent.getStringExtra(DisplayNotesActivity.NOTES_MONTHS_EXTRA_TEXT);
+        model.day = intent.getStringExtra(DisplayNotesActivity.NOTES_DAYS_EXTRA_TEXT);
     }
 
     // ----------------------- Send note to firebase -----------------------------
@@ -80,7 +79,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
 
 
         db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).get();
-        db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(day).set(note)
+        db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).set(note)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -98,32 +97,32 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
 
     private void saveNoteDate(){
         retrieveOldDates();
-        if(list != null){
-            list.add(day + "-" + month);
+        if(model.list != null){
+            model.list.add(model.day + "-" + model.month);
             saveNewDate();
         }
     }
 
     private void retrieveOldDates (){
-        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(month).document(day).get()
+        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(model.day).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
-                        list = (ArrayList<String>) document.get(KEY_VALUE);
+                        model.list = (ArrayList<String>) document.get(KEY_VALUE);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        list = null;
+                        model.list = null;
                     }
                 });
     }
     private void saveNewDate(){
         Map<String, Object> date = new HashMap<>();
-        date.put(KEY_VALUE, list);
-        db.collection(KEY_COLLECTION_NAME). document(user.getUid()).collection(month).document(KEY_DOCUMENT).set(date)
+        date.put(KEY_VALUE, model.list);
+        db.collection(KEY_COLLECTION_NAME). document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).set(date)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {

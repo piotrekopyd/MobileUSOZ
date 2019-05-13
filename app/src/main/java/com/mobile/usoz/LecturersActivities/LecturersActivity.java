@@ -32,7 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
-import com.mobile.usoz.LogInActivity;
+import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;

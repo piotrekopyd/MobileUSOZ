@@ -27,8 +27,8 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
     private FirebaseUser user;
     private FirebaseFirestore db ;
 
-    private ArrayList<String> mDates = new ArrayList<>();
-    private String month;
+    private DatesModel model;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,27 +40,25 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
 
     private void setupActivity(){
         mAuth = FirebaseAuth.getInstance();
-        getDates();
+        model = new DatesModel();
+        getDataFromCalendarActivity();
         setupRecyclerView();
     }
 
-    private void getDates(){
-        mDates.add("10-" + month);
-        mDates.add("11-" + month);
-    }
+
 
     private void getDataFromCalendarActivity() {
         Intent intent = getIntent();
-        month = intent.getStringExtra(RecyclerViewAdapter.CALENDAR_EXTRA_TEXT);
+        model.month = intent.getStringExtra(RecyclerViewAdapter.CALENDAR_EXTRA_TEXT);
     }
 
     private void retreiveDataFromFirebase(){
-        db.collection ("NoteData").document(user.getUid()).collection(month).document(KEY_DOCUMENT).get()
+        db.collection ("NoteData").document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
-                        mDates = (ArrayList<String>) document.get("dates");
+                        model.mDates = (ArrayList<String>) document.get("dates");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -74,7 +72,7 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
 
     private void setupRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.calendar_recycle_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mDates);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, model.mDates);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

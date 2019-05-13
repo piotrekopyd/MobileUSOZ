@@ -19,7 +19,7 @@ public class CalendarActivity extends AppCompatActivity
 //        implements NavigationView.OnNavigationItemSelectedListener
     {
 
-
+        private CalendarModel model;
     //Zmienne do layoutu
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -28,7 +28,6 @@ public class CalendarActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
 
     private static final String TAG = "CalendarActivity";
-    private ArrayList<String> mMonths = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,34 +43,18 @@ public class CalendarActivity extends AppCompatActivity
 
         //setupNavigation();
 
+        model = new CalendarModel();
         // recycle view
-        initDates();
         setupRecycleView();
     }
 
 
     // ------------- CALENDAR ----------------------------
 
-    public void initDates(){
-        Log.d(TAG, "initDates");
-        mMonths.add("Styczeń");
-        mMonths.add("Luty");
-        mMonths.add("Marzec");
-        mMonths.add("Kwiecień");
-        mMonths.add("Maj");
-        mMonths.add("Czerwiec");
-        mMonths.add("Lipiec");
-        mMonths.add("Sierpień");
-        mMonths.add("Wrzesień");
-        mMonths.add("Październik");
-        mMonths.add("Listopad");
-        mMonths.add("Grudzień");
-    }
-
     private void setupRecycleView(){
         Log.d(TAG, "start setup recycle view");
         RecyclerView recyclerView = findViewById(R.id.calendar_recycle_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mMonths);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, model.mMonths);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

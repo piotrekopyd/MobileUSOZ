@@ -28,7 +28,7 @@ import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.ForumActivity;
 import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValues;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
-import com.mobile.usoz.LogInActivity;
+import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
@@ -40,7 +40,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    
+
 
     private ImageView profilePicture;
     private ImageView backgroundImage;
