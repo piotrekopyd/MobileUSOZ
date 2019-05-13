@@ -11,8 +11,7 @@
     <RelativeLayout
         android:id="@+id/lecturers_relative_layout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#C3E7F8F5">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/included_drawer_layout"

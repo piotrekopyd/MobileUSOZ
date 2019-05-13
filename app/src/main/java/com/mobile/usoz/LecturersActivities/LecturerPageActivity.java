@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.net.ConnectivityManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.usoz.R;
+
 
 public class LecturerPageActivity extends AppCompatActivity {
 
@@ -35,19 +35,14 @@ public class LecturerPageActivity extends AppCompatActivity {
     private TextView lecturesTextView;
     private TextView textViewRate;
     private Button saveButton;
-    private double chosenGrade;
-    private double currentGrade;
+    private Button rateButton;
 
     private Lecturer lecturer;
-    private double grade;
-    private double gradeUID;
-    private int gradesMapSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecturer_page);
-        findViewById(R.id.lecturer_page_confirm_relative_layout).setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -70,9 +65,6 @@ public class LecturerPageActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         lecturer = (Lecturer) intent.getSerializableExtra("serialized_lecturer");
-        grade = intent.getDoubleExtra("lecturer_grade", 0);
-        gradeUID = intent.getDoubleExtra("grade_UID", 0);
-        gradesMapSize = intent.getIntExtra("gradesMapSize", 0);
 
         TextView textView1 = findViewById(R.id.textViewLecturerName);
         TextView textView2 = findViewById(R.id.textViewUniversity);
@@ -108,88 +100,52 @@ public class LecturerPageActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mSelectedIndex = i;
-                if(mSelectedIndex==0) {
-                    chosenGrade = 0;
-                } else {
-                    chosenGrade = ((double)mSelectedIndex + 3) / 2;
-                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        chosenGrade = currentGrade = gradeUID;
-        if(gradeUID == 0) {
-            spinner.setSelection(0);
-            final Button rateButton = findViewById(R.id.rateButton);
+        spinner.setSelection((int) (lecturer.getGradeUID(mAuth.getUid())*2 - 4));
 
-            rateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (spinner.getSelectedItemPosition()) {
-                        case 1:
-                            currentGrade = 2;
-                            break;
-                        case 2:
-                            currentGrade = 2.5;
-                            break;
-                        case 3:
-                            currentGrade = 3;
-                            break;
-                        case 4:
-                            currentGrade = 3.5;
-                            break;
-                        case 5:
-                            currentGrade = 4;
-                            break;
-                        case 6:
-                            currentGrade = 4.5;
-                            break;
-                        case 7:
-                            currentGrade = 5;
-                            break;
-                    }
-
-                    Thread thread = new Thread("updateGrade() Thread") {
-                        @Override
-                        public void run() {
-                            LecturersActivity.updateGrade(mAuth.getUid(), lecturer.getName(), currentGrade);
-                            super.run();
-                        }
-                    };
-                    thread.start();
-
-                    spinner = findViewById(R.id.spinnerLecturerGrade);
-                    spinner.setSelection((int) (currentGrade*2 - 3));
-                    spinner.setEnabled(false);
-                    spinner.setClickable(false);
-
-                    chosenGrade = currentGrade;
-
-                    grade *= gradesMapSize;
-                    grade += chosenGrade;
-                    gradesMapSize++;
-                    grade /= gradesMapSize;
-
-                    textViewRate.setText(String.valueOf(grade));
-
-                    rateButton.setClickable(false);
-                }
-            });
-
-        } else {
-            spinner.setSelection((int) (gradeUID*2 - 3));
-            spinner.setEnabled(false);
-        }
 
         textViewRate = findViewById(R.id.textViewRate);
-
-        if(grade==0) {
+        if(lecturer.getGrade()==0) {
             textViewRate.setText("--");
         } else {
-            textViewRate.setText(String.format("%.2f", grade));
+            textViewRate.setText(String.valueOf(lecturer.getGrade()));
         }
+
+        rateButton = findViewById(R.id.rateButton);
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (spinner.getSelectedItemPosition()) {
+                    case 0:
+                        lecturer.updateGrade(mAuth.getUid(), 2);
+                        break;
+                    case 1:
+                        lecturer.updateGrade(mAuth.getUid(), 2.5);
+                        break;
+                    case 2:
+                        lecturer.updateGrade(mAuth.getUid(), 3);
+                        break;
+                    case 3:
+                        lecturer.updateGrade(mAuth.getUid(), 3.5);
+                        break;
+                    case 4:
+                        lecturer.updateGrade(mAuth.getUid(), 4);
+                        break;
+                    case 5:
+                        lecturer.updateGrade(mAuth.getUid(), 4.5);
+                        break;
+                    case 6:
+                        lecturer.updateGrade(mAuth.getUid(), 5);
+                        break;
+                }
+                textViewRate.setText(String.valueOf(lecturer.getGrade()));
+            }
+        });
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -197,6 +153,13 @@ public class LecturerPageActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        getIntent().putExtra("updateLecturerOnBackPressed", true);
+        getIntent().putExtra("lecturer1", lecturer);
+        setResult(RESULT_OK, getIntent());
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -207,77 +170,11 @@ public class LecturerPageActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //SPRAWDZANIE LACZA INTERNETOWEGO
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(chosenGrade==currentGrade) {
-
-            getIntent().putExtra("updateLecturerOnBackPressed", true);
-            getIntent().putExtra("lecturer1", lecturer);
-
-            setResult(RESULT_OK, getIntent());
-
-            super.onBackPressed();
-        } else {
-            findViewById(R.id.lecturer_page_confirm_relative_layout).setVisibility(View.VISIBLE);
-            findViewById(R.id.lecturer_page_confirm_relative_layout).setClickable(true);
-            findViewById(R.id.lecturer_page_relative_layout).getForeground().setAlpha(180);
-
-            Button button = findViewById(R.id.lecturer_page_confirm_frame_layout_accept_button);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Thread thread = new Thread("updateGrade() Thread") {
-                        @Override
-                        public void run() {
-                            LecturersActivity.updateGrade(mAuth.getUid(), lecturer.getName(), chosenGrade);
-                            super.run();
-                        }
-                    };
-                    thread.start();
-
-                    currentGrade = chosenGrade;
-                    onBackPressed();
-                }
-            });
-
-            button = findViewById(R.id.lecturer_page_confirm_frame_layout_reject_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    currentGrade = chosenGrade;
-                    onBackPressed();
-                }
-            });
-
-            button = findViewById(R.id.lecturer_page_confirm_frame_layout_cancel_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    findViewById(R.id.lecturer_page_confirm_relative_layout).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.lecturer_page_confirm_relative_layout).setClickable(false);
-                    findViewById(R.id.lecturer_page_relative_layout).getForeground().setAlpha(0);
-                }
-            });
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.onBackPressed();
-                return false;
+                this.finish();
             case (R.id.lecturer_page_delete):
                 Intent intent1 = new Intent();
                 intent1.putExtra("deleteLecturer", true);
@@ -285,6 +182,7 @@ public class LecturerPageActivity extends AppCompatActivity {
                 intent1.putExtra("lecturerSurname", lecturer.getSurname());
                 setResult(RESULT_OK, intent1);
                 this.finish();
+                break;
             case (R.id.lecturer_page_edit):
                 showEditField();
                 universityTextView.setText(lecturer.getUniversity());
@@ -300,26 +198,23 @@ public class LecturerPageActivity extends AppCompatActivity {
                 this.finish();
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void setLecturerPageTextLectures(String[] array) {
         lecturesTextView.setText("");
-
         for(int i=0; i<array.length; i++) {
             lecturesTextView.append(array[i]);
-
             if(i!=(array.length-1)) {
                 lecturesTextView.append("\n");
             }
+
         }
     }
 
     private void setTextViewLectures(String[] array) {
         TextView tv = findViewById(R.id.textViewLectures);
         tv.setText("");
-
         for(int i=0; i<array.length; i++) {
             tv.append("* "+ array[i]);
             if(i!=(array.length-1)) {
@@ -329,23 +224,16 @@ public class LecturerPageActivity extends AppCompatActivity {
     }
 
     private void showEditField() {
-        findViewById(R.id.lecturer_page_edit_relative_layout).setClickable(true);
-        findViewById(R.id.lecturer_page_relative_layout).getForeground().setAlpha(180);
-        findViewById(R.id.lecturer_page_edit_relative_layout).setVisibility(View.VISIBLE);
-        View view = findViewById(R.id.lecturer_page_edit_relative_layout);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideEditField();
-            }
-        });
+        universityTextView.setVisibility(View.VISIBLE);
+        lecturesTextView.setVisibility(View.VISIBLE);
+        saveButton.setVisibility(View.VISIBLE);
     }
 
     private void hideEditField() {
-        findViewById(R.id.lecturer_page_edit_relative_layout).setClickable(false);
-        findViewById(R.id.lecturer_page_relative_layout).getForeground().setAlpha(0);
-        findViewById(R.id.lecturer_page_edit_relative_layout).setVisibility(View.INVISIBLE);
+        universityTextView.setVisibility(View.INVISIBLE);
+        lecturesTextView.setVisibility(View.INVISIBLE);
+        saveButton.setVisibility(View.INVISIBLE);
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(findViewById(R.id.lecturer_page_frame_layout).getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(findViewById(R.id.lecturers_frame_layout).getWindowToken(), 0);
     }
 }

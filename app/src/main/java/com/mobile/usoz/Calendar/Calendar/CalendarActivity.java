@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.usoz.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class CalendarActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
 
     private static final String TAG = "CalendarActivity";
-    private ArrayList<String> mDates = new ArrayList<>();
+    private ArrayList<String> mMonths = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +54,26 @@ public class CalendarActivity extends AppCompatActivity
 
     public void initDates(){
         Log.d(TAG, "initDates");
-        mDates.add("siema");
-        mDates.add("10.20.2");
-        mDates.add("32e");
-        mDates.add("sifdfsdfema");
-        mDates.add("fdsfs");
-        mDates.add("si123efdsema");
-        mDates.add("r3r2");
+        mMonths.add("Styczeń");
+        mMonths.add("Luty");
+        mMonths.add("Marzec");
+        mMonths.add("Kwiecień");
+        mMonths.add("Maj");
+        mMonths.add("Czerwiec");
+        mMonths.add("Lipiec");
+        mMonths.add("Sierpień");
+        mMonths.add("Wrzesień");
+        mMonths.add("Październik");
+        mMonths.add("Listopad");
+        mMonths.add("Grudzień");
     }
 
     private void setupRecycleView(){
         Log.d(TAG, "start setup recycle view");
         RecyclerView recyclerView = findViewById(R.id.calendar_recycle_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,mDates);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mMonths);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
     }
 
 

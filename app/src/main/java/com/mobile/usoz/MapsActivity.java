@@ -39,7 +39,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.Calendar.Notes.NotesActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
@@ -355,9 +354,6 @@ public class MapsActivity extends AppCompatActivity
                 break;
             case R.id.nav_maps:
                 intent = new Intent(MapsActivity.this, MapsActivity.class);
-                break;
-            case R.id.nav_notes:
-                intent = new Intent(MapsActivity.this, NotesActivity.class);
                 break;
             case R.id.nav_log_out:
                 logOut();

@@ -19,6 +19,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     private ArrayList<String> mNotes = new ArrayList<>();
     private Context mContext;
 
+
     public NotesRecyclerViewAdapter(Context context, ArrayList<String> notes){
         mContext = context;
         mNotes = notes;
@@ -33,7 +34,6 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.noteTextView.setText(mNotes.get(i));
-
     }
 
     @Override

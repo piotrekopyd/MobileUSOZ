@@ -19,10 +19,15 @@ import java.util.ArrayList;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mDates = new ArrayList<>();
+    private ArrayList<String> data = new ArrayList<>();
     private Context mContext;
+    public static final String CALENDAR_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.CALENDAR_EXTRA_TEXT";
+    public static final String DATES_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.MONTH_EXTRA_TEXT";
+    public static final String DATES_DAYS_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.DAY_EXTRA_TEXT";
+
+
     public RecyclerViewAdapter( Context context,ArrayList<String> dates){
-        mDates = dates;
+        data = dates;
         mContext = context;
     }
 
@@ -36,23 +41,35 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 
-        viewHolder.dateTextView.setText(mDates.get(position));
+        viewHolder.dateTextView.setText(data.get(position));
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Intent intent = new Intent(mContext, DisplayNotesActivity.class);
-                 mContext.startActivity(intent);
+                Intent intent;
+                if(mContext instanceof CalendarActivity){
+                    intent = new Intent(mContext, DatesActivity.class);
+                    String s = formatMonthToNumber(data.get(position));
+                    intent.putExtra(CALENDAR_EXTRA_TEXT, s);
+                }else{
+                    intent = new Intent(mContext, DisplayNotesActivity.class);
+                    String s = data.get(position);
+                    String d = data.get(position);
+                    intent.putExtra(DATES_EXTRA_TEXT, s.substring(3));
+                    intent.putExtra(DATES_DAYS_EXTRA_TEXT, d.substring(0,2));
+                }
+
+                mContext.startActivity(intent);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mDates.size();
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -63,6 +80,38 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             dateTextView = itemView.findViewById(R.id.calendar_cell_text_view);
             parentLayout = itemView.findViewById(R.id.calendar_recycle_view_item_layout);
+        }
+    }
+
+
+    private String formatMonthToNumber(String month){
+        switch (month){
+            case "Styczeń":
+                return "1";
+            case "Luty":
+                return "2";
+            case "Marzec":
+                return "3";
+            case "Kwiecień":
+                return "4";
+            case "Maj":
+                return "5";
+            case "Czerwiec":
+                return "6";
+            case "Lipiec":
+                return "7";
+            case "Sierpień":
+                return "8";
+            case "Wrzesień":
+                return "9";
+            case "Październik":
+                return "10";
+            case "Lispotad":
+                return "11";
+            case "Grudzień":
+                return "12";
+            default:
+                return "0";
         }
     }
 }

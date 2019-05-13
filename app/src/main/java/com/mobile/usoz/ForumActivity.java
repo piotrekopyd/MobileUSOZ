@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.Calendar.Notes.NotesActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
@@ -81,9 +80,6 @@ public class ForumActivity extends AppCompatActivity
                 break;
             case R.id.nav_maps :
                 intent = new Intent(ForumActivity.this, MapsActivity.class);
-                break;
-            case R.id.nav_notes:
-                intent = new Intent(ForumActivity.this, NotesActivity.class);
                 break;
             case R.id.nav_log_out:
                 logOut();
