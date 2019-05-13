@@ -332,6 +332,7 @@ public class MapsActivity extends AppCompatActivity
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
