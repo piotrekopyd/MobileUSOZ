@@ -105,19 +105,23 @@ public class LecturerPageActivity extends AppCompatActivity {
                 return tv;
             }
         };
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 mSelectedIndex = i;
                 if(mSelectedIndex==0) {
                     chosenGrade = 0;
+                } else if (mSelectedIndex==1) {
+                    chosenGrade = 2;
                 } else {
-                    chosenGrade = ((double)mSelectedIndex + 3) / 2;
+                    chosenGrade = ((double)mSelectedIndex + 4) / 2;
                 }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         chosenGrade = currentGrade = gradeUID;
@@ -129,28 +133,30 @@ public class LecturerPageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     switch (spinner.getSelectedItemPosition()) {
+                        case 0:
+                            currentGrade = 0;
+                            break;
                         case 1:
                             currentGrade = 2;
                             break;
                         case 2:
-                            currentGrade = 2.5;
-                            break;
-                        case 3:
                             currentGrade = 3;
                             break;
-                        case 4:
+                        case 3:
                             currentGrade = 3.5;
                             break;
-                        case 5:
+                        case 4:
                             currentGrade = 4;
                             break;
-                        case 6:
+                        case 5:
                             currentGrade = 4.5;
                             break;
-                        case 7:
+                        case 6:
                             currentGrade = 5;
                             break;
                     }
+
+                    if(currentGrade == 0) return;
 
                     Thread thread = new Thread("updateGrade() Thread") {
                         @Override
@@ -162,7 +168,13 @@ public class LecturerPageActivity extends AppCompatActivity {
                     thread.start();
 
                     spinner = findViewById(R.id.spinnerLecturerGrade);
-                    spinner.setSelection((int) (currentGrade*2 - 3));
+
+                    if(currentGrade==2) {
+                        spinner.setSelection(1);
+                    } else {
+                        spinner.setSelection((int) (currentGrade*2 - 4));
+                    }
+
                     spinner.setEnabled(false);
                     spinner.setClickable(false);
 
@@ -173,14 +185,18 @@ public class LecturerPageActivity extends AppCompatActivity {
                     gradesMapSize++;
                     grade /= gradesMapSize;
 
-                    textViewRate.setText(String.valueOf(grade));
+                    textViewRate.setText(String.format("%.2f", grade));
 
                     rateButton.setClickable(false);
                 }
             });
 
         } else {
-            spinner.setSelection((int) (gradeUID*2 - 3));
+            if(gradeUID==2) {
+                spinner.setSelection(1);
+            } else {
+                spinner.setSelection((int) (gradeUID*2 - 4));
+            }
             spinner.setEnabled(false);
         }
 
@@ -208,18 +224,13 @@ public class LecturerPageActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    //SPRAWDZANIE LACZA INTERNETOWEGO
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
     @Override
     public void onBackPressed() {
+        if(findViewById(R.id.lecturer_page_edit_relative_layout).getVisibility()==View.VISIBLE) {
+            hideEditField();
+            return;
+        }
+
         if(chosenGrade==currentGrade) {
 
             getIntent().putExtra("updateLecturerOnBackPressed", true);

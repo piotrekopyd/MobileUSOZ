@@ -57,9 +57,7 @@
                 android:id="@+id/lecturers_text_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="0dp"
                 android:autofillHints=""
                 android:hint="Name" />
 
@@ -67,9 +65,7 @@
                 android:id="@+id/lecturers_text_surname"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
+                android:layout_marginTop="45dp"
                 android:autofillHints=""
                 android:gravity="bottom|left"
                 android:hint="Surname" />
@@ -77,10 +73,8 @@
             <EditText
                 android:id="@+id/lecturers_text_university"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="110dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="90dp"
                 android:autofillHints=""
                 android:gravity="bottom|left"
                 android:hint="University" />
@@ -89,14 +83,14 @@
                 android:id="@+id/lecturers_button_save"
                 android:layout_width="110dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="190dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="135dp"
                 android:layout_gravity="center_horizontal"
                 android:typeface="sans"
                 android:textSize="17sp"
                 android:textAllCaps="false"
                 android:background="@drawable/spinner_shape"
                 android:text="Add" />
+
         </FrameLayout>
     </RelativeLayout>
 

@@ -14,7 +14,7 @@
             android:layout_height="match_parent">
 
                 <include
-                    android:id="@+id/included_drawer_layout"
+                    android:id="@+id/included_toolbar"
                     layout="@layout/app_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -23,7 +23,7 @@
                     android:id="@+id/textViewLecturerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/included_drawer_layout"
+                    android:layout_below="@+id/included_toolbar"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="0dp"
@@ -148,7 +148,7 @@
                         <EditText
                             android:id="@+id/lecturer_page_text_university"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="40dp"
                             android:layout_marginTop="0dp"
                             android:autofillHints=""
                             android:gravity="bottom|left"
@@ -158,7 +158,7 @@
                             android:id="@+id/lecturer_page_text_lectures"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:layout_marginTop="65dp"
+                            android:layout_marginTop="40dp"
                             android:autofillHints=""
                             android:gravity="bottom|left"
                             android:hint="Lectures" />
@@ -167,8 +167,7 @@
                             android:id="@+id/lecturer_page_button_save"
                             android:layout_width="110dp"
                             android:layout_height="50dp"
-                            android:layout_marginTop="225dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="193dp"
                             android:layout_gravity="center_horizontal"
                             android:typeface="sans"
                             android:textSize="17sp"

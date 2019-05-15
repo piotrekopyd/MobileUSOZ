@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,10 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.common.collect.Maps;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -331,11 +327,11 @@ public class MapsActivity extends AppCompatActivity
         public void onReceive(Context context, Intent intent) {
             if(isNetworkAvailable()) {
                 if(myMarkersCollection==null) {
-                    Toast.makeText(MapsActivity.this, "Sieć znów działa" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(MapsActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
                     downloadMarkers();
                 }
             } else if(myMarkersCollection==null) {
-                Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę" ,Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -345,7 +341,12 @@ public class MapsActivity extends AppCompatActivity
         super.onResume();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        if(isNetworkAvailable()) {
+        if (myMarkersCollection != null) {
+            for (MyMarker e:
+                    myMarkersCollection) {
+                googleMap.addMarker(e.getMarkerOptions());
+            }
+        } else if(isNetworkAvailable()) {
             downloadMarkers();
         }
         registerReceiver(networkChangeReceiver, intentFilter);
@@ -355,6 +356,13 @@ public class MapsActivity extends AppCompatActivity
     protected void onPause() {
         super.onPause();
         unregisterReceiver(networkChangeReceiver);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void downloadMarkers() {
@@ -374,13 +382,6 @@ public class MapsActivity extends AppCompatActivity
         });
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -388,8 +389,13 @@ public class MapsActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
 
-        findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
-        findViewById(R.id.maps_relative_layout1).getForeground().setAlpha(180);
+        if(findViewById(R.id.maps_edit_relative_layout).getVisibility()==View.VISIBLE) {
+            hideEditTextAndButtons();
+            return;
+        }
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.maps_relative_layout).getForeground().setAlpha(180);
 
         findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.included_exit_layout).setClickable(true);
@@ -398,7 +404,7 @@ public class MapsActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.TRANSPARENT));
 
                 findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
                 findViewById(R.id.included_exit_layout).setClickable(false);
@@ -447,21 +453,25 @@ public class MapsActivity extends AppCompatActivity
     }
 
     private void showEditTextAndButton() {
-        titleText.setVisibility(View.VISIBLE);
-        snippetText.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.VISIBLE);
-        spinner.setVisibility(View.VISIBLE);
-        deleteButton.setVisibility(View.VISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setClickable(true);
+        findViewById(R.id.maps_edit_relative_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideEditTextAndButtons();
+            }
+        });
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.maps_relative_layout).getForeground().setAlpha(180);
     }
 
     private void hideEditTextAndButtons() {
-        titleText.setText("");
-        snippetText.setText("");
-        titleText.setVisibility(View.INVISIBLE);
-        snippetText.setVisibility(View.INVISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
-        deleteButton.setVisibility(View.INVISIBLE);
-        spinner.setVisibility(View.INVISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setClickable(false);
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.map_frame_layout).getWindowToken(), 0);
     }
