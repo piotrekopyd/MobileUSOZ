@@ -47,6 +47,8 @@ public class DatesActivity extends AppCompatActivity implements NotesDatabaseKey
 
 
     private void setupActivity(){
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(false);
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();

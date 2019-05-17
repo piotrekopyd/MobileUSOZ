@@ -85,6 +85,8 @@ public class CalendarActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    // ------------------ Navigation ---------------------------------------
+
     public void setupNavigation(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

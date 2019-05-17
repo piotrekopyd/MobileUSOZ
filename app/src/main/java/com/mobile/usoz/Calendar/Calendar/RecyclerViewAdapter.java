@@ -14,13 +14,19 @@ import android.widget.TextView;
 import com.mobile.usoz.Calendar.Notes.DisplayNotesActivity;
 import com.mobile.usoz.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> data = new ArrayList<>();
+    private ArrayList<String> data ;
     private Context mContext;
     public static final String CALENDAR_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.CALENDAR_EXTRA_TEXT";
     public static final String DATES_MONTH_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.MONTH_EXTRA_TEXT";
@@ -54,7 +60,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 
-        viewHolder.dateTextView.setText(data.get(position));
+        // TODO: ADD NAME OF DAY
+        if(mContext instanceof CalendarActivity){
+            viewHolder.dateTextView.setText(data.get(position));
+        } else {
+            String date = data.get(position);
+            String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(date));
+            Date inputDate = new Date();
+            try {
+                inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
+            } catch (ParseException exception) {
+                System.out.print(exception);
+            }
+            String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
+            date = date + ".  " + dayOfWeek;
+            viewHolder.dateTextView.setText(date);
+        }
+
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
