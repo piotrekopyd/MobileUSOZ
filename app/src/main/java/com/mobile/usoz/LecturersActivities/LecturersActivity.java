@@ -1,10 +1,14 @@
 package com.mobile.usoz.LecturersActivities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -78,15 +82,11 @@ public class LecturersActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addLecturers();
-
         setContentView(R.layout.activity_lecturers);
 
         findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
-
-        lectutersCollection = new LinkedList<Lecturer>();
 
         nameTextView = findViewById(R.id.lecturers_text_name);
         surnameTextView = findViewById(R.id.lecturers_text_surname);
@@ -145,8 +145,52 @@ public class LecturersActivity extends AppCompatActivity
             }
         });
     }
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(isNetworkAvailable()) {
+                if(lectutersCollection==null) {
+                    Toast.makeText(LecturersActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
+                    downloadLecturers();
+                }
+            } else if(lectutersCollection==null) {
+                Toast.makeText(LecturersActivity.this, "Wystąpił błąd podczas pobierania listy wykładowców. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
-    public void addLecturers() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        if (lectutersCollection != null) {
+            for (Lecturer l:
+                    lectutersCollection) {
+                addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
+            }
+        } else if(isNetworkAvailable()) {
+            downloadLecturers();
+        }
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void downloadLecturers() {
+        lectutersCollection = new LinkedList<Lecturer>();
+
         firebaseStorage = FirebaseStorage.getInstance();
 
         storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
@@ -316,6 +360,12 @@ public class LecturersActivity extends AppCompatActivity
     private void showEditField() {
         findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.lecturers_edit_relative_layout).setClickable(true);
+        findViewById(R.id.lecturers_edit_relative_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideEditField();
+            }
+        });
 
         findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
         findViewById(R.id.lecturers_relative_layout1).getForeground().setAlpha(180);
@@ -367,6 +417,11 @@ public class LecturersActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        }
+
+        if(findViewById(R.id.lecturers_edit_relative_layout).getVisibility()==View.VISIBLE) {
+            hideEditField();
+            return;
         }
 
         findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));

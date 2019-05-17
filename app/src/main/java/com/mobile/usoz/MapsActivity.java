@@ -1,9 +1,13 @@
 package com.mobile.usoz;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
@@ -118,7 +122,6 @@ public class MapsActivity extends AppCompatActivity
         spinner.setAdapter(adapter);
 
         hideEditTextAndButtons();
-        myMarkersCollection = new LinkedList<MyMarker>();
 
         try {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -146,6 +149,9 @@ public class MapsActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_maps);
+        if(isNetworkAvailable()) {
+            downloadMarkers();
+        }
     }
 
     @Override
@@ -307,7 +313,61 @@ public class MapsActivity extends AppCompatActivity
             });
         }
 
-        //DOWNLOAD MARKERS FROM FIREBASE
+        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944))
+                .zoom(12.5f)
+                .bearing(0)
+                .tilt(0)
+                .build();
+
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
+    }
+
+    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(isNetworkAvailable()) {
+                if(myMarkersCollection==null) {
+                    Toast.makeText(MapsActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
+                    downloadMarkers();
+                }
+            } else if(myMarkersCollection==null) {
+                Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        if (myMarkersCollection != null) {
+            for (MyMarker e:
+                    myMarkersCollection) {
+                googleMap.addMarker(e.getMarkerOptions());
+            }
+        } else if(isNetworkAvailable()) {
+            downloadMarkers();
+        }
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void downloadMarkers() {
+        myMarkersCollection = new LinkedList<MyMarker>();
+
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
         storageReference.getBytes(100*1028*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -320,16 +380,7 @@ public class MapsActivity extends AppCompatActivity
                 }
             }
         });
-
-        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944))
-                .zoom(12.5f)
-                .bearing(0)
-                .tilt(0)
-                .build();
-
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -338,8 +389,13 @@ public class MapsActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
 
-        findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
-        findViewById(R.id.maps_relative_layout1).getForeground().setAlpha(180);
+        if(findViewById(R.id.maps_edit_relative_layout).getVisibility()==View.VISIBLE) {
+            hideEditTextAndButtons();
+            return;
+        }
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.maps_relative_layout).getForeground().setAlpha(180);
 
         findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.included_exit_layout).setClickable(true);
@@ -348,7 +404,7 @@ public class MapsActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.maps_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.TRANSPARENT));
 
                 findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
                 findViewById(R.id.included_exit_layout).setClickable(false);
@@ -397,21 +453,25 @@ public class MapsActivity extends AppCompatActivity
     }
 
     private void showEditTextAndButton() {
-        titleText.setVisibility(View.VISIBLE);
-        snippetText.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.VISIBLE);
-        spinner.setVisibility(View.VISIBLE);
-        deleteButton.setVisibility(View.VISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setClickable(true);
+        findViewById(R.id.maps_edit_relative_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideEditTextAndButtons();
+            }
+        });
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.maps_relative_layout).getForeground().setAlpha(180);
     }
 
     private void hideEditTextAndButtons() {
-        titleText.setText("");
-        snippetText.setText("");
-        titleText.setVisibility(View.INVISIBLE);
-        snippetText.setVisibility(View.INVISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
-        deleteButton.setVisibility(View.INVISIBLE);
-        spinner.setVisibility(View.INVISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.maps_edit_relative_layout).setClickable(false);
+
+        findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.map_frame_layout).getWindowToken(), 0);
     }

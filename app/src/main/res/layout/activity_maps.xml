@@ -9,12 +9,12 @@
     tools:openDrawer="start">
 
     <RelativeLayout
-        android:id="@+id/maps_relative_layout1"
+        android:id="@+id/maps_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/included_drawer_layout"
+            android:id="@+id/included_toolbar"
             layout="@layout/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -27,22 +27,29 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/included_drawer_layout"
+            android:layout_below="@+id/included_toolbar"
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             tools:context=".MapsActivity" />
 
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/maps_edit_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/map_frame_layout"
-            android:layout_width="273dp"
+            android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/included_drawer_layout"
-            android:layout_alignStart="@+id/map"
-            android:layout_alignEnd="@+id/map"
             android:layout_marginStart="65dp"
-            android:layout_marginTop="145dp"
-            android:layout_marginEnd="65dp">
+            android:layout_marginTop="170dp"
+            android:layout_marginEnd="65dp"
+            android:background="@drawable/relative_layout_border_1">
 
             <EditText
                 android:id="@+id/map_marker_title"
@@ -61,46 +68,46 @@
                 android:gravity="bottom|left"
                 android:hint="Snippet" />
 
-            <Button
-                android:id="@+id/map_marker_save"
-                android:layout_width="110dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="180dp"
-                android:layout_marginEnd="0dp"
-                android:layout_gravity="right|top"
-                android:typeface="sans"
-                android:textSize="17sp"
-                android:textAllCaps="false"
-                android:background="@drawable/spinner_shape"
-                android:text="@string/save_marker" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="160dp"
+                android:gravity="center"
+                android:showDividers="middle"
+                android:divider="@drawable/empty_thick_divider">
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/map_color_spinner"
-                android:layout_width="70dp"
-                android:layout_marginEnd="130dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right|top"
-                android:layout_marginTop="180dp"
-                android:textAlignment="center"
-                android:typeface="sans"
-                android:background="@drawable/spinner_shape">
-            </android.support.v7.widget.AppCompatSpinner>
+                <Button
+                    android:id="@+id/map_marker_delete"
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:typeface="sans"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/spinner_shape"
+                    android:text="@string/delete_marker" />
 
-            <Button
-                android:id="@+id/map_marker_delete"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="180dp"
-                android:layout_marginStart="0dp"
-                android:layout_gravity="right|left"
-                android:typeface="sans"
-                android:textSize="17sp"
-                android:textAllCaps="false"
-                android:background="@drawable/spinner_shape"
-                android:text="@string/delete_marker" />
+                <Button
+                    android:id="@+id/map_marker_save"
+                    android:layout_width="110dp"
+                    android:layout_height="50dp"
+                    android:typeface="sans"
+                    android:textSize="17sp"
+                    android:textAllCaps="false"
+                    android:background="@drawable/spinner_shape"
+                    android:text="@string/save_marker" />
 
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/map_color_spinner"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:textAlignment="center"
+                    android:typeface="sans"
+                    android:background="@drawable/spinner_shape">
+                </android.support.v7.widget.AppCompatSpinner>
+
+            </LinearLayout>
         </FrameLayout>
-
     </RelativeLayout>
 
     <include
@@ -116,6 +123,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu" />
+        app:menu="@menu/drawer_menu"/>
 
 </android.support.v4.widget.DrawerLayout>
