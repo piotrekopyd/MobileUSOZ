@@ -1,4 +1,4 @@
-package com.mobile.usoz.UserActivities.EdutUserDataActivities;
+package com.mobile.usoz.UserActivities.EditUserDataActivities;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -24,9 +24,10 @@ import com.google.firebase.storage.UploadTask;
 import com.mobile.usoz.R;
 import com.squareup.picasso.Picasso;
 
-public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
+public class ChangeUserProfilePhoto extends AppCompatActivity {
+
     private Button choosePhotoButton;
-    private ImageView backgroundPhotoImageView;
+    private ImageView profilePhotoImageView;
     private TextView choosenImageNameTextView;
 
     private FirebaseAuth mAuth;
@@ -39,18 +40,17 @@ public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_user_background_photo);
+        setContentView(R.layout.activity_change_user_profile_photo);
         setupActivity();
     }
     private void setupActivity(){
-        choosePhotoButton = findViewById(R.id.changeUserBackgroundPhotoChooseButton);
-        backgroundPhotoImageView = findViewById(R.id.changeUserBackgroundPhotoImageView);
-        choosenImageNameTextView = findViewById(R.id.choosenBackgroundImageNameTextView);
+        choosePhotoButton = findViewById(R.id.changeUserProfilePhotoChooseButton);
+        profilePhotoImageView = findViewById(R.id.changeUserProfilePhotoImageView);
+        choosenImageNameTextView = findViewById(R.id.changeUserProfilePhotoChoosenImageNameTextView);
 
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
-        mStorageRef= FirebaseStorage.getInstance().getReference("backgroundPicture");
-
+        mStorageRef= FirebaseStorage.getInstance().getReference("profilePicture");
 
         choosePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +60,12 @@ public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
         });
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             mImageUri = data.getData();
-            Picasso.with(this).load(mImageUri).into(backgroundPhotoImageView);
+            Picasso.with(this).load(mImageUri).into(profilePhotoImageView);
         }
     }
 
@@ -77,7 +76,7 @@ public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(ChangeUserBackgroundPhoto.this, "Upload succesful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChangeUserProfilePhoto.this, "Upload succesful", Toast.LENGTH_LONG).show();
                             //Upload upload = new Upload(name, taskSnapshot.getUploadSessionUri().toString());
                             //choosenImageNameTextView.setText(taskSnapshot.getUploadSessionUri().toString());
                         }
@@ -85,7 +84,7 @@ public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChangeUserBackgroundPhoto.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangeUserProfilePhoto.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }else{
@@ -107,7 +106,7 @@ public class ChangeUserBackgroundPhoto extends AppCompatActivity  {
     }
 
     private void goToEditUserDataMenuActivity(){
-        Intent intent = new Intent(ChangeUserBackgroundPhoto.this, EditDataMenu.class);
+        Intent intent = new Intent(ChangeUserProfilePhoto.this, EditDataMenu.class);
         startActivity(intent);
         finish();
     }

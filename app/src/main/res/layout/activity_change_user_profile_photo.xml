@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserActivities.EdutUserDataActivities.ChangeUserProfilePhoto">
+    tools:context=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto">
 
     <Button
         android:id="@+id/changeUserProfilePhotoChooseButton"
@@ -30,7 +30,7 @@
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 
     <TextView
-        android:id="@+id/choosenImageNameTextView"
+        android:id="@+id/changeUserProfilePhotoChoosenImageNameTextView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"

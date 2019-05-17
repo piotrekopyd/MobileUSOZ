@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,24 +18,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.usoz.Calendar.Notes.AddNewNoteActivity;
 import com.mobile.usoz.Interfaces.NoteDataDatabaseKeyValues;
+import com.mobile.usoz.Interfaces.NotesDatabaseKeyValues;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.mobile.usoz.Interfaces.NoteDataDatabaseKeyValues.KEY_DOCUMENT;
 
-public class DatesActivity extends AppCompatActivity implements NoteDataDatabaseKeyValues {
+public class DatesActivity extends AppCompatActivity implements NotesDatabaseKeyValues {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseFirestore db ;
 
     private DatesModel model;
-
-
+    private Button addNoteButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +48,20 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
 
     private void setupActivity(){
         mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
         model = new DatesModel();
         getDataFromCalendarActivity();
         retreiveDatesFromFirebase();
-        setupRecyclerView();
+
+        addNoteButton = findViewById(R.id.addNoteButton);
+        addNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DatesActivity.this, AddNewNoteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -56,26 +71,42 @@ public class DatesActivity extends AppCompatActivity implements NoteDataDatabase
         model.month = intent.getStringExtra(RecyclerViewAdapter.CALENDAR_EXTRA_TEXT);
     }
 
+    // ------------------ Get data from firebase ----------------------------------
+
     private void retreiveDatesFromFirebase(){
-        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
+        db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        model.mDates = (ArrayList<String>) documentSnapshot.get("dates");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            model.mDates = (ArrayList<String>)document.get(KEY_NOTE);
+                            setupRecyclerView();
+                        } else {
+                            Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+//        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
+//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                        model.mDates = (ArrayList<String>) documentSnapshot.get("dates");
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
+
     // ---------------------- Recycler View -----------------------------------
 
     private void setupRecyclerView(){
         RecyclerView recyclerView = findViewById(R.id.calendar_recycle_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, model.mDates);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, model.mDates, model.month);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

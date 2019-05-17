@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.mobile.usoz.Calendar.Notes.AddNewNoteActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.R;
@@ -38,6 +39,7 @@ public class CalendarActivity extends AppCompatActivity
     private NavigationView navigationView;
     private Toolbar toolbar;
 
+    private Button saveNoteButton;
     private FirebaseAuth mAuth;
 
     private static final String TAG = "CalendarActivity";
@@ -53,6 +55,14 @@ public class CalendarActivity extends AppCompatActivity
 
     private void setupActivity(){
 
+        saveNoteButton = findViewById(R.id.addNoteButton);
+        saveNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CalendarActivity.this, AddNewNoteActivity.class);
+                startActivity(intent);
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
 
         //setupNavigation();

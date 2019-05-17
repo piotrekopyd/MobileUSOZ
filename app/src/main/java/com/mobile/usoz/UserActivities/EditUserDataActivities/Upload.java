@@ -1,4 +1,4 @@
-package com.mobile.usoz.UserActivities.EdutUserDataActivities;
+package com.mobile.usoz.UserActivities.EditUserDataActivities;
 
 public class Upload {
     private String mName;

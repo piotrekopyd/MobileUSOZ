@@ -33,7 +33,7 @@ import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.MapsActivity;
 import com.mobile.usoz.R;
-import com.mobile.usoz.UserActivities.EdutUserDataActivities.EditDataMenu;
+import com.mobile.usoz.UserActivities.EditUserDataActivities.EditDataMenu;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValues {
     private FirebaseAuth mAuth;

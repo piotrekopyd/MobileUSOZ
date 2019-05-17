@@ -21,8 +21,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.RecyclerView
+        <Button
+            android:id="@+id/addNoteButton"
             android:layout_below="@+id/included_toolbar"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:text="Add note"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/addNoteButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/calendar_recycle_view">

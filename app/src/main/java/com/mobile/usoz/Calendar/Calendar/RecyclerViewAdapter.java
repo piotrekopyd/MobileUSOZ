@@ -15,6 +15,7 @@ import com.mobile.usoz.Calendar.Notes.DisplayNotesActivity;
 import com.mobile.usoz.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
@@ -22,13 +23,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<String> data = new ArrayList<>();
     private Context mContext;
     public static final String CALENDAR_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.CALENDAR_EXTRA_TEXT";
-    public static final String DATES_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.MONTH_EXTRA_TEXT";
-    public static final String DATES_DAYS_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.DAY_EXTRA_TEXT";
+    public static final String DATES_MONTH_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.MONTH_EXTRA_TEXT";
+    public static final String DATES_DAY_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.DAY_EXTRA_TEXT";
 
-
+    private String  month;
     public RecyclerViewAdapter( Context context,ArrayList<String> dates){
         data = dates;
         mContext = context;
+    }
+    public RecyclerViewAdapter(Context context, List<String> dates){
+        data = (ArrayList<String>) dates;
+        mContext = context;
+    }
+    public RecyclerViewAdapter(Context context, ArrayList<String> dates, String month ){
+        data =  dates;
+        mContext = context;
+        this.month = month;
     }
 
     @NonNull
@@ -56,10 +66,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     intent.putExtra(CALENDAR_EXTRA_TEXT, s);
                 }else{
                     intent = new Intent(mContext, DisplayNotesActivity.class);
-                    String s = data.get(position);
-                    String d = data.get(position);
-                    intent.putExtra(DATES_EXTRA_TEXT, s.substring(3));
-                    intent.putExtra(DATES_DAYS_EXTRA_TEXT, d.substring(0,2));
+                    intent.putExtra(DATES_DAY_EXTRA_TEXT, data.get(position));
+                    intent.putExtra(DATES_MONTH_EXTRA_TEXT, month);
                 }
 
                 mContext.startActivity(intent);

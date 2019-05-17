@@ -1,4 +1,4 @@
-package com.mobile.usoz.UserActivities.EdutUserDataActivities;
+package com.mobile.usoz.UserActivities.EditUserDataActivities;
 
 import android.content.Context;
 

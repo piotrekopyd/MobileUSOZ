@@ -22,7 +22,7 @@
         <activity android:name=".Calendar.Notes.AddNewNoteActivity" />
         <activity android:name=".Calendar.Notes.DisplayNotesActivity" />
         <activity
-            android:name=".UserActivities.EditUserDataActivity"
+            android:name=".UserActivities.EditUserDataActivities.EditUserDataActivity"
             android:label="EditUserData"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -31,7 +31,9 @@
             android:label="Profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserBackgroundPhoto" />
+        <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto" />
+        <activity android:name=".UserActivities.EditUserDataActivities.EditDataMenu" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

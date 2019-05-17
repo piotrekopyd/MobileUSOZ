@@ -5,4 +5,5 @@ public interface NotesDatabaseKeyValues {
     String NOTES_COLLECTION_PATH = "Calendar";
     String NOTES_NOTE_DOCUMENT_PATH = "Note";
     String NOTES_MAP_DOCUMENT_PATH = "Map";
+    String KEY_NUMBERS_OF_DAY_DOCUMENT = "Days";
 }

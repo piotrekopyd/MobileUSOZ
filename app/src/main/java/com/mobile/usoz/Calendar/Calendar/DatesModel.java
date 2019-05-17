@@ -1,6 +1,7 @@
 package com.mobile.usoz.Calendar.Calendar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatesModel {
     public ArrayList<String> mDates;
@@ -8,11 +9,5 @@ public class DatesModel {
 
     DatesModel(){
         mDates = new ArrayList<>();
-        getDates();
-    }
-
-    private void getDates(){
-        mDates.add("10-" + month);
-        mDates.add("11-" + month);
     }
 }
