@@ -37,6 +37,8 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
     static final public String NOTES_DAYS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_DAYS";
     static final public String NOTES_MONTHS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_MONTHS";
 
+    RecyclerView recyclerView;
+    NotesRecyclerViewAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +54,6 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
         retreiveDataFromPreviousActivity();
         fetchNotesFromFirebase();
         setupRecyclerView();
-
         mAddNoteButton = findViewById(R.id.addNoteButton);
         mAddNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,8 +96,8 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
     // ---------------------------- Recycler View -----------------------
 
     private void setupRecyclerView(){
-        RecyclerView recyclerView = findViewById(R.id.notes_recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,model.mNotes);
+        recyclerView = findViewById(R.id.notes_recycler_view);
+        adapter = new NotesRecyclerViewAdapter(this,model.mNotes, model.day, model.month);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

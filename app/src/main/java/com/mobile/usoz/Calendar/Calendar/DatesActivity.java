@@ -83,25 +83,14 @@ public class DatesActivity extends AppCompatActivity implements NotesDatabaseKey
                         DocumentSnapshot document = task.getResult();
                         if(document.exists()){
                             model.mDates = (ArrayList<String>)document.get(KEY_NOTE);
+                            if(model.mDates.isEmpty())
+                                Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
                             setupRecyclerView();
                         } else {
                             Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-//        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        model.mDates = (ArrayList<String>) documentSnapshot.get("dates");
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
     }
 
     // ---------------------- Recycler View -----------------------------------
