@@ -42,6 +42,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_display_notes);
         setupActivity();
     }

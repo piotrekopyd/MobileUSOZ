@@ -31,11 +31,9 @@ import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValues;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
-import com.mobile.usoz.MapsActivity;
+import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EditUserDataActivities.EditDataMenu;
-
-import org.w3c.dom.Text;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValues {
     private FirebaseAuth mAuth;

@@ -45,7 +45,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.firestore.Transaction;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.MapsActivity;
+import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
@@ -73,10 +73,11 @@ public class LecturersActivity extends AppCompatActivity
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
 
-    private static LinkedList<Lecturer> lectutersCollection;
-    private double grade;
-    private double gradeUID;
-    private int gradesMapSize;
+    //private static LinkedList<Lecturer> lectutersCollection;
+    private LecturersModel model;
+    //private double grade;
+    //private double gradeUID;
+    //private int gradesMapSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,18 @@ public class LecturersActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
 
+        setupEditField();
+
+        hideEditField();
+
+        setupNavigation();
+
+        if(isNetworkAvailable() && model==null) {
+            downloadLecturers();
+        }
+    }
+
+    private void setupEditField() {
         nameTextView = findViewById(R.id.lecturers_text_name);
         surnameTextView = findViewById(R.id.lecturers_text_surname);
         universityTextView = findViewById(R.id.lecturers_text_university);
@@ -102,7 +115,7 @@ public class LecturersActivity extends AppCompatActivity
                 if(name.equals("") || university.equals("") || surname.equals("")) {
                     Toast.makeText(LecturersActivity.this, "Some fields are empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    lectutersCollection.add(new Lecturer(name, surname, university));
+                    model.lectutersCollection.add(new Lecturer(name, surname, university));
                     addLecturer(name, surname, university);
                     nameTextView.setText("");
                     surnameTextView.setText("");
@@ -111,12 +124,9 @@ public class LecturersActivity extends AppCompatActivity
                 }
             }
         });
+    }
 
-        hideEditField();
-
-        /** inicjalizacja layoutu
-         * */
-
+    private void setupNavigation() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -145,15 +155,16 @@ public class LecturersActivity extends AppCompatActivity
             }
         });
     }
+
     private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(isNetworkAvailable()) {
-                if(lectutersCollection==null) {
+                if(model.lectutersCollection==null) {
                     Toast.makeText(LecturersActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
                     downloadLecturers();
                 }
-            } else if(lectutersCollection==null) {
+            } else if(model.lectutersCollection==null) {
                 Toast.makeText(LecturersActivity.this, "Wystąpił błąd podczas pobierania listy wykładowców. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
             }
         }
@@ -162,16 +173,19 @@ public class LecturersActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        if (lectutersCollection != null) {
+
+        LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
+
+        if(linearLayout1.getChildCount()==0 && model.lectutersCollection!=null) {
             for (Lecturer l:
-                    lectutersCollection) {
+                    model.lectutersCollection) {
                 addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
             }
-        } else if(isNetworkAvailable()) {
-            downloadLecturers();
         }
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
         registerReceiver(networkChangeReceiver, intentFilter);
     }
 
@@ -189,7 +203,7 @@ public class LecturersActivity extends AppCompatActivity
     }
 
     public void downloadLecturers() {
-        lectutersCollection = new LinkedList<Lecturer>();
+        model = new LecturersModel();
 
         firebaseStorage = FirebaseStorage.getInstance();
 
@@ -197,9 +211,9 @@ public class LecturersActivity extends AppCompatActivity
         storageReference.getBytes(100*1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                lectutersCollection = SerializationUtils.deserialize(bytes);
+                model.lectutersCollection = SerializationUtils.deserialize(bytes);
                 for (Lecturer l:
-                        lectutersCollection) {
+                        model.lectutersCollection) {
                     addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
                 }
             }
@@ -293,9 +307,9 @@ public class LecturersActivity extends AppCompatActivity
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 final DocumentReference documentReference = db.collection("Lecturers").document(lecturerName);
 
-                grade = 0;
-                gradeUID = 0;
-                gradesMapSize = 0;
+                model.grade = 0;
+                model.gradeUID = 0;
+                model.gradesMapSize = 0;
 
                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -308,23 +322,23 @@ public class LecturersActivity extends AppCompatActivity
 
                                 gradesMap = (Map<String, Number>) document.get("grades");
 
-                                grade = 0;
-                                gradeUID = 0;
-                                gradesMapSize = 0;
+                                model.grade = 0;
+                                model.gradeUID = 0;
+                                model.gradesMapSize = 0;
 
                                 if(gradesMap!=null) {
-                                    gradesMapSize = gradesMap.size();
+                                    model.gradesMapSize = gradesMap.size();
 
                                     if(gradesMap.containsKey(mAuth.getUid())) {
-                                        gradeUID = gradesMap.get(mAuth.getUid()).doubleValue();
+                                        model.gradeUID = gradesMap.get(mAuth.getUid()).doubleValue();
                                     }
 
                                     Collection<Number> collection = gradesMap.values();
 
                                     for(Number n : collection) {
-                                        grade += n.doubleValue();
+                                        model.grade += n.doubleValue();
                                     }
-                                    grade /= gradesMap.size();
+                                    model.grade /= gradesMap.size();
                                 }
                             }
                         }
@@ -336,13 +350,13 @@ public class LecturersActivity extends AppCompatActivity
 
                         Lecturer lecturer;
 
-                        for(int i=0; i<lectutersCollection.size(); i++) {
-                            lecturer = lectutersCollection.get(i);
+                        for(int i=0; i<model.lectutersCollection.size(); i++) {
+                            lecturer = model.lectutersCollection.get(i);
                             if((lecturer.getFirstName() + " " + lecturer.getSurname()).equals(lecturerName)) {
                                 intent.putExtra("serialized_lecturer", lecturer);
-                                intent.putExtra("lecturer_grade", grade);
-                                intent.putExtra("grade_UID", gradeUID);
-                                intent.putExtra("gradesMapSize", gradesMapSize);
+                                intent.putExtra("lecturer_grade", model.grade);
+                                intent.putExtra("grade_UID", model.gradeUID);
+                                intent.putExtra("gradesMapSize", model.gradesMapSize);
 
                                 startActivityForResult(intent,1);
                             }
@@ -405,7 +419,7 @@ public class LecturersActivity extends AppCompatActivity
 
     private void sendDataToFirebase() {
         try {
-            byte[] myBytes = SerializationUtils.serialize(lectutersCollection);
+            byte[] myBytes = SerializationUtils.serialize(model.lectutersCollection);
             firebaseStorage = FirebaseStorage.getInstance();
             storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
             storageReference.putBytes(myBytes);
@@ -480,8 +494,8 @@ public class LecturersActivity extends AppCompatActivity
 
                     Lecturer l;
 
-                    for (int i=0; i<lectutersCollection.size(); i++) {
-                        l = lectutersCollection.get(i);
+                    for (int i=0; i<model.lectutersCollection.size(); i++) {
+                        l = model.lectutersCollection.get(i);
                         if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
 
                             l.setUniversity(lecturer.getUniversity());
@@ -489,12 +503,12 @@ public class LecturersActivity extends AppCompatActivity
 
                             LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
 
-                            for (int j=i; j<lectutersCollection.size(); j++) {
+                            for (int j=i; j<model.lectutersCollection.size(); j++) {
                                 linearLayout1.removeViewAt(i);
                             }
 
-                            for (int j=i; j<lectutersCollection.size(); j++) {
-                                l = lectutersCollection.get(j);
+                            for (int j=i; j<model.lectutersCollection.size(); j++) {
+                                l = model.lectutersCollection.get(j);
                                 addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
                             }
                             break;
@@ -556,11 +570,11 @@ public class LecturersActivity extends AppCompatActivity
         //TODO: delete from database
         Lecturer l;
 
-        for (int i=0; i<lectutersCollection.size(); i++) {
-            l = lectutersCollection.get(i);
+        for (int i=0; i<model.lectutersCollection.size(); i++) {
+            l = model.lectutersCollection.get(i);
 
             if(l.getFirstName().equals(name) && l.getSurname().equals(surname)) {
-                lectutersCollection.remove(i);
+                model.lectutersCollection.remove(i);
                 return i;
             }
         }

@@ -19,22 +19,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Calendar.Calendar.DatesActivity"></activity>
-        <activity android:name=".Calendar.Notes.AddNewNoteActivity" />
-        <activity android:name=".Calendar.Notes.DisplayNotesActivity" />
+
+        <activity android:name=".Calendar.Calendar.DatesActivity"
+            android:label="@string/title_activity_calendar"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".Calendar.Notes.AddNewNoteActivity"
+            android:label="Add Note"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".Calendar.Notes.DisplayNotesActivity"/>
+
         <activity
             android:name=".UserActivities.EditUserDataActivities.EditUserDataActivity"
             android:label="EditUserData"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".UserActivities.UserProfileAcitivity"
             android:label="Profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserBackgroundPhoto" />
+
         <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto" />
+
         <activity android:name=".UserActivities.EditUserDataActivities.EditDataMenu" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -46,15 +61,17 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Maps.MapsActivity"
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Calendar.Calendar.CalendarActivity"
             android:label="@string/title_activity_calendar"
@@ -65,6 +82,7 @@
             android:label="@string/title_activity_lecturers"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".LecturersActivities.LecturerPageActivity"
             android:label="@string/title_activity_lecturers"
@@ -77,6 +95,7 @@
             tools:replace="android:value" />
 
         <activity android:name=".UserAccount.CreateAccountActivity" />
+
         <activity
             android:name=".UserAccount.LogInActivity"
             android:screenOrientation="portrait">
@@ -86,12 +105,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">

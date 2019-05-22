@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.mobile.usoz.Calendar.Notes.AddNewNoteActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
-import com.mobile.usoz.MapsActivity;
+import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobile.usoz.UserAccount.LogInActivity;

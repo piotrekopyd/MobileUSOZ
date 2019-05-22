@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,6 +40,7 @@ import java.util.Map;
 
 public class AddNewNoteActivity extends AppCompatActivity implements NotesDatabaseKeyValues, NoteDataDatabaseKeyValues{
 
+    private Toolbar toolbar;
     private Button mSaveButton;
     private EditText mNoteContentEditText;
     private Spinner daySpinner, monthSpinner;
@@ -73,11 +76,14 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
                 }
             }
         });
+
+        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setupDatabaseAuth();
-
     }
-
-
 
     // --------------------------- Setup Spinners ---------------------------------------------------------
     private void setupSpinners(){
@@ -136,7 +142,15 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
         });
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     // ----------------------- Send note to firebase -----------------------------
 
