@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class CalendarModel {
     public ArrayList<String> mMonths = new ArrayList<>();
 
-    CalendarModel(){
+    public CalendarModel(){
         initDates();
     }
 
