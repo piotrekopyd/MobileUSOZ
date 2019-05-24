@@ -53,7 +53,7 @@ public class CalendarActivity extends AppCompatActivity
         setupActivity();
     }
 
-    private void setupActivity(){
+    private void setupActivity() {
 
         saveNoteButton = findViewById(R.id.addNoteButton);
         saveNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +92,7 @@ public class CalendarActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle (
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -102,43 +102,43 @@ public class CalendarActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_calendar);
     }
 
-        @Override
-        public void onBackPressed() {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+
+        findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.calendar_relative_layout_1).getForeground().setAlpha(180);
+
+        findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(true);
+
+        Button button = findViewById(R.id.exit_reject_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+                findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                findViewById(R.id.included_exit_layout).setClickable(false);
             }
+        });
 
-            findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.BLACK));
-            findViewById(R.id.calendar_relative_layout_1).getForeground().setAlpha(180);
+        button = findViewById(R.id.exit_confirm_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeApplication();
+            }
+        });
+    }
 
-            findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
-            findViewById(R.id.included_exit_layout).setClickable(true);
-
-            Button button = findViewById(R.id.exit_reject_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    findViewById(R.id.calendar_relative_layout_1).setForeground(new ColorDrawable(Color.TRANSPARENT));
-
-                    findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.included_exit_layout).setClickable(false);
-                }
-            });
-
-            button = findViewById(R.id.exit_confirm_button);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    closeApplication();
-                }
-            });
-        }
-
-        private void closeApplication() {
-            finishAffinity();
-            System.exit(0);
-        }
+    private void closeApplication() {
+        finishAffinity();
+        System.exit(0);
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

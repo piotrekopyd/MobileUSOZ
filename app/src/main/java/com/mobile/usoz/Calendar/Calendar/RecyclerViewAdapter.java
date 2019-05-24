@@ -73,7 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 System.out.print(exception);
             }
             String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
-            date = date + ".  " + dayOfWeek;
+            date = date + ".  " + translateEnglishToPolishNameOfDay(dayOfWeek);
             viewHolder.dateTextView.setText(date);
         }
 
@@ -86,7 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     intent = new Intent(mContext, DatesActivity.class);
                     String s = formatMonthToNumber(data.get(position));
                     intent.putExtra(CALENDAR_EXTRA_TEXT, s);
-                }else{
+                } else {
                     intent = new Intent(mContext, DisplayNotesActivity.class);
                     intent.putExtra(DATES_DAY_EXTRA_TEXT, data.get(position));
                     intent.putExtra(DATES_MONTH_EXTRA_TEXT, month);
@@ -136,7 +136,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 return "9";
             case "Październik":
                 return "10";
-            case "Lispotad":
+            case "Listopad":
                 return "11";
             case "Grudzień":
                 return "12";
@@ -144,4 +144,68 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 return "0";
         }
     }
+
+    public static String formatNumberToMonth(int i) {
+        switch (i) {
+            case 1:
+                return "Styczeń";
+            case 2:
+                return "Luty";
+            case 3:
+                return "Marzec";
+            case 4:
+                return "Kwiecień";
+            case 5:
+                return "Maj";
+            case 6:
+                return "Czerwiec";
+            case 7:
+                return "Lipiec";
+            case 8:
+                return "Sierpień";
+            case 9:
+                return "Wrzesień";
+            case 10:
+                return "Październik";
+            case 11:
+                return "Listopad";
+            case 12:
+                return "Grudzień";
+        }
+        return "none";
+    }
+
+    public static String formatDateToDayOfWeek(String month, String day) {
+        String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(day));
+        Date inputDate = new Date();
+        try {
+            inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
+        } catch (ParseException exception) {
+            System.out.print(exception);
+        }
+        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
+        return translateEnglishToPolishNameOfDay(dayOfWeek);
+    }
+
+    private static String translateEnglishToPolishNameOfDay(String name) {
+        String name1 = name.toLowerCase();
+        switch (name1) {
+            case "monday":
+                return "Poniedziałek";
+            case "tuesday":
+                return "Wtorek";
+            case "wednesday":
+                return "Środa";
+            case "thursday":
+                return "Czwartek";
+            case "friday":
+                return "Piątek";
+            case "saturday":
+                return "Sobota";
+            case "sunday":
+                return "Niedziela";
+        }
+        return "none";
+    }
 }
+

@@ -44,6 +44,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.firestore.Transaction;
+import com.mobile.usoz.Administrator.Administrator;
+import com.mobile.usoz.Administrator.AdministratorCallback;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
@@ -72,12 +74,9 @@ public class LecturersActivity extends AppCompatActivity
     private FirebaseAuth mAuth;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
+    private BroadcastReceiver networkChangeReceiver;
 
-    //private static LinkedList<Lecturer> lectutersCollection;
     private LecturersModel model;
-    //private double grade;
-    //private double gradeUID;
-    //private int gradesMapSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,16 +88,23 @@ public class LecturersActivity extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
 
+        model = new LecturersModel();
+
         setupEditField();
 
         hideEditField();
 
         setupNavigation();
 
-        if(isNetworkAvailable() && model==null) {
+        if(isNetworkAvailable() && model.lectutersCollection==null) {
             downloadLecturers();
         }
+
+        setupReciever();
     }
+
+    /** metoda ustawiajaca pole edycji dla administratora
+     */
 
     private void setupEditField() {
         nameTextView = findViewById(R.id.lecturers_text_name);
@@ -125,6 +131,9 @@ public class LecturersActivity extends AppCompatActivity
             }
         });
     }
+
+    /** ustawianie paska nawigacji
+     */
 
     private void setupNavigation() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -156,32 +165,31 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
-    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(isNetworkAvailable()) {
-                if(model.lectutersCollection==null) {
-                    Toast.makeText(LecturersActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
-                    downloadLecturers();
+    /** ustawianie recievera na nasluchiwanie zmiany polaczenia internetowego
+     */
+
+    private void setupReciever() {
+        networkChangeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(isNetworkAvailable()) {
+                    if(model.lectutersCollection==null) {
+                        Toast.makeText(LecturersActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
+                        downloadLecturers();
+                    }
+                } else if(model.lectutersCollection==null) {
+                    Toast.makeText(LecturersActivity.this, "Wystąpił błąd podczas pobierania listy wykładowców. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
                 }
-            } else if(model.lectutersCollection==null) {
-                Toast.makeText(LecturersActivity.this, "Wystąpił błąd podczas pobierania listy wykładowców. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
             }
-        }
-    };
+        };
+    }
+
+    /** rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
+     */
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
-
-        if(linearLayout1.getChildCount()==0 && model.lectutersCollection!=null) {
-            for (Lecturer l:
-                    model.lectutersCollection) {
-                addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
-            }
-        }
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -195,6 +203,9 @@ public class LecturersActivity extends AppCompatActivity
         unregisterReceiver(networkChangeReceiver);
     }
 
+    /** metoda sprawdzajaca polaczenie z internetem
+     */
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -202,9 +213,11 @@ public class LecturersActivity extends AppCompatActivity
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public void downloadLecturers() {
-        model = new LecturersModel();
+    /** metoda pobierajaca informacje o wykladowcach z bazy danych
+     */
 
+    public void downloadLecturers() {
+        model.lectutersCollection = new LinkedList<>();
         firebaseStorage = FirebaseStorage.getInstance();
 
         storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
@@ -220,12 +233,18 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
+    /** aktualizacja pojedynczej oceny wprowadzonej przez uzytkownika o identyfikatorze "UID" na wykladowcy "lecturer"
+     */
+
     public static synchronized void updateGrade(final String UID, final String lecturer, final double grade1) {
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         final DocumentReference documentReference = db.collection("Lecturers").document(lecturer);
 
+        /** uruchamianie transakcji wprowadzajacej pojedynczy rekord do bazy danych,
+         *  jesli rekord istnieje, transakcja konczy sie niepowodzeniem
+         */
         db.runTransaction(new Transaction.Function<Void>() {
             @Override
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
@@ -272,6 +291,10 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
+    /** metoda dodajaca przycisk do menu wykladowcow
+     *  przycisk jest odpowiednio utworzonym layoutem
+     */
+
     private void addLecturer(String name, String surname, String university) {
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout
                 .LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -296,6 +319,11 @@ public class LecturersActivity extends AppCompatActivity
         linearLayout.addView(textView1);
         linearLayout.addView(textView2);
 
+
+        /** ustawianie listenera dla danego przycisku
+         *  i przechodzenie do strony wykladowcy
+         */
+
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -310,6 +338,9 @@ public class LecturersActivity extends AppCompatActivity
                 model.grade = 0;
                 model.gradeUID = 0;
                 model.gradesMapSize = 0;
+
+                /** pobieranie z firebase mapy ocen danego wykladowcy
+                 */
 
                 documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -344,6 +375,10 @@ public class LecturersActivity extends AppCompatActivity
                         }
                     }
                 }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
+                    /** przechodzenie do strony wykladowcy
+                     */
+
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Intent intent = new Intent(LecturersActivity.this, LecturerPageActivity.class);
@@ -368,41 +403,29 @@ public class LecturersActivity extends AppCompatActivity
 
         LinearLayout linearLayout1 = findViewById(R.id.lecturers_linear_layout);
         linearLayout1.addView(linearLayout);
-
     }
 
-    private void showEditField() {
-        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.VISIBLE);
-        findViewById(R.id.lecturers_edit_relative_layout).setClickable(true);
-        findViewById(R.id.lecturers_edit_relative_layout).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideEditField();
-            }
-        });
-
-        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
-        findViewById(R.id.lecturers_relative_layout1).getForeground().setAlpha(180);
-    }
-
-    private void hideEditField() {
-        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.INVISIBLE);
-        findViewById(R.id.lecturers_edit_relative_layout).setClickable(false);
-
-        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
-
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(findViewById(R.id.lecturers_frame_layout).getWindowToken(), 0);
-    }
+    /** metoda ustawiajaca pole edycji dla administratora na widoczne
+     */
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if(mAuth.getUid().equals("86dXmf6RNwRPsoD3nm982tJfDzl1")) {
-            inflater.inflate(R.menu.lecturers_edit_menu, menu);
-        }
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+
+        Administrator.isAdministrator(new AdministratorCallback() {
+            @Override
+            public void onCallback(boolean isAdministrator) {
+                if(isAdministrator) {
+                    inflater.inflate(R.menu.lecturers_edit_menu, menu);
+                }
+            }
+        }, mAuth.getUid());
+
         return super.onCreateOptionsMenu(menu);
     }
+
+    /** metoda obslugujaca menu edycji administratora
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -417,6 +440,9 @@ public class LecturersActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /** metoda wysylajaca dane o wykladowcach do firebase
+     */
+
     private void sendDataToFirebase() {
         try {
             byte[] myBytes = SerializationUtils.serialize(model.lectutersCollection);
@@ -425,6 +451,10 @@ public class LecturersActivity extends AppCompatActivity
             storageReference.putBytes(myBytes);
         } catch (Exception e) {}
     }
+
+    /** metoda wyswietlajaca komunikat o wyjsciu z aplikacji
+     *  oraz ukrywajaca pole edycji dla administratora w przypadku jego otwarcia
+     */
 
     @Override
     public void onBackPressed() {
@@ -444,6 +474,7 @@ public class LecturersActivity extends AppCompatActivity
         findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.included_exit_layout).setClickable(true);
 
+        //nie wychodz z aplikacji
         Button button = findViewById(R.id.exit_reject_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -455,6 +486,7 @@ public class LecturersActivity extends AppCompatActivity
             }
         });
 
+        //wyjdz z aplikacji
         button = findViewById(R.id.exit_confirm_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -468,6 +500,10 @@ public class LecturersActivity extends AppCompatActivity
         finishAffinity();
         System.exit(0);
     }
+
+    /** metoda uruchamiana po wyjsciu z LecturerPageActivity
+     *  aktualizuje dane wykladowcy badz usuwa go z listy wykladowcow
+     */
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -519,6 +555,9 @@ public class LecturersActivity extends AppCompatActivity
         }
     }
 
+    /** metoda obslugujaca przyciski w nawigacji
+     */
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Intent intent = null;
@@ -550,6 +589,36 @@ public class LecturersActivity extends AppCompatActivity
         return true;
     }
 
+    private void showEditField() {
+        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setClickable(true);
+        findViewById(R.id.lecturers_edit_relative_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideEditField();
+            }
+        });
+
+        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.lecturers_relative_layout1).getForeground().setAlpha(180);
+    }
+
+    /** metoda ustawiajaca pole edycji dla administratora na niewidoczne
+     */
+
+    private void hideEditField() {
+        findViewById(R.id.lecturers_edit_relative_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.lecturers_edit_relative_layout).setClickable(false);
+
+        findViewById(R.id.lecturers_relative_layout1).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(findViewById(R.id.lecturers_frame_layout).getWindowToken(), 0);
+    }
+
+    /** metoda tworzaca menu edycji dla administratora
+     */
+
     private void logOut() {
         //FIREBASE LOG OUT
         mAuth.signOut();
@@ -565,6 +634,9 @@ public class LecturersActivity extends AppCompatActivity
         startActivity(loginIntent);
         finish();
     }
+
+    /** metoda usuwa wykładowcę z kolekcji
+     */
 
     private int deleteLecturer(String name, String surname) {
         //TODO: delete from database

@@ -54,17 +54,22 @@ public class DatesActivity extends AppCompatActivity implements NotesDatabaseKey
     private void setupActivity(){
         findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         model = new DatesModel();
         getDataFromCalendarActivity();
         retreiveDatesFromFirebase();
+
+        NavigationView navigationView =  findViewById(R.id.nav_view);
+        navigationView.setVisibility(View.INVISIBLE);
+        navigationView.setClickable(false);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(RecyclerViewAdapter.formatNumberToMonth(Integer.valueOf(model.month)));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         addNoteButton = findViewById(R.id.addNoteButton);
         addNoteButton.setOnClickListener(new View.OnClickListener() {

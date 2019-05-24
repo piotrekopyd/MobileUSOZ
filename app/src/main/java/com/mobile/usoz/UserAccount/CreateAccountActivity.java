@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +40,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private FirebaseFirestore db ;
+    private FirebaseFirestore db;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,10 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         pswdTextView = (TextView) findViewById(R.id.PswdTextView);
         progressBar = (ProgressBar) findViewById(R.id.circleProgressBar);
         registerButton.setOnClickListener(this);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -152,5 +160,15 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         Toast.makeText(CreateAccountActivity.this, "Error while saving data!", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

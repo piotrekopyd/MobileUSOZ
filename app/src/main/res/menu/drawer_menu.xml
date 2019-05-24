@@ -7,23 +7,23 @@
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+            android:title="@string/title_activity_profile" />
         <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_calendar"
-            android:title="Calendar" />
+            android:title="@string/title_activity_calendar" />
         <item
             android:id="@+id/nav_lecturers"
             android:icon="@drawable/ic_lecturers"
-            android:title="Lecturers" />
+            android:title="@string/title_activity_lecturers" />
         <item
             android:id="@+id/nav_maps"
             android:icon="@drawable/ic_map"
-            android:title="Map" />
+            android:title="@string/title_activity_map" />
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_log_out"
-            android:title="Log Out" />
+            android:title="@string/log_out" />
     </group>
 
 </menu>

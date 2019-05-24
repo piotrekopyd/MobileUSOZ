@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +48,8 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     private ProgressBar progressBar;
     private LoginButton facebookLoginButton;
     private SignInButton googleLogInButton;
+
+    private Toolbar toolbar;
     // Configure Google Sign In
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -61,6 +64,8 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         loginTextView = findViewById(R.id.loginTextView);
         passwordTextView = findViewById(R.id.PswdTextView) ;
         progressBar = findViewById(R.id.progressBar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         createAccountButton.setOnClickListener(this);
         logInButton.setOnClickListener(this);
@@ -87,8 +92,10 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.logInButton :
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (NullPointerException e) {}
                 signInEmailPassword(loginTextView.getText().toString(),passwordTextView.getText().toString());
                 break;
             case R.id.createAccountButton :

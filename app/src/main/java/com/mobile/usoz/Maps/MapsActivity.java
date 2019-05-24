@@ -43,6 +43,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mobile.usoz.Administrator.Administrator;
+import com.mobile.usoz.Administrator.AdministratorCallback;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.R;
@@ -57,7 +59,6 @@ public class MapsActivity extends AppCompatActivity
         implements OnMapReadyCallback,
         NavigationView.OnNavigationItemSelectedListener {
 
-    //Layouts
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -74,9 +75,8 @@ public class MapsActivity extends AppCompatActivity
     private Button deleteButton;
 
     private Spinner spinner;
-    private int mSelectedIndex = 0;
-    //private LinkedList<MyMarker> myMarkersCollection;
     private MapsModel model;
+    private BroadcastReceiver networkChangeReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +86,8 @@ public class MapsActivity extends AppCompatActivity
         findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
 
         mAuth = FirebaseAuth.getInstance();
+
+        model = new MapsModel();
 
         setupEditField();
         hideEditTextAndButtons();
@@ -99,10 +101,15 @@ public class MapsActivity extends AppCompatActivity
 
         setupNavigation();
 
-        if(isNetworkAvailable() && model==null) {
+        if(isNetworkAvailable() && model.myMarkersCollection==null) {
             downloadMarkers();
         }
+
+        setupReciever();
     }
+
+    /** ustawianie pola edycji dla administratora
+     */
 
     private void setupEditField() {
         titleText = findViewById(R.id.map_marker_title);
@@ -110,6 +117,9 @@ public class MapsActivity extends AppCompatActivity
         saveButton = findViewById(R.id.map_marker_save);
         deleteButton = findViewById(R.id.map_marker_delete);
     }
+
+    /** ustawianie paska nawigacji
+     */
 
     private void setupNavigation() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -134,6 +144,51 @@ public class MapsActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_maps);
     }
 
+    /** ustawianie recievera na nasluchiwanie zmiany polaczenia internetowego
+     */
+
+    private void setupReciever() {
+        networkChangeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (isNetworkAvailable()) {
+                    if (model.myMarkersCollection == null) {
+                        Toast.makeText(MapsActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
+                        downloadMarkers();
+                    }
+                } else if (model.myMarkersCollection == null) {
+                    Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+        registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
+    /** metoda sprawdzajaca polaczenie z internetem
+     */
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void setupSpinner() {
         spinner = findViewById(R.id.map_color_spinner);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(MapsActivity.this,
@@ -149,7 +204,7 @@ public class MapsActivity extends AppCompatActivity
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 TextView tv = (TextView) super.getView(position, convertView, parent);
                 tv.setTextColor(Color.GRAY);
-                if(position == mSelectedIndex) {
+                if(position == model.mSelectedIndex) {
                     tv.setTextColor(Color.BLACK);
                 }
                 return tv;
@@ -158,7 +213,7 @@ public class MapsActivity extends AppCompatActivity
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mSelectedIndex = i;
+                model.mSelectedIndex = i;
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
@@ -168,13 +223,20 @@ public class MapsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        if(mAuth.getUid().equals("86dXmf6RNwRPsoD3nm982tJfDzl1")) {
-            inflater.inflate(R.menu.map_settings_menu, menu);
-        } else {
-            inflater.inflate(R.menu.map_settings_user_menu, menu);
-        }
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+
+        Administrator.isAdministrator(new AdministratorCallback() {
+            @Override
+            public void onCallback(boolean isAdministrator) {
+                if(isAdministrator) {
+                    inflater.inflate(R.menu.map_settings_menu, menu);
+                } else {
+                    inflater.inflate(R.menu.map_settings_user_menu, menu);
+                }
+            }
+        }, mAuth.getUid());
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -208,179 +270,143 @@ public class MapsActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
     @Override
     public void onMapReady(GoogleMap googleMap1) {
         googleMap = googleMap1;
 
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        if(mAuth.getUid().equals("86dXmf6RNwRPsoD3nm982tJfDzl1")) {
-            googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                @Override
-                public void onMapLongClick(LatLng latLng) {
-                    MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
-                    model.myMarkersCollection.addLast(myMarker);
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                    googleMap.addMarker(myMarker.getMarkerOptions());
-                    Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
-                }
-            });
+        /** jesli uzytkownik jest administratorem, ustawiam dla niego listenery na mapie, oraz na markerach
+        */
 
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    hideEditTextAndButtons();
-                    googleMap.clear();
-                    for (MyMarker e:
-                            model.myMarkersCollection) {
-                        googleMap.addMarker(e.getMarkerOptions());
-                    }
-                }
-            });
-
-            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
-                    marker.showInfoWindow();
-                    showEditTextAndButton();
-                    titleText.setText(marker.getTitle());
-                    snippetText.setText(marker.getSnippet());
-                    saveButton.setOnClickListener(new View.OnClickListener() {
+        Administrator.isAdministrator(new AdministratorCallback() {
+            @Override
+            public void onCallback(boolean isAdministrator) {
+                if(isAdministrator) {
+                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            LatLng latLng = marker.getPosition();
+                        public void onMapLongClick(LatLng latLng) {
+                            MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
+                            model.myMarkersCollection.addLast(myMarker);
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                            googleMap.addMarker(myMarker.getMarkerOptions());
+                            Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-                            String t = titleText.getText().toString();
-                            String s = snippetText.getText().toString();
-
-                            for (int i=0; i<model.myMarkersCollection.size(); i++) {
-                                MyMarker ll = model.myMarkersCollection.get(i);
-                                if(ll.getPosition().equals(latLng)) {
-                                    model.myMarkersCollection.remove(i);
-                                    break;
-                                }
-                            }
-                            MyMarker myMarker = new MyMarker(latLng.latitude, latLng
-                                    .longitude, t, s, 0);
-
-                            marker.setTitle(t);
-                            marker.setSnippet(s);
-                            marker.hideInfoWindow();
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
                             hideEditTextAndButtons();
+                            googleMap.clear();
+                            for (MyMarker e:
+                                    model.myMarkersCollection) {
+                                googleMap.addMarker(e.getMarkerOptions());
+                            }
+                        }
+                    });
+
+                    /** wyswietlanie pola edycji po kliknieciu na marker
+                     * */
+
+                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
                             marker.showInfoWindow();
-                            switch (spinner.getSelectedItemPosition()) {
-                                case 0:
-                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                    myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
-                                    break;
-                                case 1:
-                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                                    myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
-                                    break;
-                                case 2: //BROWN
-                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
-                                    myMarker.setColor(26);
-                                    break;
-                                case 3:
-                                    marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                                    myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
-                                    break;
-                            }
-                            model.myMarkersCollection.add(myMarker);
+                            showEditTextAndButton();
+                            titleText.setText(marker.getTitle());
+                            snippetText.setText(marker.getSnippet());
+                            saveButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    LatLng latLng = marker.getPosition();
 
-                            CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
-                                    .zoom(14.5f)
-                                    .bearing(0)
-                                    .tilt(0)
-                                    .build();
-                            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
-                        }
-                    });
-                    deleteButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            LatLng latLng = marker.getPosition();
+                                    String t = titleText.getText().toString();
+                                    String s = snippetText.getText().toString();
 
-                            for (int i=0; i<model.myMarkersCollection.size(); i++) {
-                                MyMarker ll = model.myMarkersCollection.get(i);
-                                if(ll.getPosition().equals(latLng)) {
-                                    model.myMarkersCollection.remove(i);
-                                    break;
+                                    for (int i=0; i<model.myMarkersCollection.size(); i++) {
+                                        MyMarker ll = model.myMarkersCollection.get(i);
+                                        if(ll.getPosition().equals(latLng)) {
+                                            model.myMarkersCollection.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    MyMarker myMarker = new MyMarker(latLng.latitude, latLng
+                                            .longitude, t, s, 0);
+
+                                    marker.setTitle(t);
+                                    marker.setSnippet(s);
+                                    marker.hideInfoWindow();
+                                    hideEditTextAndButtons();
+                                    marker.showInfoWindow();
+                                    switch (spinner.getSelectedItemPosition()) {
+                                        case 0:
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                            myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
+                                            break;
+                                        case 1:
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                                            myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
+                                            break;
+                                        case 2: //BROWN
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
+                                            myMarker.setColor(26);
+                                            break;
+                                        case 3:
+                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                            myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
+                                            break;
+                                    }
+                                    model.myMarkersCollection.add(myMarker);
+
+                                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
+                                            .zoom(14.5f)
+                                            .bearing(0)
+                                            .tilt(0)
+                                            .build();
+                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
                                 }
-                            }
-                            marker.remove();
-                            hideEditTextAndButtons();
+                            });
+
+                            /** obsluga przycisku usuwajacego marker z mapy
+                             */
+
+                            deleteButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    LatLng latLng = marker.getPosition();
+
+                                    for (int i=0; i<model.myMarkersCollection.size(); i++) {
+                                        MyMarker ll = model.myMarkersCollection.get(i);
+                                        if(ll.getPosition().equals(latLng)) {
+                                            model.myMarkersCollection.remove(i);
+                                            break;
+                                        }
+                                    }
+                                    marker.remove();
+                                    hideEditTextAndButtons();
+                                }
+                            });
+                            return true;
                         }
                     });
-                    return true;
                 }
-            });
-        }
+            }
+        }, mAuth.getUid());
 
-        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944))
-                .zoom(12.5f)
-                .bearing(0)
-                .tilt(0)
-                .build();
+        /** ustawianie widoku mapy na krakow
+         */
+
+        CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944)).zoom(12.5f).bearing(0).tilt(0).build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
     }
 
-    private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(isNetworkAvailable()) {
-                if(model==null) {
-                    Toast.makeText(MapsActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
-                    downloadMarkers();
-                }
-            } else if(model==null) {
-                Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
-            }
-        }
-    };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-
-        if(model!=null) {
-            for (MyMarker e:
-                    model.myMarkersCollection) {
-                googleMap.addMarker(e.getMarkerOptions());
-            }
-        }
-
-        registerReceiver(networkChangeReceiver, intentFilter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(networkChangeReceiver);
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+    /** pobieranie listy markerow z firebase
+     */
 
     private void downloadMarkers() {
-        model = new MapsModel();
-
+        model.myMarkersCollection = new LinkedList<>();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
         storageReference.getBytes(100*1028*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -394,6 +420,10 @@ public class MapsActivity extends AppCompatActivity
             }
         });
     }
+
+    /** metoda wyswietlajaca komunikat o wyjsciu z aplikacji
+     *  oraz ukrywajaca pole edycji dla administratora w przypadku jego otwarcia
+     */
 
     @Override
     public void onBackPressed() {
@@ -413,6 +443,7 @@ public class MapsActivity extends AppCompatActivity
         findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.included_exit_layout).setClickable(true);
 
+        //nie wychodz z aplikacji
         Button button = findViewById(R.id.exit_reject_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -424,6 +455,7 @@ public class MapsActivity extends AppCompatActivity
             }
         });
 
+        //wyjdz z aplikacji
         button = findViewById(R.id.exit_confirm_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -437,6 +469,9 @@ public class MapsActivity extends AppCompatActivity
         finishAffinity();
         System.exit(0);
     }
+
+    /** metoda obslugujaca przyciski w nawigacji
+     */
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -465,6 +500,9 @@ public class MapsActivity extends AppCompatActivity
         return true;
     }
 
+    /** metoda ustawiajaca pole edycji dla administratora na widoczne
+     */
+
     private void showEditTextAndButton() {
         findViewById(R.id.maps_edit_relative_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.maps_edit_relative_layout).setClickable(true);
@@ -478,6 +516,9 @@ public class MapsActivity extends AppCompatActivity
         findViewById(R.id.maps_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
         findViewById(R.id.maps_relative_layout).getForeground().setAlpha(180);
     }
+
+    /** metoda ustawiajaca pole edycji dla administratora na niewidoczne
+     */
 
     private void hideEditTextAndButtons() {
         findViewById(R.id.maps_edit_relative_layout).setVisibility(View.INVISIBLE);

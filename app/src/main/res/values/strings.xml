@@ -1,29 +1,36 @@
 <resources>
     <string name="app_name">MobileUSOZ</string>
     <string name="e_mail">e-mail</string>
-    <string name="sign_in">Sign In</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="password">password</string>
-    <string name="register">Register</string>
+    <string name="sign_in">Zaloguj</string>
+    <string name="sign_up">Zarejestruj</string>
+    <string name="password">hasło</string>
     <string name="facebook_app_id">391138904773778</string>
     <string name="fb_login_protocol_scheme">fb391138904773778</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="title_activity_calendar">Calendar</string>
-    <string name="title_activity_forum">Forum</string>
-    <string name="title_activity_lecturers">Lecturers</string>
-    <string name="title_activity_map">Map</string>
-    <string name="title_activity_notes">Notes</string>
+    <string name="title_activity_log_in">Logowanie</string>
+    <string name="title_activity_create_account">Rejestracja</string>
+    <string name="title_activity_profile">Profil</string>
+    <string name="title_activity_calendar">Kalendarz</string>
+    <string name="title_activity_lecturers">Wykładowcy</string>
+    <string name="title_activity_map">Mapa</string>
+    <string name="title_activity_display_notes">Notatki</string>
+    <string name="title_activity_add_note">Dodaj Notatkę</string>
     <string name="nav_header_title">MobileUSOZ</string>
     <string name="nav_header_subtitle">projectio2019@gmail.com</string>
     <string name="save_marker">Save Marker</string>
     <string name="delete_marker">Delete</string>
+    <string name="log_out">Wyloguj</string>
+    <string name="hide_markers">Ukryj pinezki</string>
+    <string name="show_markers">Pokaż pinezki</string>
+    <string name="send">Wyślij</string>
+    <string name="add_note">Dodaj Notatkę</string>
 
     <string-array name="map_spinner_colors">
-        <item>Red</item>
-        <item>Blue</item>
-        <item>Brown</item>
-        <item>Green</item>
+        <item>Rozrywka</item>
+        <item>Nauka</item>
+        <item>Kawiarnia</item>
+        <item>Sport</item>
     </string-array>
 
     <string-array name="lecturers_grades">

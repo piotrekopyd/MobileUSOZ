@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,10 +31,11 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
     private DisplayNotesModel model;
     private Button mAddNoteButton;
+    private Toolbar toolbar;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private FirebaseFirestore db ;
+    private FirebaseFirestore db;
 
     static final public String NOTES_DAYS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_DAYS";
     static final public String NOTES_MONTHS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_MONTHS";
@@ -63,6 +66,13 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
                 startActivity(intent);
             }
         });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(RecyclerViewAdapter.formatNumberToMonth(Integer.valueOf(model.month)) + ", " +
+                RecyclerViewAdapter.formatDateToDayOfWeek(model.month, model.day) + " " + model.day);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -101,5 +111,15 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
         adapter = new NotesRecyclerViewAdapter(this,model.mNotes, model.day, model.month);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

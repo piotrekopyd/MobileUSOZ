@@ -4,7 +4,9 @@ import java.util.LinkedList;
 
 public class MapsModel {
     public LinkedList<MyMarker> myMarkersCollection;
+    public int mSelectedIndex;
     public MapsModel() {
-        myMarkersCollection = new LinkedList<MyMarker>();
+        myMarkersCollection = null;
+        mSelectedIndex = 0;
     }
 }

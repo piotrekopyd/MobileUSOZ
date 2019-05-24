@@ -26,45 +26,44 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".Calendar.Notes.AddNewNoteActivity"
-            android:label="Add Note"
+            android:label="@string/title_activity_add_note"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".Calendar.Notes.DisplayNotesActivity"/>
+        <activity android:name=".Calendar.Notes.DisplayNotesActivity"
+            android:label="@string/title_activity_display_notes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".UserActivities.EditUserDataActivities.EditUserDataActivity"
-            android:label="EditUserData"
+            android:label="EditUserDataActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".UserActivities.UserProfileAcitivity"
-            android:label="Profile"
+            android:label="@string/title_activity_profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserBackgroundPhoto" />
+        <activity
+            android:name=".UserActivities.EditUserDataActivities.ChangeUserBackgroundPhoto"
+            android:label="ChangeUserBackgroundPhoto"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto" />
+        <activity
+            android:name=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto"
+            android:label="EditUserData"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".UserActivities.EditUserDataActivities.EditDataMenu" />
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+        <activity
+            android:name=".UserActivities.EditUserDataActivities.EditDataMenu"
+            android:label="EditDataMenu"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".Maps.MapsActivity"
@@ -77,6 +76,7 @@
             android:label="@string/title_activity_calendar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".LecturersActivities.LecturersActivity"
             android:label="@string/title_activity_lecturers"
@@ -89,16 +89,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"
-            tools:replace="android:value" />
-
-        <activity android:name=".UserAccount.CreateAccountActivity" />
+        <activity
+            android:name=".UserAccount.CreateAccountActivity"
+            android:label="@string/title_activity_create_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".UserAccount.LogInActivity"
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_log_in"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -125,6 +127,28 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
     </application>
 
 </manifest>

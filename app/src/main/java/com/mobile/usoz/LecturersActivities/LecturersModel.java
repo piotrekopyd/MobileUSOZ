@@ -8,7 +8,7 @@ public class LecturersModel {
     public double gradeUID;
     public int gradesMapSize;
     public LecturersModel() {
-        lectutersCollection = new LinkedList<Lecturer>();
+        lectutersCollection = null;
         grade = 0;
         gradeUID = 0;
         gradesMapSize = 0;

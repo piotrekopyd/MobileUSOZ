@@ -10,4 +10,5 @@ public class DatesModel {
     DatesModel(){
         mDates = new ArrayList<>();
     }
+
 }
