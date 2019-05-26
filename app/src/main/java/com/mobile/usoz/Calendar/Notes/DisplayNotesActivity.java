@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +41,10 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
     static final public String NOTES_DAYS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_DAYS";
     static final public String NOTES_MONTHS_EXTRA_TEXT = "com.mobile.usoz.Calendar.DisplayNotes.EXTRA_TEXT_MONTHS";
 
-    RecyclerView recyclerView;
-    NotesRecyclerViewAdapter adapter;
+    RecyclerView nRecyclerView;
+    RecyclerView eRecyclerView;
+    NotesRecyclerViewAdapter nAdapter;
+    EventsRecyclerViewAdapter eAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
         model = new DisplayNotesModel();
         retreiveDataFromPreviousActivity();
         fetchNotesFromFirebase();
-        setupRecyclerView();
+        fetchEventsFromFirebase();
         mAddNoteButton = findViewById(R.id.addNoteButton);
         mAddNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,20 +100,56 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
                         DocumentSnapshot document = task.getResult();
                         if(document.exists()){
                             model.mNotes = (ArrayList<String>)document.get(KEY_NOTE);
-                            setupRecyclerView();
+                            fetchEventsFromFirebase();
                         } else {
-                            Toast.makeText(DisplayNotesActivity.this,"Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DisplayNotesActivity.this,"Error1", Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
+                }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                setupRecyclerView();
+            }
+        });
     }
+
+    // ----------------------------- Fetch events from database ---------------------
+
+    private void fetchEventsFromFirebase(){
+        db.collection(NOTES_COLLECTION_PATH).document(EVENTS_COLLECTION_PATH).collection(model.month).document(model.day).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult();
+                        if(document.exists()){
+                            model.mEvents = (ArrayList<String>)document.get(KEY_NOTE);
+                            fetchEventsFromFirebase();
+                        } else {
+                            Toast.makeText(DisplayNotesActivity.this,"Error2", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                setupRecyclerView2();
+            }
+        });
+    }
+
     // ---------------------------- Recycler View -----------------------
 
     private void setupRecyclerView(){
-        recyclerView = findViewById(R.id.notes_recycler_view);
-        adapter = new NotesRecyclerViewAdapter(this,model.mNotes, model.day, model.month);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        nRecyclerView = findViewById(R.id.notes_recycler_view);
+        nAdapter = new NotesRecyclerViewAdapter(this, model.mNotes, model.day, model.month);
+        nRecyclerView.setAdapter(nAdapter);
+        nRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setupRecyclerView2(){
+        eRecyclerView = findViewById(R.id.events_recycler_view);
+        eAdapter = new EventsRecyclerViewAdapter(this, model.mEvents, model.day, model.month);
+        eRecyclerView.setAdapter(eAdapter);
+        eRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

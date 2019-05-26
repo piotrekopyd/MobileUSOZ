@@ -45,7 +45,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/backgound.png" />
+                                      <entry key="imageAsset" value="C:\Users\przem\Desktop\backgound.png" />
                                       <entry key="outputName" value="user_background_icon" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
@@ -58,13 +58,24 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="46" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundImage">
                                         <value>
                                           <PersistentState>
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="scalingPercent" value="101" />
+                                                <entry key="scalingPercent" value="46" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -74,9 +85,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="backgroundImage" value="$USER_HOME$/Desktop/backgound.png" />
+                                      <entry key="backgroundImage" value="C:\Users\przem\Desktop\app_title.png" />
                                       <entry key="backgroundLayerName" value="user_background_image" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/app/src/main/res/defaultUserImages/profileIcon.jpg" />
+                                      <entry key="foregroundImage" value="C:\Users\przem\Desktop\app_title.png" />
                                       <entry key="foregroundLayerName" value="profile_icon" />
                                       <entry key="outputName" value="default_profile_icon" />
                                     </map>

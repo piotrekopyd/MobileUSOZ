@@ -39,13 +39,22 @@
             android:typeface="sans"
             />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/notes_recycler_view"
-        android:layout_below="@+id/addNoteButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="14dp"
-        app:layout_constraintTop_toTopOf="@+id/addNoteButton" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/events_recycler_view"
+            android:layout_below="@+id/addNoteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            app:layout_constraintTop_toTopOf="@+id/addNoteButton" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/notes_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/events_recycler_view"
+            android:layout_marginTop="0dp"
+            app:layout_constraintTop_toTopOf="@+id/addNoteButton" />
+
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

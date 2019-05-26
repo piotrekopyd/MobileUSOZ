@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
@@ -46,6 +45,8 @@ import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Administrator.Administrator;
 import com.mobile.usoz.Administrator.AdministratorCallback;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethodsCallback;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserAccount.LogInActivity;
@@ -101,7 +102,7 @@ public class MapsActivity extends AppCompatActivity
 
         setupNavigation();
 
-        if(isNetworkAvailable() && model.myMarkersCollection==null) {
+        if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)) && model.myMarkersCollection==null) {
             downloadMarkers();
         }
 
@@ -148,19 +149,14 @@ public class MapsActivity extends AppCompatActivity
      */
 
     private void setupReciever() {
-        networkChangeReceiver = new BroadcastReceiver() {
+        networkChangeReceiver = CollectiveMethods.setupReciever(new CollectiveMethodsCallback() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                if (isNetworkAvailable()) {
-                    if (model.myMarkersCollection == null) {
-                        Toast.makeText(MapsActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
-                        downloadMarkers();
-                    }
-                } else if (model.myMarkersCollection == null) {
-                    Toast.makeText(MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            public void onDownload(boolean download) {
+                if(download) {
+                    downloadMarkers();
                 }
             }
-        };
+        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.myMarkersCollection);
     }
 
     @Override
@@ -171,22 +167,6 @@ public class MapsActivity extends AppCompatActivity
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         registerReceiver(networkChangeReceiver, intentFilter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(networkChangeReceiver);
-    }
-
-    /** metoda sprawdzajaca polaczenie z internetem
-     */
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void setupSpinner() {
@@ -283,113 +263,7 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onCallback(boolean isAdministrator) {
                 if(isAdministrator) {
-                    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                        @Override
-                        public void onMapLongClick(LatLng latLng) {
-                            MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
-                            model.myMarkersCollection.addLast(myMarker);
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                            googleMap.addMarker(myMarker.getMarkerOptions());
-                            Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                        @Override
-                        public void onMapClick(LatLng latLng) {
-                            hideEditTextAndButtons();
-                            googleMap.clear();
-                            for (MyMarker e:
-                                    model.myMarkersCollection) {
-                                googleMap.addMarker(e.getMarkerOptions());
-                            }
-                        }
-                    });
-
-                    /** wyswietlanie pola edycji po kliknieciu na marker
-                     * */
-
-                    googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
-                            marker.showInfoWindow();
-                            showEditTextAndButton();
-                            titleText.setText(marker.getTitle());
-                            snippetText.setText(marker.getSnippet());
-                            saveButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    LatLng latLng = marker.getPosition();
-
-                                    String t = titleText.getText().toString();
-                                    String s = snippetText.getText().toString();
-
-                                    for (int i=0; i<model.myMarkersCollection.size(); i++) {
-                                        MyMarker ll = model.myMarkersCollection.get(i);
-                                        if(ll.getPosition().equals(latLng)) {
-                                            model.myMarkersCollection.remove(i);
-                                            break;
-                                        }
-                                    }
-                                    MyMarker myMarker = new MyMarker(latLng.latitude, latLng
-                                            .longitude, t, s, 0);
-
-                                    marker.setTitle(t);
-                                    marker.setSnippet(s);
-                                    marker.hideInfoWindow();
-                                    hideEditTextAndButtons();
-                                    marker.showInfoWindow();
-                                    switch (spinner.getSelectedItemPosition()) {
-                                        case 0:
-                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                            myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
-                                            break;
-                                        case 1:
-                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                                            myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
-                                            break;
-                                        case 2: //BROWN
-                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
-                                            myMarker.setColor(26);
-                                            break;
-                                        case 3:
-                                            marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                                            myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
-                                            break;
-                                    }
-                                    model.myMarkersCollection.add(myMarker);
-
-                                    CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
-                                            .zoom(14.5f)
-                                            .bearing(0)
-                                            .tilt(0)
-                                            .build();
-                                    googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
-                                }
-                            });
-
-                            /** obsluga przycisku usuwajacego marker z mapy
-                             */
-
-                            deleteButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    LatLng latLng = marker.getPosition();
-
-                                    for (int i=0; i<model.myMarkersCollection.size(); i++) {
-                                        MyMarker ll = model.myMarkersCollection.get(i);
-                                        if(ll.getPosition().equals(latLng)) {
-                                            model.myMarkersCollection.remove(i);
-                                            break;
-                                        }
-                                    }
-                                    marker.remove();
-                                    hideEditTextAndButtons();
-                                }
-                            });
-                            return true;
-                        }
-                    });
+                    setupMapListeners();
                 }
             }
         }, mAuth.getUid());
@@ -400,6 +274,116 @@ public class MapsActivity extends AppCompatActivity
         CameraPosition cracow = new CameraPosition.Builder().target(new LatLng(50.06,  19.944)).zoom(12.5f).bearing(0).tilt(0).build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cracow), 10, null);
+    }
+
+    private void setupMapListeners() {
+        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                MyMarker myMarker = new MyMarker(latLng.latitude, latLng.longitude,"", "", 0);
+                model.myMarkersCollection.addLast(myMarker);
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.addMarker(myMarker.getMarkerOptions());
+                Toast.makeText(MapsActivity.this, latLng.latitude + " " + latLng.longitude, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                hideEditTextAndButtons();
+                googleMap.clear();
+                for (MyMarker e:
+                        model.myMarkersCollection) {
+                    googleMap.addMarker(e.getMarkerOptions());
+                }
+            }
+        });
+
+        /** wyswietlanie pola edycji po kliknieciu na marker
+         * */
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(final com.google.android.gms.maps.model.Marker marker) {
+                marker.showInfoWindow();
+                showEditTextAndButton();
+                titleText.setText(marker.getTitle());
+                snippetText.setText(marker.getSnippet());
+                saveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        LatLng latLng = marker.getPosition();
+
+                        String t = titleText.getText().toString();
+                        String s = snippetText.getText().toString();
+
+                        for (int i=0; i<model.myMarkersCollection.size(); i++) {
+                            MyMarker ll = model.myMarkersCollection.get(i);
+                            if(ll.getPosition().equals(latLng)) {
+                                model.myMarkersCollection.remove(i);
+                                break;
+                            }
+                        }
+                        MyMarker myMarker = new MyMarker(latLng.latitude, latLng
+                                .longitude, t, s, 0);
+
+                        marker.setTitle(t);
+                        marker.setSnippet(s);
+                        marker.hideInfoWindow();
+                        hideEditTextAndButtons();
+                        marker.showInfoWindow();
+                        switch (spinner.getSelectedItemPosition()) {
+                            case 0:
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                myMarker.setColor(BitmapDescriptorFactory.HUE_RED);
+                                break;
+                            case 1:
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                                myMarker.setColor(BitmapDescriptorFactory.HUE_BLUE);
+                                break;
+                            case 2: //BROWN
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(26));
+                                myMarker.setColor(26);
+                                break;
+                            case 3:
+                                marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                                myMarker.setColor(BitmapDescriptorFactory.HUE_GREEN);
+                                break;
+                        }
+                        model.myMarkersCollection.add(myMarker);
+
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(latLng.latitude, latLng.longitude))
+                                .zoom(14.5f)
+                                .bearing(0)
+                                .tilt(0)
+                                .build();
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
+                    }
+                });
+
+                /** obsluga przycisku usuwajacego marker z mapy
+                 */
+
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        LatLng latLng = marker.getPosition();
+
+                        for (int i=0; i<model.myMarkersCollection.size(); i++) {
+                            MyMarker ll = model.myMarkersCollection.get(i);
+                            if(ll.getPosition().equals(latLng)) {
+                                model.myMarkersCollection.remove(i);
+                                break;
+                            }
+                        }
+                        marker.remove();
+                        hideEditTextAndButtons();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     /** pobieranie listy markerow z firebase
@@ -417,6 +401,7 @@ public class MapsActivity extends AppCompatActivity
                         model.myMarkersCollection) {
                     googleMap.addMarker(e.getMarkerOptions());
                 }
+                unregisterReceiver(networkChangeReceiver);
             }
         });
     }

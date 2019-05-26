@@ -21,8 +21,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.Calendar.Calendar.DatesActivity;
-import com.mobile.usoz.Calendar.Notes.NotesRecyclerViewAdapter;
 import com.mobile.usoz.Interfaces.NotesDatabaseKeyValues;
 import com.mobile.usoz.R;
 
@@ -68,7 +66,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
     // ----------------------------- ViewHolder  ------------------------------------------------
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView noteTextView;
         private ImageView deleteNoteImageView;

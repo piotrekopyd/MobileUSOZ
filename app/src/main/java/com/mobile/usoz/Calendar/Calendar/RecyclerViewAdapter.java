@@ -2,6 +2,8 @@ package com.mobile.usoz.Calendar.Calendar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncStats;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.usoz.Calendar.Notes.DisplayNotesActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.R;
 
 import java.text.SimpleDateFormat;
@@ -41,16 +44,29 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         data = (ArrayList<String>) dates;
         mContext = context;
     }
-    public RecyclerViewAdapter(Context context, ArrayList<String> dates, String month ){
+    public RecyclerViewAdapter(Context context, ArrayList<String> dates, String month ) {
         data =  dates;
         mContext = context;
         this.month = month;
+    }
+    public RecyclerViewAdapter(Context context, ArrayList<String> dates, ArrayList<String> events, String month ){
+        parseList(dates, events);
+        mContext = context;
+        this.month = month;
+    }
+
+    private void parseList(ArrayList<String> dates, ArrayList<String> events) {
+        data = dates;
+        for(String s : events) {
+            if(!data.contains(s)) {
+                data.add(s);
+            }
+        }
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_recycle_view_item, parent, false);
         return  new ViewHolder(view);
     }
@@ -103,7 +119,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         TextView dateTextView;
         RelativeLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {

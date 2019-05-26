@@ -47,6 +47,8 @@ import com.google.firebase.firestore.Transaction;
 import com.mobile.usoz.Administrator.Administrator;
 import com.mobile.usoz.Administrator.AdministratorCallback;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethodsCallback;
 import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserAccount.LogInActivity;
@@ -96,14 +98,15 @@ public class LecturersActivity extends AppCompatActivity
 
         setupNavigation();
 
-        if(isNetworkAvailable() && model.lectutersCollection==null) {
+        if (CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)) && model.lectutersCollection == null) {
             downloadLecturers();
         }
 
         setupReciever();
     }
 
-    /** metoda ustawiajaca pole edycji dla administratora
+    /**
+     * metoda ustawiajaca pole edycji dla administratora
      */
 
     private void setupEditField() {
@@ -118,7 +121,7 @@ public class LecturersActivity extends AppCompatActivity
                 String name = nameTextView.getText().toString();
                 String surname = surnameTextView.getText().toString();
                 String university = universityTextView.getText().toString();
-                if(name.equals("") || university.equals("") || surname.equals("")) {
+                if (name.equals("") || university.equals("") || surname.equals("")) {
                     Toast.makeText(LecturersActivity.this, "Some fields are empty", Toast.LENGTH_SHORT).show();
                 } else {
                     model.lectutersCollection.add(new Lecturer(name, surname, university));
@@ -132,7 +135,8 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
-    /** ustawianie paska nawigacji
+    /**
+     * ustawianie paska nawigacji
      */
 
     private void setupNavigation() {
@@ -165,26 +169,23 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
-    /** ustawianie recievera na nasluchiwanie zmiany polaczenia internetowego
+    /**
+     * ustawianie recievera na nasluchiwanie zmiany polaczenia internetowego
      */
 
     private void setupReciever() {
-        networkChangeReceiver = new BroadcastReceiver() {
+        networkChangeReceiver = CollectiveMethods.setupReciever(new CollectiveMethodsCallback() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                if(isNetworkAvailable()) {
-                    if(model.lectutersCollection==null) {
-                        Toast.makeText(LecturersActivity.this, "Sieć znów działa", Toast.LENGTH_SHORT).show();
-                        downloadLecturers();
-                    }
-                } else if(model.lectutersCollection==null) {
-                    Toast.makeText(LecturersActivity.this, "Wystąpił błąd podczas pobierania listy wykładowców. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            public void onDownload(boolean download) {
+                if (download) {
+                    downloadLecturers();
                 }
             }
-        };
+        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.lectutersCollection);
     }
 
-    /** rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
+    /**
+     * rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
      */
 
     @Override
@@ -197,21 +198,6 @@ public class LecturersActivity extends AppCompatActivity
         registerReceiver(networkChangeReceiver, intentFilter);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(networkChangeReceiver);
-    }
-
-    /** metoda sprawdzajaca polaczenie z internetem
-     */
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     /** metoda pobierajaca informacje o wykladowcach z bazy danych
      */
@@ -229,6 +215,7 @@ public class LecturersActivity extends AppCompatActivity
                         model.lectutersCollection) {
                     addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
                 }
+                unregisterReceiver(networkChangeReceiver);
             }
         });
     }
@@ -302,7 +289,7 @@ public class LecturersActivity extends AppCompatActivity
         final LinearLayout linearLayout = new LinearLayout(this);
         linearLayoutParams.setMargins(4,3,3,4);
         linearLayout.setLayoutParams(linearLayoutParams);
-        linearLayout.setBackgroundResource(R.drawable.lecturers_linear_layout_border);
+        linearLayout.setBackgroundResource(R.drawable.linear_layout_border_1);
 
         TextView textView1 = new TextView(this);
         textView1.setText(name + " " + surname);
@@ -393,7 +380,9 @@ public class LecturersActivity extends AppCompatActivity
                                 intent.putExtra("grade_UID", model.gradeUID);
                                 intent.putExtra("gradesMapSize", model.gradesMapSize);
 
-                                startActivityForResult(intent,1);
+                                if(CollectiveMethods.isNetworkAvailableForToast((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), LecturersActivity.this)) {
+                                    startActivityForResult(intent,1);
+                                }
                             }
                         }
                     }
