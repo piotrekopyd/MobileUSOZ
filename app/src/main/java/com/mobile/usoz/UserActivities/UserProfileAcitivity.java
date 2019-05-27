@@ -28,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValues;
+import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.UserDataDatabaseKeyValues;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.Maps.MapsActivity;

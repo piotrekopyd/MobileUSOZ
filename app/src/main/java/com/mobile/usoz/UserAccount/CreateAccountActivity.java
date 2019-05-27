@@ -24,7 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mobile.usoz.Interfaces.UserDataDatabaseKeyValues;
+import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.UserDataDatabaseKeyValues;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 

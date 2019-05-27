@@ -16,20 +16,16 @@ import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.value.FieldValueOptions;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
-import com.mobile.usoz.Interfaces.NoteDataDatabaseKeyValues;
-import com.mobile.usoz.Interfaces.NotesDatabaseKeyValues;
+import com.mobile.usoz.DatabaseManager.AddNoteDatabaseManager;
+import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.NoteDataDatabaseKeyValues;
+import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.NotesDatabaseKeyValues;
 import com.mobile.usoz.R;
 
 import java.time.YearMonth;
@@ -44,45 +40,49 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
     private Button mSaveButton;
     private EditText mNoteContentEditText;
     private Spinner daySpinner, monthSpinner;
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseFirestore db ;
 
     private AddNewNoteModel model;
+    private AddNoteDatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_note);
-        setup();
+
+        setupActivity();
     }
 
-    private void setup(){
+    private void setupActivity(){
         model = new AddNewNoteModel();
-        mNoteContentEditText = findViewById(R.id.saveNoteNoteTextView);
-        mSaveButton = findViewById(R.id.saveNoteSaveButton);
-        daySpinner = findViewById(R.id.AddNewNoteDaySpinner);
-        monthSpinner = findViewById(R.id.AddNewNoteMonthSpinner);
+        databaseManager = new AddNoteDatabaseManager();
+        setupView();
         setupSpinners();
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(daySpinner.getSelectedItemPosition() > 0 && monthSpinner.getSelectedItemPosition() > 0 && !mNoteContentEditText.getText().toString().matches("")) {
-                    saveNote();
-                    Intent intent = new Intent(AddNewNoteActivity.this, CalendarActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(AddNewNoteActivity.this, "Empty note or invalid date!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        setupDatabaseAuth();
+    private void setupView(){
+        mNoteContentEditText = findViewById(R.id.saveNoteNoteTextView);
+        mSaveButton = findViewById(R.id.saveNoteSaveButton);
+        daySpinner = findViewById(R.id.AddNewNoteDaySpinner);
+        monthSpinner = findViewById(R.id.AddNewNoteMonthSpinner);
+
+        /** Add listener to button */
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(daySpinner.getSelectedItemPosition() > 0 && monthSpinner.getSelectedItemPosition() > 0 && !mNoteContentEditText.getText().toString().matches("")) {
+                    databaseManager.saveNote(mNoteContentEditText.getText().toString(), model.day, model.month);
+                    Intent intent = new Intent(AddNewNoteActivity.this, CalendarActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(AddNewNoteActivity.this, "Pusta notka lub niepoprawna data!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     // --------------------------- Setup Spinners ---------------------------------------------------------
@@ -151,96 +151,5 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
         }
         return super.onOptionsItemSelected(item);
     }
-
-    // ----------------------- Send note to firebase -----------------------------
-
-    private void setupDatabaseAuth(){
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-    }
-
-    private void saveNote(){
-        final Map<String, Object> note = new HashMap<>();
-        note.put(KEY_NOTE, mNoteContentEditText.getText().toString());
-        db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()) {
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).update(KEY_NOTE, FieldValue.arrayUnion(mNoteContentEditText.getText().toString()));
-                            } else {
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).set(note);
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(model.day).update(KEY_NOTE, FieldValue.arrayUnion(mNoteContentEditText.getText().toString()));
-                            }
-                        } else {
-                            Toast.makeText(AddNewNoteActivity.this, "DATABASE ERROR!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-        db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            if(document.exists()) {
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).update(KEY_NOTE, FieldValue.arrayUnion(model.day));
-                            } else {
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).set(note);
-                                db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(model.month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).update(KEY_NOTE, FieldValue.arrayUnion(model.day));
-                            }
-                        } else {
-                            Toast.makeText(AddNewNoteActivity.this, "DATABASE ERROR!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void saveNoteDate(){
-        retrieveOldDates();
-        if(model.listOfNotes != null){
-            model.listOfNotes.add(model.day + "-" + model.month);
-            saveNewDate();
-        }
-    }
-
-    private void retrieveOldDates (){
-        db.collection (KEY_COLLECTION_NAME).document(user.getUid()).collection(model.month).document(model.day).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot document = task.getResult();
-                        model.listOfNotes = (ArrayList<String>) document.get(KEY_VALUE);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        model.listOfNotes = null;
-                    }
-                });
-    }
-    private void saveNewDate(){
-        Map<String, Object> date = new HashMap<>();
-        date.put(KEY_VALUE, model.listOfNotes);
-        db.collection(KEY_COLLECTION_NAME). document(user.getUid()).collection(model.month).document(KEY_DOCUMENT).set(date)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddNewNoteActivity.this, "Error while saving data!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
 
 }

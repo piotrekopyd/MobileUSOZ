@@ -2,8 +2,6 @@ package com.mobile.usoz.Calendar.Calendar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncStats;
-import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.usoz.Calendar.Notes.DisplayNotesActivity;
-import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.R;
 
 import java.text.SimpleDateFormat;
@@ -23,11 +20,10 @@ import java.util.Date;
 import java.util.List;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
-    private static final String TAG = "RecyclerViewAdapter";
+public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRecyclerViewAdapter.ViewHolder>{
+    private static final String TAG = "CalendarRecyclerViewAdapter";
 
     private ArrayList<String> data ;
     private Context mContext;
@@ -36,20 +32,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static final String DATES_DAY_EXTRA_TEXT = "com.mobile.usoz.Calendar.Notes.DAY_EXTRA_TEXT";
 
     private String  month;
-    public RecyclerViewAdapter( Context context,ArrayList<String> dates){
+    public CalendarRecyclerViewAdapter(Context context, ArrayList<String> dates){
         data = dates;
         mContext = context;
     }
-    public RecyclerViewAdapter(Context context, List<String> dates){
+    public CalendarRecyclerViewAdapter(Context context, List<String> dates){
         data = (ArrayList<String>) dates;
         mContext = context;
     }
-    public RecyclerViewAdapter(Context context, ArrayList<String> dates, String month ) {
+    public CalendarRecyclerViewAdapter(Context context, ArrayList<String> dates, String month ) {
         data =  dates;
         mContext = context;
         this.month = month;
     }
-    public RecyclerViewAdapter(Context context, ArrayList<String> dates, ArrayList<String> events, String month ){
+    public CalendarRecyclerViewAdapter(Context context, ArrayList<String> dates, ArrayList<String> events, String month ){
         parseList(dates, events);
         mContext = context;
         this.month = month;
@@ -64,6 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    // Przypisanie ViewHoldera który będzie spinał recyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
@@ -72,28 +69,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
+    // Przypisanie danych do wiersza na danej pozycji
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 
         // TODO: ADD NAME OF DAY
         if(mContext instanceof CalendarActivity){
+            // Jeżeli nasz parentlayout to Callendar wtedy po prostu ustawiamy date
             viewHolder.dateTextView.setText(data.get(position));
         } else {
-            String date = data.get(position);
-            String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(date));
-            Date inputDate = new Date();
-            try {
-                inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
-            } catch (ParseException exception) {
-                System.out.print(exception);
-            }
-            String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
-            date = date + ".  " + translateEnglishToPolishNameOfDay(dayOfWeek);
+            // Jeśli nasz parenlayout to DatesActivity to ustawiamy dni tygodnia w których są notatki
+            String date = getDayName(position);
             viewHolder.dateTextView.setText(date);
         }
 
-
+        // Ustawiamy listener na kliknięcie w dany wiersz w recyclerView
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +104,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
     }
 
+    // Funkcja zwraca nazwe dnia  tygodnia
+    private String getDayName(final int position){
+        String date  = data.get(position);
+        String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(date));
+        Date inputDate = new Date();
+        try {
+            inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
+        } catch (ParseException exception) {
+            System.out.print(exception);
+        }
+        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
+        date = date + ".  " + translateEnglishToPolishNameOfDay(dayOfWeek);
+        return date;
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
@@ -128,6 +134,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    // Funkcje pomocnicze formatujące miesiące na indexy lub indexy na miesiace
 
     private String formatMonthToNumber(String month){
         switch (month){

@@ -80,7 +80,7 @@ public class CalendarActivity extends AppCompatActivity
     private void setupRecycleView(){
         Log.d(TAG, "start setup recycle view");
         RecyclerView recyclerView = findViewById(R.id.calendar_recycle_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, model.mMonths);
+        CalendarRecyclerViewAdapter adapter = new CalendarRecyclerViewAdapter(this, model.mMonths);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

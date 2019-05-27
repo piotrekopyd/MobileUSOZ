@@ -1,4 +1,4 @@
-package com.mobile.usoz.Interfaces;
+package com.mobile.usoz.DatabaseManager.FirebaseKeyValues;
 
 public interface NotesDatabaseKeyValues {
     String KEY_NOTE = "note";
