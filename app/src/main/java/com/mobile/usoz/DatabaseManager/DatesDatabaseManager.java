@@ -27,14 +27,12 @@ public class DatesDatabaseManager extends DatabaseManager implements NotesDataba
                             //Przypisanie do modelu pobranej listy dat
                             ArrayList<String> list = (ArrayList<String>) document.get(KEY_NOTE);
                             if (list.isEmpty()) {
-                                System.out.println("EEE CIPY JEBANE !!!");
                                 //Toast.makeText(DatesActivity., "Folder is empty", Toast.LENGTH_SHORT).show();
                                 callback.prepareArray(null);
                             } else {
                                 for(int i=0; i < list.size(); i++) {
                                     System.out.println(list.get(i));
                                 }
-                                System.out.println("EEE CHUJE JEBANE !!!");
                                 callback.prepareArray(list);
                             }
                         } else {
