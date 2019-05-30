@@ -76,7 +76,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Toast.makeText(CreateAccountActivity.this, "Account has been created successfully!.",
+                            Toast.makeText(CreateAccountActivity.this, "Konto zostało założone pomyślnie!",
                                     Toast.LENGTH_SHORT).show();
                             user = mAuth.getCurrentUser();
                             db = FirebaseFirestore.getInstance();
@@ -85,7 +85,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(CreateAccountActivity.this, "Authentication failed.",
+                            Toast.makeText(CreateAccountActivity.this, "Autentykacja nieudana",
                                     Toast.LENGTH_SHORT).show();
                             //TODO: DISPLAY ERROR MESSAGE TO USER
                         }
@@ -97,19 +97,24 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.registerButton:
-                if(!emailTextView.getText().toString().equals("")  && !pswdTextView.getText().toString().equals("")) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
+        if(v!=null) {
+            switch (v.getId()) {
+                case R.id.registerButton:
+                    if (pswdTextView.getText().toString().length() < 6 && !emailTextView.getText().toString().equals("")) {
+                        Toast.makeText(CreateAccountActivity.this, "Hasło musi mieć co najmniej 6 znaków!",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (!emailTextView.getText().toString().equals("") && !pswdTextView.getText().toString().equals("")) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
 
-                    //HIDE KEYBOARD WHILE PROGRESSBAR IS LOADING
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } else {
-                    Toast.makeText(CreateAccountActivity.this, "E-mail or password field is empty!",
-                            Toast.LENGTH_SHORT).show();
-                }
+                        //HIDE KEYBOARD WHILE PROGRESSBAR IS LOADING
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } else {
+                        Toast.makeText(CreateAccountActivity.this, "Pola nie mogą być puste!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+            }
         }
     }
 
@@ -118,7 +123,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         String email = emailTextView.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            emailTextView.setError("Required.");
+            emailTextView.setError("Wymagane.");
             valid = false;
         } else {
             emailTextView.setError(null);
@@ -126,7 +131,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         String password = pswdTextView.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            pswdTextView.setError("Required.");
+            pswdTextView.setError("Wymagane.");
             valid = false;
         } else {
             pswdTextView.setError(null);
@@ -157,7 +162,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateAccountActivity.this, "Error while saving data!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CreateAccountActivity.this, "Błąd podczas zapisywania danych!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

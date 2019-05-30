@@ -90,21 +90,23 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.logInButton :
-                try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch (NullPointerException e) {}
-                signInEmailPassword(loginTextView.getText().toString(),passwordTextView.getText().toString());
-                break;
-            case R.id.createAccountButton :
-                openCreateAccountActivity();
-                break;
-            case R.id.googleSignInButton :
-                googleSignIn();
-                break;
-
+        if(v!=null) {
+            switch (v.getId()) {
+                case R.id.logInButton:
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (NullPointerException e) {
+                    }
+                    signInEmailPassword(loginTextView.getText().toString(), passwordTextView.getText().toString());
+                    break;
+                case R.id.createAccountButton:
+                    openCreateAccountActivity();
+                    break;
+                case R.id.googleSignInButton:
+                    googleSignIn();
+                    break;
+            }
         }
     }
 
@@ -120,7 +122,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     }
 
     private void updateUI(FirebaseUser currentUser) {
-        Toast.makeText(LogInActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
+        Toast.makeText(LogInActivity.this, "Zalogowano!", Toast.LENGTH_LONG).show();
 
         Intent mainIntent = new Intent(LogInActivity.this, UserProfileAcitivity.class);
         startActivity(mainIntent);

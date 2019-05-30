@@ -64,7 +64,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
                     saveData();
                     goToEditUserDataMenuActivity();
                 }else{
-                    Toast.makeText(EditUserDataActivity.this, "Data is incorrect!",
+                    Toast.makeText(EditUserDataActivity.this, "Błędne dane!",
                             Toast.LENGTH_SHORT).show();
                 }
 
@@ -72,26 +72,30 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void saveData() {
-        Map<String, Object> newUserData = new HashMap<>();
-        newUserData.put(KEY_NAME, nameTextView.getText().toString());
-        newUserData.put(KEY_LASTNAME, lastNameTextView.getText().toString());
-        newUserData.put(KEY_UNIVERSITY, universityTextView.getText().toString());
-        newUserData.put(KEY_DATEOFBIRTH, birthdayTextView.getText().toString());
-        newUserData.put(KEY_PASSIONS, passionsTextView.getText().toString());
+        if(isCorrect()) {
+            Map<String, Object> newUserData = new HashMap<>();
+            newUserData.put(KEY_NAME, nameTextView.getText().toString());
+            newUserData.put(KEY_LASTNAME, lastNameTextView.getText().toString());
+            newUserData.put(KEY_UNIVERSITY, universityTextView.getText().toString());
+            newUserData.put(KEY_DATEOFBIRTH, birthdayTextView.getText().toString());
+            newUserData.put(KEY_PASSIONS, passionsTextView.getText().toString());
 
-        db.collection("User data").document(user.getUid().toString()).set(newUserData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(EditUserDataActivity.this, "Your new data has been saved", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditUserDataActivity.this, "Error while saving data!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            db.collection("User data").document(user.getUid().toString()).set(newUserData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(EditUserDataActivity.this, "Nowe dane zostały zapisane!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania danych!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(EditUserDataActivity.this, "Błędne dane!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean isCorrect(){

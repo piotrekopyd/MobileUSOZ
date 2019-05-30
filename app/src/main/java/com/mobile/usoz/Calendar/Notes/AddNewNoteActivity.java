@@ -91,7 +91,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
         String[] array= new String[model.months.size()];
         model.months.toArray(array);
 
-        model.days.add("Day");
+        model.days.add("Dzień");
         String[] arrayDay = new String[model.days.size()];
         model.days.toArray(arrayDay);
 

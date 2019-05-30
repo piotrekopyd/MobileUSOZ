@@ -202,8 +202,12 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         Date inputDate = new Date();
         try {
             inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
-        } catch (ParseException exception) {
+        } catch (ParseException exception ) {
             System.out.print(exception);
+            return "none";
+        } catch (IllegalArgumentException exception){
+            System.out.print(exception);
+            return "none";
         }
         String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(inputDate);
         return translateEnglishToPolishNameOfDay(dayOfWeek);
