@@ -109,7 +109,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
                 if(position > 0) {
                     model.month = Integer.toString(position);
                     List<String> newDays = new ArrayList<>();
-                    newDays.add("Day");
+                    newDays.add("Dzień");
                     YearMonth yearMonthObject = YearMonth.of(2019,position);
                     for(int i=1; i <= yearMonthObject.lengthOfMonth(); i++){
                         newDays.add(Integer.toString(i));

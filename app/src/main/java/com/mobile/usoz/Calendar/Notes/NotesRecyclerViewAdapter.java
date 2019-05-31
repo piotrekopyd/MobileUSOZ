@@ -58,7 +58,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
 
     // ----------------------------- ViewHolder  ------------------------------------------------
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    protected class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView noteTextView;
         private ImageView deleteNoteImageView;

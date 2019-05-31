@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class RecyclerViewAdapterTest {
     CalendarRecyclerViewAdapter adapter = null;
@@ -205,6 +206,196 @@ public class RecyclerViewAdapterTest {
         adapter = new CalendarRecyclerViewAdapter(null, null);
         String result = Whitebox.invokeMethod(adapter, "formatMonthToNumber", "Wrzesien");
         assertEquals("0", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_1() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(1);
+        assertEquals("Styczeń", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_2() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(2);
+        assertEquals("Luty", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_3() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(3);
+        assertEquals("Marzec", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_4() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(4);
+        assertEquals("Kwiecień", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_5() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(5);
+        assertEquals("Maj", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_6() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(6);
+        assertEquals("Czerwiec", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_7() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(7);
+        assertEquals("Lipiec", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_8() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(8);
+        assertEquals("Sierpień", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_9() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(9);
+        assertEquals("Wrzesień", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_10() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(10);
+        assertEquals("Październik", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_11() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(11);
+        assertEquals("Listopad", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_12() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(12);
+        assertEquals("Grudzień", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_13() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(13);
+        assertEquals("none", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_0() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(0);
+        assertEquals("none", result);
+    }
+
+    @Test
+    public void formatNumberToMonth_minus1() throws Exception {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatNumberToMonth(-1);
+        assertEquals("none", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_failMonth() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        try {
+            String result = adapter.formatDateToDayOfWeek("miesiac", "3");
+            fail();
+        }
+        catch(NumberFormatException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_failDay() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        try {
+            String result = adapter.formatDateToDayOfWeek("1", "trzeci");
+            fail();
+        }
+        catch(NumberFormatException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_failBoth() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        try {
+            String result = adapter.formatDateToDayOfWeek("styczeń", "trzeci");
+            fail();
+        }
+        catch(NumberFormatException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_poniedzialek() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "6");
+        assertEquals("Poniedziałek", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_wtorek() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "7");
+        assertEquals("Wtorek", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_sroda() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "8");
+        assertEquals("Środa", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_czwartek() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "9");
+        assertEquals("Czwartek", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_piatek() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "10");
+        assertEquals("Piątek", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_sobota() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "11");
+        assertEquals("Sobota", result);
+    }
+
+    @Test
+    public void formatDateToDayOfWeek_niedziela() {
+        adapter = new CalendarRecyclerViewAdapter(null, null);
+        String result = adapter.formatDateToDayOfWeek("5", "12");
+        assertEquals("Niedziela", result);
     }
 
 }

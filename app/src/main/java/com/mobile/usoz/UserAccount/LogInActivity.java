@@ -224,7 +224,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LogInActivity.this, "Authentication failed.",
+                            Toast.makeText(LogInActivity.this, "Autentykacja nieudana.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -285,7 +285,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LogInActivity.this, "Authentication failed.",
+                            Toast.makeText(LogInActivity.this, "Autentykacja nieudana.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -309,7 +309,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         String email = loginTextView.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            loginTextView.setError("Required.");
+            loginTextView.setError("Wymagane.");
             valid = false;
         } else {
             loginTextView.setError(null);
@@ -317,7 +317,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         String password = passwordTextView.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            passwordTextView.setError("Required.");
+            passwordTextView.setError("Wymagane.");
             valid = false;
         } else {
             passwordTextView.setError(null);

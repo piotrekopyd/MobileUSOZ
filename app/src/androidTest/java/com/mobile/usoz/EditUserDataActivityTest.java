@@ -83,26 +83,12 @@ public class EditUserDataActivityTest {
     }
 
     @Test
-    public void saveData_wrongData() throws Exception {
-        onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
-        onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
-        Whitebox.invokeMethod(activity, "saveData");
-        onView(withText("Error while saving data!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void saveData_emptyData() throws Exception {
-        Whitebox.invokeMethod(activity, "saveData");
-        onView(withText("Error while saving data!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void saveData_successRequiredFields() throws Exception {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserUniversityTextView)).perform(typeText("temp"), closeSoftKeyboard());
         Whitebox.invokeMethod(activity, "saveData");
-        onView(withText("Your new data has been saved")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Nowe dane zostały zapisane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -113,21 +99,21 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         Whitebox.invokeMethod(activity, "saveData");
-        onView(withText("Your new data has been saved")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Nowe dane zostały zapisane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     //Instrumented Tests
     @Test
     public void onClick_wrongData() {
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
     public void onClick_wrongData2() {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -135,14 +121,14 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
     public void onClick_wrongData4() {
         onView(withId(R.id.editUserUniversityTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -150,7 +136,7 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserUniversityTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserBirthdayDateTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -160,7 +146,7 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserPassionsTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -169,7 +155,7 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserUniversityTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
     }
 
     @Test
@@ -180,7 +166,7 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.saveUserDataButton)).perform(click());
-        onView(withText("Data is incorrect!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
+        onView(withText("Błędne dane!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
     }
 
 }

@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddNewNoteModel {
-    public String month;
-    public String day;
+    public String month = "Styczeń";
+    public String day = "1";
     public List<String> listOfNotes;
     public final List<String> months;
     public List<String> days;
-    AddNewNoteModel(){
+    public AddNewNoteModel(){
         listOfNotes = new ArrayList<>();
         days = new ArrayList<>();
         months = new ArrayList<>();

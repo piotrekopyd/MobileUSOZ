@@ -57,7 +57,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
 
     // ----------------------------- ViewHolder  ------------------------------------------------
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    protected class ViewHolder extends RecyclerView.ViewHolder {
         private TextView noteTextView;
         private RelativeLayout parentLayout;
         private ImageView deleteNoteImageView;

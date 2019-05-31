@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -55,5 +59,14 @@ dependencies {
     androidTestImplementation 'org.powermock:powermock-core:1.7.0RC2'
     androidTestImplementation 'org.powermock:powermock-module-junit4:1.7.0RC2'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+    androidTestImplementation ('org.mockito:mockito-android:2.23.0') {
+        exclude group: 'net.bytebuddy', module: 'byte-buddy'
+        exclude group: 'net.bytebuddy', module: 'byte-buddy-android'
+        exclude group: 'net.bytebuddy', module: 'byte-buddy-agent'
+    }
+// Explicitly include byte-buddy 1.8.22 to fix a build error with Mockito 2.23
+    androidTestImplementation 'net.bytebuddy:byte-buddy:1.8.22'
+    androidTestImplementation 'net.bytebuddy:byte-buddy-android:1.8.22'
+    androidTestImplementation 'net.bytebuddy:byte-buddy-agent:1.8.22'
 
 }

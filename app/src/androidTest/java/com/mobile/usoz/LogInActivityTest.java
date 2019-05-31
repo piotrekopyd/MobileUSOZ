@@ -133,14 +133,14 @@ public class LogInActivityTest {
     public void loginWithEmptyData_PasswordCheck() {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
-        assertEquals("Required.", temp.getError());
+        assertEquals("Wymagane.", temp.getError());
     }
 
     @Test
     public void loginWithEmptyData_EmailCheck() {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.loginTextView);
-        assertEquals("Required.", temp.getError());
+        assertEquals("Wymagane.", temp.getError());
     }
 
     @Test
@@ -148,7 +148,7 @@ public class LogInActivityTest {
         onView(withId(R.id.loginTextView)).perform(typeText("temp@temp.pl"), closeSoftKeyboard());
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
-        assertEquals("Required.", temp.getError());
+        assertEquals("Wymagane.", temp.getError());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class LogInActivityTest {
         TextView temp = activity.findViewById(R.id.loginTextView);
         onView(withId(R.id.PswdTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.logInButton)).perform(click());
-        assertEquals("Required.", temp.getError());
+        assertEquals("Wymagane.", temp.getError());
     }
 
     @Test
@@ -166,7 +166,7 @@ public class LogInActivityTest {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
         assertNull(temp.getError());
-        onView(withText("Authentication failed.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Autentykacja nieudana.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Ignore("Zaloguje i nie bedzie dostepu do kolejnych testow wiec odpalac osobno")

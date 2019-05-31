@@ -50,21 +50,21 @@ public class CreateAccountActivityTest {
     @Test
     public void createAccount_registerErrorToastEmpty() {
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("E-mail or password field is empty!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Pola nie mogą być puste!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
     public void createAccount_registerErrorToastEmptyPassword() {
         onView(withId(R.id.createEmailTextView)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Account has been created successfully!.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
+        onView(withText("Konto zostało założone pomyślnie!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
     }
 
     @Test
     public void createAccount_registerErrorToastEmptyEmail() {
         onView(withId(R.id.PswdTextView)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Account has been created successfully!.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
+        onView(withText("Konto zostało założone pomyślnie!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(doesNotExist());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Authentication failed.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Hasło musi mieć co najmniej 6 znaków!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Authentication failed.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Autentykacja nieudana")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     //Instrumented tests
@@ -101,7 +101,7 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("test@test.com"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Account has been created successfully!.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Konto zostało założone pomyślnie!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -109,6 +109,6 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("12@12.pl"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Authentication failed.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Autentykacja nieudana")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }

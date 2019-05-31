@@ -60,7 +60,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/relative_layout_border_1"
             android:gravity="top|left"
-            android:hint="Your note"
+            android:hint="Twoja notatka"
             android:inputType="textMultiLine"
             android:scrollbars="vertical"
             app:layout_constraintHorizontal_bias="0.492" />

@@ -50,7 +50,7 @@ public class NavigationMenuTest {
     @Test
     public void menu_lecturers() {
         NavigationView navigationView = (NavigationView) activity.findViewById(R.id.nav_view);
-        boolean result = activity.onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_lecturers));
+        boolean result = activity.onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_calendar));
         assertTrue(result);
     }
 

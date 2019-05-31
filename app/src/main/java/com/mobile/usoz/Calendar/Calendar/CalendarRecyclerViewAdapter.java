@@ -124,7 +124,7 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    protected class ViewHolder extends RecyclerView.ViewHolder{
         TextView dateTextView;
         RelativeLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {
