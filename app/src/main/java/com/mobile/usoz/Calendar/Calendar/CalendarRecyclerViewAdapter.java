@@ -198,9 +198,9 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
     }
 
     public static String formatDateToDayOfWeek(String month, String day) {
-        String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(day));
         Date inputDate = new Date();
         try {
+            String dateString = String.format("%d-%d-%d", 2019, Integer.parseInt(month), Integer.parseInt(day));
             inputDate = new SimpleDateFormat("yyyy-M-d").parse(dateString);
         } catch (ParseException exception ) {
             System.out.print(exception);

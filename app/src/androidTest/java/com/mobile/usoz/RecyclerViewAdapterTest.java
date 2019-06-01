@@ -316,37 +316,22 @@ public class RecyclerViewAdapterTest {
     @Test
     public void formatDateToDayOfWeek_failMonth() {
         adapter = new CalendarRecyclerViewAdapter(null, null);
-        try {
-            String result = adapter.formatDateToDayOfWeek("miesiac", "3");
-            fail();
-        }
-        catch(NumberFormatException e) {
-            assertTrue(true);
-        }
+        String result = adapter.formatDateToDayOfWeek("miesiac", "3");
+        assertEquals("none", result);
     }
 
     @Test
     public void formatDateToDayOfWeek_failDay() {
         adapter = new CalendarRecyclerViewAdapter(null, null);
-        try {
-            String result = adapter.formatDateToDayOfWeek("1", "trzeci");
-            fail();
-        }
-        catch(NumberFormatException e) {
-            assertTrue(true);
-        }
+        String result = adapter.formatDateToDayOfWeek("1", "trzeci");
+        assertEquals("none", result);
     }
 
     @Test
     public void formatDateToDayOfWeek_failBoth() {
         adapter = new CalendarRecyclerViewAdapter(null, null);
-        try {
-            String result = adapter.formatDateToDayOfWeek("styczeń", "trzeci");
-            fail();
-        }
-        catch(NumberFormatException e) {
-            assertTrue(true);
-        }
+        String result = adapter.formatDateToDayOfWeek("styczeń", "trzeci");
+        assertEquals("none", result);
     }
 
     @Test
