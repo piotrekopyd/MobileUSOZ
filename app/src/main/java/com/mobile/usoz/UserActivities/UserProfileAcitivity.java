@@ -34,6 +34,7 @@ import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.EditUserDataActivities.EditDataMenu;
+import com.mobile.usoz.UserActivities.EditUserDataActivities.EditUserDataActivity;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValues {
     private FirebaseAuth mAuth;
@@ -42,6 +43,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
 
 
     private ImageView profilePicture;
@@ -55,6 +57,14 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private FirebaseUser user;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private StorageReference storageReference;
+
+    //Extras
+    private String name, lastName;
+    static final public String USER_PROFILE_EXTRA_NAME = "com.mobile.usoz.UserActivities.UserProfileActivity.USER_PROFILE_EXTRA_NAME";
+    static final public String USER_PROFILE_EXTRA_LASTNAME = "com.mobile.usoz.UserActivities.UserProfileActivity.USER_PROFILE_EXTRA_LASTNAME";
+    static final public String USER_PROFILE_EXTRA_UNIVERSITY = "com.mobile.usoz.UserActivities.UserProfileActivity.USER_PROFILE_EXTRA_UNIVERSITY";
+    static final public String USER_PROFILE_EXTRA_BIRTHDAY = "com.mobile.usoz.UserActivities.UserProfileActivity.USER_PROFILE_EXTRA_BIRTHDAY";
+    static final public String USER_PROFILE_EXTRA_PASSIONS = "com.mobile.usoz.UserActivities.UserProfileActivity.USER_PROFILE_EXTRA_PASSIONS";
 
 
     @Override
@@ -82,7 +92,13 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
 
         editUserDataIV.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent newIntent = new Intent(UserProfileAcitivity.this, EditDataMenu.class);
+                Intent newIntent = new Intent(UserProfileAcitivity.this, EditUserDataActivity.class);
+                newIntent.putExtra(USER_PROFILE_EXTRA_NAME, name);
+                newIntent.putExtra(USER_PROFILE_EXTRA_LASTNAME, lastName);
+                newIntent.putExtra(USER_PROFILE_EXTRA_UNIVERSITY, universityTextView.getText().toString());
+                newIntent.putExtra(USER_PROFILE_EXTRA_BIRTHDAY, birthdayTextView.getText().toString());
+                newIntent.putExtra(USER_PROFILE_EXTRA_PASSIONS, passionsTextView.getText().toString());
+
                 startActivity(newIntent);
                 finish();
             }
@@ -120,8 +136,9 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
-                            String name = documentSnapshot.getString(KEY_NAME) + " " + documentSnapshot.getString(KEY_LASTNAME);
-                            nameTextView.setText(name);
+                            name = documentSnapshot.getString(KEY_NAME);
+                            lastName = documentSnapshot.getString(KEY_LASTNAME);
+                            nameTextView.setText(name + " " + lastName);
                             universityTextView.setText(documentSnapshot.getString(KEY_UNIVERSITY));
                             birthdayTextView.setText(documentSnapshot.getString(KEY_DATEOFBIRTH));
                             emailTextView.setText(user.getEmail());

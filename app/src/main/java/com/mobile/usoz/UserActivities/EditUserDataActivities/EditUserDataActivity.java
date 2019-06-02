@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.usoz.R;
+import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +54,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
+        retreiveDataFromPreviousActivity();
 
     }
 
@@ -69,6 +71,15 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
                 }
 
         }
+    }
+
+    public void retreiveDataFromPreviousActivity(){
+        Intent intent = getIntent();
+        nameTextView.setText(intent.getStringExtra(UserProfileAcitivity.USER_PROFILE_EXTRA_NAME));
+        lastNameTextView.setText(intent.getStringExtra(UserProfileAcitivity.USER_PROFILE_EXTRA_LASTNAME));
+        birthdayTextView.setText(intent.getStringExtra(UserProfileAcitivity.USER_PROFILE_EXTRA_BIRTHDAY));
+        universityTextView.setText(intent.getStringExtra(UserProfileAcitivity.USER_PROFILE_EXTRA_UNIVERSITY));
+        passionsTextView.setText(intent.getStringExtra(UserProfileAcitivity.USER_PROFILE_EXTRA_PASSIONS));
     }
 
     public void saveData() {
