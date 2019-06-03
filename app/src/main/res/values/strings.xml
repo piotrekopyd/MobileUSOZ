@@ -6,8 +6,8 @@
     <string name="password">hasło</string>
     <string name="facebook_app_id">391138904773778</string>
     <string name="fb_login_protocol_scheme">fb391138904773778</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Zamknij menu</string>
+    <string name="navigation_drawer_open">Otwórz menu</string>
     <string name="title_activity_log_in">Logowanie</string>
     <string name="title_activity_create_account">Rejestracja</string>
     <string name="title_activity_profile">Profil</string>
@@ -18,8 +18,8 @@
     <string name="title_activity_add_note">Dodaj Notatkę</string>
     <string name="nav_header_title">MobileUSOZ</string>
     <string name="nav_header_subtitle">projectio2019@gmail.com</string>
-    <string name="save_marker">Save Marker</string>
-    <string name="delete_marker">Delete</string>
+    <string name="save_marker">Zapisz</string>
+    <string name="delete_marker">Usuń</string>
     <string name="log_out">Wyloguj</string>
     <string name="hide_markers">Ukryj pinezki</string>
     <string name="show_markers">Pokaż pinezki</string>
