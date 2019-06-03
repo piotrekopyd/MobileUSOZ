@@ -116,7 +116,11 @@ public class LecturerPageActivity extends AppCompatActivity {
                             break;
                     }
 
-                    if(model.currentGrade == 0) return;
+                    if(model.currentGrade == 0)
+                    {
+                        Toast.makeText(LecturerPageActivity.this, "Nie wybrałeś oceny dla prowadzącego", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
                     /** wątek jest odpowiedzialny za wysłanie oceny do bazy danych
                      */
@@ -124,7 +128,7 @@ public class LecturerPageActivity extends AppCompatActivity {
                     Thread thread = new Thread("updateGrade() Thread") {
                         @Override
                         public void run() {
-                            LecturersActivity.updateGrade(mAuth.getUid(), model.lecturer.getName(), model.currentGrade);
+                            LecturersActivity.updateGrade(mAuth.getUid(), model.lecturer.getName(), model.currentGrade, getApplicationContext());
                             super.run();
                         }
                     };
@@ -310,7 +314,7 @@ public class LecturerPageActivity extends AppCompatActivity {
                     Thread thread = new Thread("updateGrade() Thread") {
                         @Override
                         public void run() {
-                            LecturersActivity.updateGrade(mAuth.getUid(), model.lecturer.getName(), model.chosenGrade);
+                            LecturersActivity.updateGrade(mAuth.getUid(), model.lecturer.getName(), model.chosenGrade, getApplicationContext());
                             super.run();
                         }
                     };

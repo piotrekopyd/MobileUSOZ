@@ -100,7 +100,7 @@ public class MapsActivity extends AppCompatActivity
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
         } catch (NullPointerException e) {
-            Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "WWystąpił błąd podczas ładowania mapy. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas ładowania mapy. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
         }
 
         setupNavigation();

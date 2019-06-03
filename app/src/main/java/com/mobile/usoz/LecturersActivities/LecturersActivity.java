@@ -217,13 +217,18 @@ public class LecturersActivity extends AppCompatActivity
                 }
                 unregisterReceiver(networkChangeReceiver);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Nie udało się pobrać listy prowadzących", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
     /** aktualizacja pojedynczej oceny wprowadzonej przez uzytkownika o identyfikatorze "UID" na wykladowcy "lecturer"
      */
 
-    public static synchronized void updateGrade(final String UID, final String lecturer, final double grade1) {
+    public static synchronized void updateGrade(final String UID, final String lecturer, final double grade1, final Context context) {
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -258,6 +263,7 @@ public class LecturersActivity extends AppCompatActivity
 
                         if(n!=null) {
                             if(n.doubleValue()!=0) {
+                                Toast.makeText(context, "Niestety oceniłeś już wcześniej tego prowadzącego. Jeżeli uważasz, że to błąd aplikacji skontaktuj się z nami", Toast.LENGTH_LONG).show();
                                 return null;
                             }
                         }
@@ -270,13 +276,20 @@ public class LecturersActivity extends AppCompatActivity
                 // Success
                 return null;
             }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Twoja ocena została dodana", Toast.LENGTH_LONG).show();
+            }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Błąd podczas dodawania Twojej oceny do bazy danych! Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         });
     }
+
 
     /** metoda dodajaca przycisk do menu wykladowcow
      *  przycisk jest odpowiednio utworzonym layoutem
@@ -386,7 +399,12 @@ public class LecturersActivity extends AppCompatActivity
                             }
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Nie udało się pobrać ocen wybranego prowadzącego", Toast.LENGTH_LONG).show();
+                    }
+                });;
             }
         });
 
