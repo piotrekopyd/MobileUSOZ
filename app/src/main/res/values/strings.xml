@@ -26,6 +26,8 @@
     <string name="send">Wyślij</string>
     <string name="add_note">Dodaj Notatkę</string>
 
+    <string name="you_re_logged_out">Zostałeś wylogowany</string>
+
     <string-array name="map_spinner_colors">
         <item>Rozrywka</item>
         <item>Nauka</item>

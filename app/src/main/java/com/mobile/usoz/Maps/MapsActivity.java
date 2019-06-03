@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
@@ -98,7 +99,9 @@ public class MapsActivity extends AppCompatActivity
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "WWystąpił błąd podczas ładowania mapy. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+        }
 
         setupNavigation();
 
@@ -244,7 +247,9 @@ public class MapsActivity extends AppCompatActivity
                     firebaseStorage = FirebaseStorage.getInstance();
                     storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
                     storageReference.putBytes(myBytes);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                    Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -403,7 +408,13 @@ public class MapsActivity extends AppCompatActivity
                 }
                 unregisterReceiver(networkChangeReceiver);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+            }
         });
+
     }
 
     /** metoda wyswietlajaca komunikat o wyjsciu z aplikacji
@@ -525,7 +536,7 @@ public class MapsActivity extends AppCompatActivity
     }
 
     private void UpdateUI() {
-        Toast.makeText(MapsActivity.this, "You're logged out", Toast.LENGTH_LONG).show();
+        Toast.makeText(MapsActivity.this, getResources().getString(R.string.you_re_logged_out), Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(MapsActivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();

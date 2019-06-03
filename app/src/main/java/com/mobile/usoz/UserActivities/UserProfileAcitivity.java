@@ -153,20 +153,20 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
 //                                    .load(storageReference)
 //                                    .into(profilePicture);
                         } else {
-                            Toast.makeText(UserProfileAcitivity.this,"Document does not exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu! (Document does not exists)", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UserProfileAcitivity.this,"ERROR!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu!", Toast.LENGTH_SHORT).show();
 
                     }
                 });
     }
     private void updateLogOutUI() {
-        Toast.makeText(UserProfileAcitivity.this, "You're logged out", Toast.LENGTH_LONG).show();
+        Toast.makeText(UserProfileAcitivity.this, getResources().getString(R.string.you_re_logged_out), Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(UserProfileAcitivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();

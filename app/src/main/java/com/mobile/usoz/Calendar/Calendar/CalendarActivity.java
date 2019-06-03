@@ -177,7 +177,7 @@ public class CalendarActivity extends AppCompatActivity
     }
 
     private void UpdateUI() {
-        Toast.makeText(CalendarActivity.this, "Wylogowałeś się!", Toast.LENGTH_LONG).show();
+        Toast.makeText(CalendarActivity.this, getResources().getString(R.string.you_re_logged_out), Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(CalendarActivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();

@@ -618,7 +618,7 @@ public class LecturersActivity extends AppCompatActivity
     }
 
     private void UpdateUI() {
-        Toast.makeText(LecturersActivity.this, "You're logged out", Toast.LENGTH_LONG).show();
+        Toast.makeText(LecturersActivity.this, getResources().getString(R.string.you_re_logged_out), Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(LecturersActivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();

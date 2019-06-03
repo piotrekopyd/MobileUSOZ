@@ -62,13 +62,14 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.saveUserDataButton:
-                if(isCorrect()) {
+                /*if(isCorrect()) {*/
                     saveData();
-                    goToEditUserDataMenuActivity();
+                    goToEditUserProfileActivity();
+                /*
                 }else{
                     Toast.makeText(EditUserDataActivity.this, "Błędne dane!",
                             Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
         }
     }
@@ -83,7 +84,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void saveData() {
-        if(isCorrect()) {
+        /*if(isCorrect()) {*/
             Map<String, Object> newUserData = new HashMap<>();
             newUserData.put(KEY_NAME, nameTextView.getText().toString());
             newUserData.put(KEY_LASTNAME, lastNameTextView.getText().toString());
@@ -95,21 +96,24 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(EditUserDataActivity.this, "Nowe dane zostały zapisane!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditUserDataActivity.this, "Dane Twojego profilu zostały zapisane", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania danych!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
                         }
                     });
+        /*
         } else {
             Toast.makeText(EditUserDataActivity.this, "Błędne dane!", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
-    private boolean isCorrect(){
+    //Useless (no one of fields are necessary)
+
+    /*private boolean isCorrect(){
         if(nameTextView.getText().toString().equals(""))
             return false;
         if(lastNameTextView.getText().toString().equals(""))
@@ -119,6 +123,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
         //TODO: END THIS
         return true;
     }
+    */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -126,8 +131,8 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
         //TODO: DELETE?
     }
 
-    private void goToEditUserDataMenuActivity(){
-        Intent intent = new Intent(EditUserDataActivity.this, EditDataMenu.class);
+    private void goToEditUserProfileActivity(){
+        Intent intent = new Intent(EditUserDataActivity.this, UserProfileAcitivity.class);
         startActivity(intent);
         finish();
     }
