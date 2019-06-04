@@ -85,7 +85,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(CreateAccountActivity.this, "Autentykacja nieudana",
+                            Toast.makeText(CreateAccountActivity.this, "Wystąpił błąd podczas zakładania konta",
                                     Toast.LENGTH_SHORT).show();
                             //TODO: DISPLAY ERROR MESSAGE TO USER
                         }
@@ -100,19 +100,21 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         if(v!=null) {
             switch (v.getId()) {
                 case R.id.registerButton:
-                    if (pswdTextView.getText().toString().length() < 6 && !emailTextView.getText().toString().equals("")) {
+                    if(!validateForm())
+                    {
+                        Toast.makeText(com.mobile.usoz.UserAccount.CreateAccountActivity.this, "Pola nie mogą być puste!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else if (pswdTextView.getText().toString().length() < 6 && !emailTextView.getText().toString().equals("")) {
                         Toast.makeText(CreateAccountActivity.this, "Hasło musi mieć co najmniej 6 znaków!",
                                 Toast.LENGTH_SHORT).show();
-                    } else if (!emailTextView.getText().toString().equals("") && !pswdTextView.getText().toString().equals("")) {
+                    } else  {
                         progressBar.setVisibility(View.VISIBLE);
                         createAccount(emailTextView.getText().toString(), pswdTextView.getText().toString());
 
                         //HIDE KEYBOARD WHILE PROGRESSBAR IS LOADING
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    } else {
-                        Toast.makeText(CreateAccountActivity.this, "Pola nie mogą być puste!",
-                                Toast.LENGTH_SHORT).show();
                     }
             }
         }
@@ -123,7 +125,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         String email = emailTextView.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            emailTextView.setError("Wymagane.");
+            emailTextView.setError("Pole wymagane");
             valid = false;
         } else {
             emailTextView.setError(null);
@@ -131,7 +133,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
         String password = pswdTextView.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            pswdTextView.setError("Wymagane.");
+            pswdTextView.setError("Pole wymagane");
             valid = false;
         } else {
             pswdTextView.setError(null);

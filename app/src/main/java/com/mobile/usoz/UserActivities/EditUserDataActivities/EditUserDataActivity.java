@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.usoz.R;
+import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
 import java.util.HashMap;
@@ -135,5 +136,12 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent(EditUserDataActivity.this, UserProfileAcitivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent i = new Intent(EditUserDataActivity.this, UserProfileAcitivity.class);
+        startActivity(i);
     }
 }

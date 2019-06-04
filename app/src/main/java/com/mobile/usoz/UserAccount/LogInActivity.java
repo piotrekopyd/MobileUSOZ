@@ -224,7 +224,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LogInActivity.this, "Autentykacja nieudana.",
+                            Toast.makeText(LogInActivity.this, "Błąd podczas logowania!",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -285,7 +285,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LogInActivity.this, "Autentykacja nieudana.",
+                            Toast.makeText(LogInActivity.this, "Błąd podczas logowania!",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
@@ -309,7 +309,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         String email = loginTextView.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            loginTextView.setError("Wymagane.");
+            loginTextView.setError("Pole wymagane");
             valid = false;
         } else {
             loginTextView.setError(null);
@@ -317,7 +317,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
         String password = passwordTextView.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            passwordTextView.setError("Wymagane.");
+            passwordTextView.setError("Pole wymagane");
             valid = false;
         } else {
             passwordTextView.setError(null);
