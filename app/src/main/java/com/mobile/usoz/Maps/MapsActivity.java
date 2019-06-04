@@ -225,33 +225,35 @@ public class MapsActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case (R.id.map_settings_hide) :
-                hideEditTextAndButtons();
-                googleMap.clear();
-                break;
-            case (R.id.map_settings_show) :
-                for (MyMarker e:
-                        model.myMarkersCollection) {
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(new LatLng(e.getLatitude(), e.getLongitude()));
-                    markerOptions.title(e.getTitle());
-                    markerOptions.snippet(e.getSnippet());
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(e.getColor()));
-                    googleMap.addMarker(markerOptions);
-                }
-                break;
-            case (R.id.map_settings_send) :
-                try  { //UPLOAD MARKERS TO FIREBASE
-                    byte[] myBytes = SerializationUtils.serialize(model.myMarkersCollection);
-                    firebaseStorage = FirebaseStorage.getInstance();
-                    storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
-                    storageReference.putBytes(myBytes);
-                    Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
-                }
-                break;
+        if(item != null) {
+            switch (item.getItemId()) {
+                case (R.id.map_settings_hide):
+                    hideEditTextAndButtons();
+                    googleMap.clear();
+                    break;
+                case (R.id.map_settings_show):
+                    for (MyMarker e :
+                            model.myMarkersCollection) {
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(new LatLng(e.getLatitude(), e.getLongitude()));
+                        markerOptions.title(e.getTitle());
+                        markerOptions.snippet(e.getSnippet());
+                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(e.getColor()));
+                        googleMap.addMarker(markerOptions);
+                    }
+                    break;
+                case (R.id.map_settings_send):
+                    try { //UPLOAD MARKERS TO FIREBASE
+                        byte[] myBytes = SerializationUtils.serialize(model.myMarkersCollection);
+                        firebaseStorage = FirebaseStorage.getInstance();
+                        storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
+                        storageReference.putBytes(myBytes);
+                        Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

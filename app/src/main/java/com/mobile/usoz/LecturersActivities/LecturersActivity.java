@@ -436,13 +436,15 @@ public class LecturersActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case (R.id.lecturers_settings_add) :
-                showEditField();
-                break;
-            case (R.id.lecturers_settings_send) :
-                sendDataToFirebase();
-                break;
+        if(item!=null) {
+            switch (item.getItemId()) {
+                case (R.id.lecturers_settings_add):
+                    showEditField();
+                    break;
+                case (R.id.lecturers_settings_send):
+                    sendDataToFirebase();
+                    break;
+            }
         }
         return super.onOptionsItemSelected(item);
     }

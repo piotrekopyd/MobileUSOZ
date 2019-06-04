@@ -33,6 +33,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
+//ACTIVITY DO LOGOWANIA, WIĘC W APLIKACJI NIE MOŻE BYC NIKT ZALOGOWANY
 public class LogInActivityTest {
 
     @Rule
