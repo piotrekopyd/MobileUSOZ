@@ -247,6 +247,7 @@ public class MapsActivity extends AppCompatActivity
                     firebaseStorage = FirebaseStorage.getInstance();
                     storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
                     storageReference.putBytes(myBytes);
+                    Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
                 }

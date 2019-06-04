@@ -122,7 +122,7 @@ public class LecturersActivity extends AppCompatActivity
                 String surname = surnameTextView.getText().toString();
                 String university = universityTextView.getText().toString();
                 if (name.equals("") || university.equals("") || surname.equals("")) {
-                    Toast.makeText(LecturersActivity.this, "Some fields are empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LecturersActivity.this, "Musisz wypełnić wszystkie pola", Toast.LENGTH_SHORT).show();
                 } else {
                     model.lectutersCollection.add(new Lecturer(name, surname, university));
                     addLecturer(name, surname, university);
@@ -456,7 +456,10 @@ public class LecturersActivity extends AppCompatActivity
             firebaseStorage = FirebaseStorage.getInstance();
             storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
             storageReference.putBytes(myBytes);
-        } catch (Exception e) {}
+            Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Błąd podczas wysyłania zmian", Toast.LENGTH_LONG).show();
+        }
     }
 
     /** metoda wyswietlajaca komunikat o wyjsciu z aplikacji

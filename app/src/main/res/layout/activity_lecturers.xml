@@ -59,7 +59,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="0dp"
                 android:autofillHints=""
-                android:hint="Name" />
+                android:hint="Imię" />
 
             <EditText
                 android:id="@+id/lecturers_text_surname"
@@ -68,7 +68,7 @@
                 android:layout_marginTop="45dp"
                 android:autofillHints=""
                 android:gravity="bottom|left"
-                android:hint="Surname" />
+                android:hint="Nazwisko" />
 
             <EditText
                 android:id="@+id/lecturers_text_university"
@@ -77,7 +77,7 @@
                 android:layout_marginTop="90dp"
                 android:autofillHints=""
                 android:gravity="bottom|left"
-                android:hint="University" />
+                android:hint="Uniwersytet" />
 
             <Button
                 android:id="@+id/lecturers_button_save"
@@ -89,7 +89,7 @@
                 android:textSize="17sp"
                 android:textAllCaps="false"
                 android:background="@drawable/spinner_shape"
-                android:text="Add" />
+                android:text="Dodaj" />
 
         </FrameLayout>
     </RelativeLayout>

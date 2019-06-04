@@ -152,7 +152,7 @@
                             android:layout_marginTop="0dp"
                             android:autofillHints=""
                             android:gravity="bottom|left"
-                            android:hint="University" />
+                            android:hint="Uniwersytet" />
 
                         <EditText
                             android:id="@+id/lecturer_page_text_lectures"
@@ -161,7 +161,7 @@
                             android:layout_marginTop="40dp"
                             android:autofillHints=""
                             android:gravity="bottom|left"
-                            android:hint="Lectures" />
+                            android:hint="Wykłady" />
 
                         <Button
                             android:id="@+id/lecturer_page_button_save"
@@ -173,7 +173,7 @@
                             android:textSize="17sp"
                             android:textAllCaps="false"
                             android:background="@drawable/spinner_shape"
-                            android:text="Update" />
+                            android:text="Aktualizuj" />
                 </FrameLayout>
 
         </RelativeLayout>
