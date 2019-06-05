@@ -61,7 +61,7 @@ public class UserProfileAcitivityTest {
     @Test
     public void updateLogOutUI_toast() throws Exception {
         Whitebox.invokeMethod(activity, "updateLogOutUI");
-        onView(withText("You're logged out")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Zostałeś wylogowany")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Test
