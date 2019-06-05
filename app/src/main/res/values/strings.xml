@@ -17,7 +17,6 @@
     <string name="title_activity_display_notes">Notatki</string>
     <string name="title_activity_add_note">Dodaj Notatkę</string>
     <string name="nav_header_title">MobileUSOZ</string>
-    <string name="nav_header_subtitle">projectio2019@gmail.com</string>
     <string name="save_marker">Zapisz</string>
     <string name="delete_marker">Usuń</string>
     <string name="log_out">Wyloguj</string>

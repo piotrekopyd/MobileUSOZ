@@ -144,8 +144,6 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                             emailTextView.setText(user.getEmail());
                             passionsTextView.setText(documentSnapshot.getString(KEY_PASSIONS));
 
-                            TextView textView = findViewById(R.id.email_text_view1);
-                            textView.setText(user.getEmail());
 
 //                            System.out.print(storageReference);
 //

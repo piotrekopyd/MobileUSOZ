@@ -414,7 +414,7 @@ public class MapsActivity extends AppCompatActivity
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+                Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas pobierania. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
             }
         });
 
