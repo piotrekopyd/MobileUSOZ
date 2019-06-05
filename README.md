@@ -2,18 +2,26 @@
 Mobile App is being created for software engineering subject on Jagiellonian University.
 
 opis działania programu:
+- Calendar: Pozwala użytkownikowi na dodawanie/kasowanie własnych notatek na każdy dzień w roku. Wyświetlane są również wydarzenia które zostały zarejestrowane przed administratora.
+-UserProfile: Wyświetla informacje użytkownika takie jak: Imie, nazwisko, data urodzenia, uczelnia oraz pasje.
+-UserAccount: Pozwala na założenia konta użytkownikowi chcącemu użytkować aplikacje. Możliwa jest standardowa rejestracja przez email i hasło oraz logowanie przez Facebook'a lub konto Google.
 
 sposób wywołania:
     Shift+F10 w Android Studio 3.4.1 lub nowszym
 
 wykaz z opisem ważniejszych zmiennych:
 
+
 opis plików wejścia/wyjścia:
     brak plików wejścia/wyjścia
 
+
+
 nazwy używanych podprogramów:
     Google Maps
-    Firebase
+    Firebase(Firestore)
+
+
 
 nazwy wszelkich specjalnych metod, które zostały użyte, wraz ze wskazaniem, gdzie można znaleźć dalsze informacje:
     public abstract void onMapReady (GoogleMap googleMap) https://developers.google.com/android/reference/com/google/android/gms/maps/OnMapReadyCallback
@@ -23,13 +31,19 @@ nazwy wszelkich specjalnych metod, które zostały użyte, wraz ze wskazaniem, g
     putBytes(byte[] array) https://firebase.google.com/docs/storage/android/upload-files
     get() https://firebase.google.com/docs/firestore/query-data/get-data
     runTransaction() https://firebase.google.com/docs/firestore/manage-data/transactions
-
+	mGoogleSignInClient.getSignInIntent() https://firebase.google.com/docs/auth/android/google-signin
+	FirebaseAuth https://firebase.google.com/docs/auth/android/facebook-login
+	handleFacebookAccessToken https://developers.facebook.com/docs/facebook-login/access-tokens/
+	
+	
 wymagania sprzętowe i systemowe:
     wersja systemu: android 8 lub nowszy
     minimalna ilość pamięci ram: 250MB
     minimalna ilość miejsca na dysku: 200MB
 
 opis specjalnych poleceń dla użytkownika:
+
+
 
 autor i data powstania (data modyfikacji/numer wersji):
     Autorzy:

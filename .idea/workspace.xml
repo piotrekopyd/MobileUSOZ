@@ -23,13 +23,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4ab88bb3-473d-466f-8ace-3645476e3ec4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -99,8 +92,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+            <state relative-caret-position="262">
+              <caret line="210" column="41" lean-forward="true" selection-start-line="210" selection-start-column="41" selection-end-line="210" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1051,8 +1044,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+        <state relative-caret-position="262">
+          <caret line="210" column="41" lean-forward="true" selection-start-line="210" selection-start-column="41" selection-end-line="210" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
