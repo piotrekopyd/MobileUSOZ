@@ -29,6 +29,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.UserDataDatabaseKeyValues;
+import com.mobile.usoz.DatabaseManager.Protocols.UserProfileRetrieveDataInterface;
+import com.mobile.usoz.DatabaseManager.Protocols.UserProfileShowToastDatabaseManagrInterface;
+import com.mobile.usoz.DatabaseManager.UserProfileDatabaseManager;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.Maps.MapsActivity;
@@ -54,9 +57,8 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
     private TextView nameTextView;
     private TextView universityTextView;
     private ImageView editUserDataIV;
-    private FirebaseUser user;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private StorageReference storageReference;
+
+    private UserProfileDatabaseManager databaseManager;
 
     //Extras
     private String name, lastName;
@@ -115,58 +117,27 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         nameTextView = findViewById(R.id.userName_label);
         universityTextView = findViewById(R.id.university_label);
         editUserDataIV = findViewById(R.id.editProfile_image);
+        databaseManager = new UserProfileDatabaseManager();
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-
-        storageReference = FirebaseStorage.getInstance().getReference("uploads/" + user.getUid().toString() + ".jpg");
-
 
         updateUI();
 
     }
-//    private void setupNavigation(){
-//
-//    }
+
     private void updateUI(){
-        retrieveUserData();
+        databaseManager.retrieveUserData((String name, String lastName, String university, String birthday, String email, String passions) -> {
+                nameTextView.setText(name + " " + lastName);
+                universityTextView.setText(university);
+                birthdayTextView.setText(birthday);
+                emailTextView.setText(email);
+                passionsTextView.setText(passions);
+            }, (boolean isSuccess) -> {
+                Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu!", Toast.LENGTH_SHORT).show();
+        });
     }
-    private void retrieveUserData(){
-        db.collection ("User data").document(user.getUid().toString()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()){
-                            name = documentSnapshot.getString(KEY_NAME);
-                            lastName = documentSnapshot.getString(KEY_LASTNAME);
-                            nameTextView.setText(name + " " + lastName);
-                            universityTextView.setText(documentSnapshot.getString(KEY_UNIVERSITY));
-                            birthdayTextView.setText(documentSnapshot.getString(KEY_DATEOFBIRTH));
-                            emailTextView.setText(user.getEmail());
-                            passionsTextView.setText(documentSnapshot.getString(KEY_PASSIONS));
 
-                            TextView textView = findViewById(R.id.email_text_view1);
-                            textView.setText(user.getEmail());
-
-//                            System.out.print(storageReference);
-//
-//                            Glide.with(UserProfileAcitivity.this)
-//                                    .load(storageReference)
-//                                    .into(profilePicture);
-                        } else {
-                            Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu! (Document does not exists)", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu!", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-    }
     private void updateLogOutUI() {
-        Toast.makeText(UserProfileAcitivity.this, getResources().getString(R.string.you_re_logged_out), Toast.LENGTH_LONG).show();
+        Toast.makeText(UserProfileAcitivity.this, "Wylogowano", Toast.LENGTH_LONG).show();
         Intent loginIntent = new Intent(UserProfileAcitivity.this, LogInActivity.class);
         startActivity(loginIntent);
         finish();

@@ -40,7 +40,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
         setContentView(R.layout.activity_display_notes);
         setupActivity();
-        //retreiveDataFromPreviousActivity();
+        //retrieveDataFromPreviousActivity();
         fetchNotesFromFirebase();
 
     }

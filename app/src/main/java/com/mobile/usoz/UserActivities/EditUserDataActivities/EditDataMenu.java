@@ -16,10 +16,10 @@ public class EditDataMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_data_menu);
-        setupAcitivity();
+        setupActivity();
     }
 
-    private void setupAcitivity(){
+    private void setupActivity(){
         changeProfilePhotoButton = findViewById(R.id.clickToChangeProfilePhotoButton);
         changeBackgroundPhotoButton = findViewById(R.id.clickToChangeBackgroundPhotoButton);
         changePersonalDataButton = findViewById(R.id.clickToChangePersonalDataButton);
