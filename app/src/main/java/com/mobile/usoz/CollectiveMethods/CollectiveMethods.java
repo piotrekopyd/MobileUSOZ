@@ -20,7 +20,7 @@ public class CollectiveMethods {
                         callback.onDownload(true);
                     }
                 } else if (modelReference == null) {
-                    Toast.makeText(context, "Wystąpił błąd podczas pobierania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Wystąpił błąd podczas pobierania. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
                 }
                 callback.onDownload(false);
             }

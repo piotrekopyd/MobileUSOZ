@@ -96,8 +96,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                     try {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                    } catch (NullPointerException e) {
-                    }
+                    } catch (NullPointerException e) {}
                     signInEmailPassword(loginTextView.getText().toString(), passwordTextView.getText().toString());
                     break;
                 case R.id.createAccountButton:
@@ -326,4 +325,11 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         return valid;
     }
 
+    @Override
+    public void onBackPressed() {
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        } catch (NullPointerException e) {}
+    }
 }
