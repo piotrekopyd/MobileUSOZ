@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class NotesRecyclerViewAdapterDatabaseManager extends DatabaseManager implements NotesDatabaseKeyValues {
     public void deleteItemFromDatabase(final String note, final String day, final String month, final int position, final NotesRecyclerViewAdapterDatabaseManagerDeleteNoteInterface callback){
-        // Delete note
         db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(day).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -28,7 +27,6 @@ public class NotesRecyclerViewAdapterDatabaseManager extends DatabaseManager imp
 //                            deleteDate();
                         } else {
                             callback.deleteNoteFromModel(-1);
-                            //Toast.makeText(mContext,"Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -40,18 +38,18 @@ public class NotesRecyclerViewAdapterDatabaseManager extends DatabaseManager imp
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
+                        // If deleted note was last one at particular month we need to delete date from dates list at Firestore
+                        // Callback function takes us back to calendar activity
                         if(document.exists()){
                             ArrayList<String> list = (ArrayList<String>)document.get(KEY_NOTE);
                             if(list.isEmpty()){
                                 db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).update(KEY_NOTE, FieldValue.arrayRemove(day));
                                 callback.backToCalendarView(true);
-                                //backToCalendar();
                             } else {
                                 callback.backToCalendarView(false);
                             }
                         } else {
                             callback.backToCalendarView(false);
-                            // db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).update(KEY_NOTE, FieldValue.arrayRemove(day));
                         }
                     }
                 });

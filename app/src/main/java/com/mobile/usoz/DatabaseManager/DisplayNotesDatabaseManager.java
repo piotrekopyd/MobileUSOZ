@@ -21,14 +21,14 @@ public class DisplayNotesDatabaseManager extends DatabaseManager implements Note
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        // Fetch list of notes from passed month
                         DocumentSnapshot document = task.getResult();
+                        // If there are some notes pass them to interface function. If not return null
                         if(document.exists()){
                             ArrayList<String> notes = (ArrayList<String>)document.get(KEY_NOTE);
                             callback.prepareArray(notes);
-                            //fetchEventsFromFirebase();
                         } else {
                             callback.prepareArray(null);
-                            //Toast.makeText(DisplayNotesActivity.this,"Error1", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -45,9 +45,7 @@ public class DisplayNotesDatabaseManager extends DatabaseManager implements Note
                         if(document.exists()){
                             ArrayList<String> note = (ArrayList<String>)document.get(KEY_NOTE);
                             callback.prepareArray(note);
-                            //fetchEventsFromFirebase();
                         } else {
-                            //Toast.makeText(DisplayNotesActivity.this,"Error2", Toast.LENGTH_SHORT).show();
                             callback.prepareArray(null);
                         }
                     }

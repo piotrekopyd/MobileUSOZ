@@ -124,6 +124,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
 
     }
 
+    // Fill text views with retrieved data
     private void updateUI(){
         databaseManager.retrieveUserData((String name, String lastName, String university, String birthday, String email, String passions) -> {
                 nameTextView.setText(name + " " + lastName);

@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserProfileDatabaseManager extends DatabaseManager implements UserDataDatabaseKeyValues {
+    // Save edited user data to firebase
     public void saveData(String name, String lastName, String university, String birthday, String passions, final UserProfileShowToastDatabaseManagrInterface callback) {
-        /*if(isCorrect()) {*/
         Map<String, Object> newUserData = new HashMap<>();
         newUserData.put(KEY_NAME, name);
         newUserData.put(KEY_LASTNAME, lastName);
@@ -38,6 +38,8 @@ public class UserProfileDatabaseManager extends DatabaseManager implements UserD
                     }
                 });
     }
+    // Function retrieves user data from firebase
+    // Callback function fills text views with fetched parameters
     public void retrieveUserData(final UserProfileRetrieveDataInterface callback, final UserProfileShowToastDatabaseManagrInterface showToast){
         db.collection ("User data").document(user.getUid()).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

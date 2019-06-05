@@ -22,20 +22,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ab88bb3-473d-466f-8ace-3645476e3ec4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/DisplayNotesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/DisplayNotesActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditDataMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditDataMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,10 +48,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarRecyclerViewAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+            <state relative-caret-position="730">
+              <caret line="231" column="35" selection-start-line="231" selection-start-column="35" selection-end-line="231" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -65,58 +59,78 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="121" selection-start-line="121" selection-end-line="121" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="60" column="51" selection-start-line="60" selection-start-column="51" selection-end-line="60" selection-end-column="51" />
+            <state relative-caret-position="1274">
+              <caret line="126" column="42" selection-start-line="126" selection-start-column="42" selection-end-line="126" selection-end-column="42" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3206#3207#0" expanded="true" />
-                <element signature="e#3280#3281#0" expanded="true" />
+                <element signature="e#3821#3852#0" expanded="true" />
+                <element signature="e#3854#3886#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/UserProfileRetrieveDataInterface.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="117" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="117" />
+            <state relative-caret-position="-41">
+              <caret line="50" column="87" selection-start-line="50" selection-start-column="87" selection-end-line="50" selection-end-column="87" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/NotesRecyclerViewAdapterDatabaseManagerDeleteNoteInterface.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="413">
+              <caret line="128" column="9" selection-start-line="128" selection-start-column="9" selection-end-line="128" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/UserProfileShowToastDatabaseManagrInterface.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+            <state relative-caret-position="725">
+              <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/DisplayNotesActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="730">
-              <caret line="77" column="20" selection-start-line="77" selection-end-line="78" />
+              <caret line="80" column="68" selection-start-line="80" selection-start-column="68" selection-end-line="80" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -131,27 +145,6 @@
                 <element signature="e#617#618#0" expanded="true" />
                 <element signature="e#640#641#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="370">
-              <caret line="36" column="34" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditDataMenu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
             </state>
           </provider>
         </entry>
@@ -190,6 +183,7 @@
       <find>Sys</find>
       <find>formatDateToDa</find>
       <find>put</find>
+      <find>ter</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -221,24 +215,19 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/DatesDatabaseManagerInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/CollectiveMethods/CollectiveMethods.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/RecyclerViewAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/EventsRecyclerViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/DisplayNotesDatabaseManagerInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/NotesRecyclerViewAdapterDatabaseManagerInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/NotesRecyclerViewAdapterDatabaseManagerDeleteNoteInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/NotesRecyclerViewAdapterDatabaseManagerDeleteDateInterface.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/NotesRecyclerViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/DisplayNotesActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarRecyclerViewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/AddNewNoteActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/EditUserDataDatabaseManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/EditUserDataDatabaseManagerInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditDataMenu.java" />
@@ -246,14 +235,19 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/UserProfileRetrieveDataInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/UserProfileDatabaseManagerInterface.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/UserProfileShowToastDatabaseManagrInterface.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1440" />
     <option name="height" value="877" />
@@ -348,29 +342,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="usoz" type="462c0819:PsiDirectoryNode" />
-              <item name="DatabaseManager" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MobielUSOZ" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="usoz" type="462c0819:PsiDirectoryNode" />
-              <item name="DatabaseManager" type="462c0819:PsiDirectoryNode" />
-              <item name="FirebaseKeyValues" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MobielUSOZ" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="usoz" type="462c0819:PsiDirectoryNode" />
-              <item name="DatabaseManager" type="462c0819:PsiDirectoryNode" />
-              <item name="Protocols" type="462c0819:PsiDirectoryNode" />
+              <item name="UserAccount" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
@@ -381,17 +353,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="usoz" type="462c0819:PsiDirectoryNode" />
               <item name="UserActivities" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MobielUSOZ" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="usoz" type="462c0819:PsiDirectoryNode" />
-              <item name="UserActivities" type="462c0819:PsiDirectoryNode" />
-              <item name="EditUserDataActivities" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
@@ -641,7 +602,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="877" extended-state="0" />
+    <frame x="0" y="24" width="1440" height="877" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49710983" visible="true" weight="0.24320458" />
@@ -769,13 +731,6 @@
       </provider>
       <provider selected="true" editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/CollectiveMethods/CollectiveMethods.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -868,20 +823,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="708">
-          <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="708">
-          <caret line="124" column="55" selection-start-line="124" selection-start-column="55" selection-end-line="124" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Notes/AddNewNoteActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1125">
@@ -896,13 +837,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="24" column="19" selection-start-line="24" selection-start-column="18" selection-end-line="24" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="80" column="68" selection-start-line="80" selection-start-column="68" selection-end-line="80" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -928,54 +862,10 @@
       <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="android-designer2" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="55" column="22" lean-forward="true" selection-start-line="55" selection-start-column="22" selection-end-line="55" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="26" column="73" selection-start-line="26" selection-start-column="73" selection-end-line="26" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/Protocols/DisplayNotesDatabaseManagerInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="51" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="43" column="33" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="65" column="5" lean-forward="true" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -986,24 +876,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarRecyclerViewAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3135">
-          <caret line="231" column="35" selection-start-line="231" selection-start-column="35" selection-end-line="231" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/ChangeUserBackgroundPhoto.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
@@ -1037,8 +913,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
+        <state relative-caret-position="330">
+          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
         </state>
       </provider>
     </entry>
@@ -1049,17 +925,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/AddNoteDatabaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="121" selection-start-line="121" selection-end-line="121" />
+        <state relative-caret-position="378">
+          <caret line="47" column="91" selection-start-line="47" selection-start-column="91" selection-end-line="47" selection-end-column="91" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DatesDatabaseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="29" column="99" selection-start-line="29" selection-start-column="99" selection-end-line="29" selection-end-column="99" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="41" column="50" selection-start-line="41" selection-start-column="50" selection-end-line="41" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/UserProfileDatabaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="60" column="51" selection-start-line="60" selection-start-column="51" selection-end-line="60" selection-end-column="51" />
+        <state relative-caret-position="242">
+          <caret line="40" column="49" lean-forward="true" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3206#3207#0" expanded="true" />
@@ -1080,10 +989,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/NotesRecyclerViewAdapterDatabaseManager.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/EditUserDataActivities/EditUserDataActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="36" column="34" selection-start-line="36" selection-start-column="34" selection-end-line="36" selection-end-column="34" />
+        <state relative-caret-position="-41">
+          <caret line="50" column="87" selection-start-line="50" selection-start-column="87" selection-end-line="50" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserActivities/UserProfileAcitivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1274">
+          <caret line="126" column="42" selection-start-line="126" selection-start-column="42" selection-end-line="126" selection-end-column="42" />
+          <folding>
+            <element signature="e#3821#3852#0" expanded="true" />
+            <element signature="e#3854#3886#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarRecyclerViewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="730">
+          <caret line="231" column="35" selection-start-line="231" selection-start-column="35" selection-end-line="231" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="730">
+          <caret line="80" column="68" selection-start-line="80" selection-start-column="68" selection-end-line="80" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/DatesModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/Calendar/Calendar/CalendarActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="128" column="9" selection-start-line="128" selection-start-column="9" selection-end-line="128" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="725">
+          <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

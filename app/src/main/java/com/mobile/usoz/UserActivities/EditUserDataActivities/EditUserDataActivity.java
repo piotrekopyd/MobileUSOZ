@@ -48,6 +48,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    /* When we click on save button database manager function 'save data' is triggered */
     @Override
     public void onClick(View v) {
         switch (v.getId()){

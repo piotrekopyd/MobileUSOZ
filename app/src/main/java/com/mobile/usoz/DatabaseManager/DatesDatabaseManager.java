@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class DatesDatabaseManager extends DatabaseManager implements NotesDatabaseKeyValues {
 
+    //
     public void retrieveDatesFromFirebase(String month, final DatesDatabaseManagerInterface callback) {
         db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -24,20 +25,16 @@ public class DatesDatabaseManager extends DatabaseManager implements NotesDataba
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            //Przypisanie do modelu pobranej listy dat
+                            //fetching list of dates in particular month
                             ArrayList<String> list = (ArrayList<String>) document.get(KEY_NOTE);
+                            // if list is empty return null. If not pass list to interface function
                             if (list.isEmpty()) {
-                                //Toast.makeText(DatesActivity., "Folder is empty", Toast.LENGTH_SHORT).show();
                                 callback.prepareArray(null);
                             } else {
-                                for(int i=0; i < list.size(); i++) {
-                                    System.out.println(list.get(i));
-                                }
                                 callback.prepareArray(list);
                             }
                         } else {
                             callback.prepareArray(null);
-                            //Toast.makeText(DatesActivity.this, "Folder is empty", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -48,12 +45,6 @@ public class DatesDatabaseManager extends DatabaseManager implements NotesDataba
                          callback.prepareArray(null);
                         }
                 });
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                 @Override
-//                public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                    retrieveEventsFromFirebase();
-//                    }
-//                 });
     }
 
     public void retrieveEventsFromFirebase(String month, final DatesDatabaseManagerInterface callback) {
@@ -69,13 +60,11 @@ public class DatesDatabaseManager extends DatabaseManager implements NotesDataba
                         if(document.exists()){
                             ArrayList<String> list = (ArrayList<String>)document.get(KEY_NOTE);
                             if(!list.isEmpty()) {
-                                //Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
                                 callback.prepareArray(list);
                             } else {
                                 callback.prepareArray(null);
                             }
                         } else {
-                            //Toast.makeText(DatesActivity.this,"Folder is empty", Toast.LENGTH_SHORT).show();
                             callback.prepareArray(null);
                         }
                     }
@@ -86,11 +75,5 @@ public class DatesDatabaseManager extends DatabaseManager implements NotesDataba
                 callback.prepareArray(null);
             }
         });
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                setupRecyclerView();
-//            }
-//        });
     }
 }
