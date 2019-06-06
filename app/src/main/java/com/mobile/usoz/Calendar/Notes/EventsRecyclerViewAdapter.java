@@ -23,8 +23,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
     private  String day,month;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseFirestore db ;
+
     // ------------------------------ RecyclerView setup ----------------------------------------
 
     public EventsRecyclerViewAdapter(Context context, ArrayList<String> events, String day, String month){
@@ -34,8 +33,6 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         this.month = month;
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
     }
     @NonNull
     @Override

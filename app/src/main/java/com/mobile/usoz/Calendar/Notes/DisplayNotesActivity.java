@@ -47,7 +47,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
     private void setupActivity(){
         model = new DisplayNotesModel();
-        retreiveDataFromPreviousActivity();
+        retrieveDataFromPreviousActivity();
         databaseManager = new DisplayNotesDatabaseManager();
         setupView();
     }
@@ -74,7 +74,7 @@ public class DisplayNotesActivity extends AppCompatActivity implements NotesData
 
 
 
-    private void retreiveDataFromPreviousActivity(){
+    private void retrieveDataFromPreviousActivity(){
         Intent intent = getIntent();
         model.month = intent.getStringExtra(CalendarRecyclerViewAdapter.DATES_MONTH_EXTRA_TEXT);
         model.day = intent.getStringExtra(CalendarRecyclerViewAdapter.DATES_DAY_EXTRA_TEXT);

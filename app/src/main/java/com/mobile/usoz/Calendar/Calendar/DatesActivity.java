@@ -26,9 +26,6 @@ public class DatesActivity extends AppCompatActivity implements NotesDatabaseKey
 
     private Toolbar toolbar;
     private DatesDatabaseManager databaseManager = new DatesDatabaseManager();
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseFirestore db ;
 
     private DatesModel model;
     private Button addNoteButton;
