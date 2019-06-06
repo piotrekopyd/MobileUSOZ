@@ -6,7 +6,7 @@ opis działania programu:
 -UserProfile: Wyświetla informacje użytkownika takie jak: Imie, nazwisko, data urodzenia, uczelnia oraz pasje.
 -UserAccount: Pozwala na założenia konta użytkownikowi chcącemu użytkować aplikacje. Możliwa jest standardowa rejestracja przez email i hasło oraz logowanie przez Facebook'a lub konto Google.
 
-q   
+  
 
 sposób wywołania:
     Shift+F10 w Android Studio 3.4.1 lub nowszym
