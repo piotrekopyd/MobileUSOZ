@@ -59,10 +59,9 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
                                     Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(EditUserDataActivity.this, "Dane Twojego profilu zostały zapisane", Toast.LENGTH_SHORT).show();
+                                    goToEditUserProfileActivity();
                                 }
                             });
-                    goToEditUserProfileActivity();
-
         }
     }
 
