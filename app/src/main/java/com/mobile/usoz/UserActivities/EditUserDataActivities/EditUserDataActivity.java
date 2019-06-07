@@ -55,7 +55,7 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
             case R.id.saveUserDataButton:
                     dataDatabaseManager.saveData(nameTextView.getText().toString(), lastNameTextView.getText().toString(), universityTextView.getText().toString(),
                             birthdayTextView.getText().toString(), passionsTextView.getText().toString(), (boolean isSuccess) -> {
-                                if(isSuccess){
+                                if(!isSuccess){
                                     Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(EditUserDataActivity.this, "Dane Twojego profilu zostały zapisane", Toast.LENGTH_SHORT).show();
