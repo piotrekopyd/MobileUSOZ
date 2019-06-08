@@ -30,7 +30,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -52,20 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1320">
+            <state relative-caret-position="730">
               <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="48" selection-start-line="48" selection-end-line="48" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -73,11 +60,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="62">
-              <caret line="231" column="63" selection-start-line="231" selection-start-column="63" selection-end-line="231" selection-end-column="63" />
+            <state relative-caret-position="653">
+              <caret line="277" column="66" selection-start-line="277" selection-start-column="66" selection-end-line="277" selection-end-column="66" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1c09ac318bf1174460aa80028beb5b71/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-119">
+              <caret line="338" column="16" selection-start-line="338" selection-start-column="16" selection-end-line="338" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -170,6 +166,9 @@
       <find>updateUI</find>
       <find>update</find>
       <find>result</find>
+      <find>startacti</find>
+      <find>forresu</find>
+      <find>forre</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -298,6 +297,16 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="usoz" type="462c0819:PsiDirectoryNode" />
               <item name="UserAccount" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MobielUSOZ" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MobielUSOZ" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="usoz" type="462c0819:PsiDirectoryNode" />
+              <item name="UserActivities" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -530,6 +539,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49710983" visible="true" weight="0.24320458" />
@@ -540,7 +550,7 @@
       <window_info id="Designer" order="6" />
       <window_info id="Capture Tool" order="7" />
       <window_info id="Resources Explorer" order="8" />
-      <window_info active="true" anchor="bottom" id="Run" order="0" sideWeight="0.49642345" visible="true" weight="0.7006369" />
+      <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49642345" weight="0.3745223" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.4985694" weight="0.3299363" />
       <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49928468" weight="0.3299363" />
       <window_info anchor="bottom" id="Debug" order="3" />
@@ -607,14 +617,6 @@
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_save_note.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="1245">
-          <caret line="83" column="56" selection-start-line="83" selection-start-column="42" selection-end-line="83" selection-end-column="56" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/CollectiveMethods/CollectiveMethodsCallback.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -901,13 +903,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1320">
-          <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/DatabaseManager/DisplayNotesDatabaseManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
@@ -955,10 +950,24 @@
       <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="android-manifest" />
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1c09ac318bf1174460aa80028beb5b71/jars/classes.jar!/android/support/v4/app/FragmentActivity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-119">
+          <caret line="338" column="16" selection-start-line="338" selection-start-column="16" selection-end-line="338" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/CreateAccountActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="730">
+          <caret line="117" column="9" selection-start-line="117" selection-start-column="9" selection-end-line="117" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/mobile/usoz/UserAccount/LogInActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="231" column="63" selection-start-line="231" selection-start-column="63" selection-end-line="231" selection-end-column="63" />
+        <state relative-caret-position="653">
+          <caret line="277" column="66" selection-start-line="277" selection-start-column="66" selection-end-line="277" selection-end-column="66" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

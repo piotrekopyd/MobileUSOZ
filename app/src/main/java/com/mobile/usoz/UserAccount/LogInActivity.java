@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -36,6 +37,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
 
@@ -221,16 +223,15 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            // Logowanie powiodlo sie
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
+                            // Jesli logowanie nie uda sie
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LogInActivity.this, "Błąd podczas logowania!",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
 
                         // ...
@@ -254,17 +255,38 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            // Signed in successfully, show authenticated UI.
-            updateUI(mAuth.getCurrentUser());
+            // Logowanie do Google service powiodło się, pokaż UI
+            firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
+            //updateUI(null);
         }
     }
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Logowanie powiodło się, przejdz do profilu
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // Jeśli logowanie nie działa
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+
+                        }
+
+                        // ...
+                    }
+                });
+    }
 
     // ------------------------------------------- EMAIL/PASSWORD LOGIN ----------------------------------------------------
 
