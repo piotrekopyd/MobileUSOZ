@@ -80,7 +80,7 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Autentykacja nieudana")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Wystąpił błąd podczas zakładania konta")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     //Instrumented tests
@@ -109,6 +109,6 @@ public class CreateAccountActivityTest {
         onView(withId(R.id.createEmailTextView)).perform(typeText("12@12.pl"), closeSoftKeyboard());
         onView(withId(R.id.PswdTextView)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.registerButton)).perform(click());
-        onView(withText("Autentykacja nieudana")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Wystąpił błąd podczas zakładania konta")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 }

@@ -134,14 +134,14 @@ public class LogInActivityTest {
     public void loginWithEmptyData_PasswordCheck() {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
-        assertEquals("Wymagane.", temp.getError());
+        assertEquals("Pole wymagane", temp.getError());
     }
 
     @Test
     public void loginWithEmptyData_EmailCheck() {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.loginTextView);
-        assertEquals("Wymagane.", temp.getError());
+        assertEquals("Pole wymagane", temp.getError());
     }
 
     @Test
@@ -149,7 +149,7 @@ public class LogInActivityTest {
         onView(withId(R.id.loginTextView)).perform(typeText("temp@temp.pl"), closeSoftKeyboard());
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
-        assertEquals("Wymagane.", temp.getError());
+        assertEquals("Pole wymagane", temp.getError());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class LogInActivityTest {
         TextView temp = activity.findViewById(R.id.loginTextView);
         onView(withId(R.id.PswdTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.logInButton)).perform(click());
-        assertEquals("Wymagane.", temp.getError());
+        assertEquals("Pole wymagane", temp.getError());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class LogInActivityTest {
         onView(withId(R.id.logInButton)).perform(click());
         TextView temp = activity.findViewById(R.id.PswdTextView);
         assertNull(temp.getError());
-        onView(withText("Autentykacja nieudana.")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        onView(withText("Błąd podczas logowania!")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
     }
 
     @Ignore("Zaloguje i nie bedzie dostepu do kolejnych testow wiec odpalac osobno")

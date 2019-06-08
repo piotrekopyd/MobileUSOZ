@@ -117,7 +117,7 @@ public class EditUserDataActivityTest {
         assertFalse(result);
     }*/
 
-    @Test
+    /*@Test
     public void saveData_successSomeFields1() throws Exception {
         onView(withId(R.id.editUserNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
@@ -143,7 +143,7 @@ public class EditUserDataActivityTest {
         onView(withId(R.id.editUserLastNameTextView)).perform(typeText("temp"), closeSoftKeyboard());
         Whitebox.invokeMethod(activity, "saveData");
         onView(withText("Dane Twojego profilu zostały zapisane")).inRoot(withDecorView(not(is(rule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
-    }
+    }*/
 
     //Instrumented Tests
     @Test
