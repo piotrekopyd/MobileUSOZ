@@ -2,6 +2,8 @@ package com.mobile.usoz.UserAccount;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -63,6 +65,8 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+
         createAccountButton = findViewById(R.id.createAccountButton);
         logInButton = findViewById(R.id.logInButton);
         loginTextView = findViewById(R.id.loginTextView);
@@ -184,8 +188,6 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
             handleSignInResult(task);
         }
     }
-
-
 
     // ------------------------------------------- FACEBOOK LOGIN ----------------------------------------------------
 
@@ -354,9 +356,35 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        try {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        } catch (NullPointerException e) {}
+        findViewById(R.id.log_in_relative_layout).setForeground(new ColorDrawable(Color.BLACK));
+        findViewById(R.id.log_in_relative_layout).getForeground().setAlpha(180);
+
+        findViewById(R.id.included_exit_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.included_exit_layout).setClickable(true);
+
+        //nie wychodz z aplikacji
+        Button button = findViewById(R.id.exit_reject_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.log_in_relative_layout).setForeground(new ColorDrawable(Color.TRANSPARENT));
+
+                findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
+                findViewById(R.id.included_exit_layout).setClickable(false);
+            }
+        });
+
+        //wyjdz z aplikacji
+        button = findViewById(R.id.exit_confirm_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeApplication();
+            }
+        });
+    }
+    private void closeApplication() {
+        finishAffinity();
+        System.exit(0);
     }
 }

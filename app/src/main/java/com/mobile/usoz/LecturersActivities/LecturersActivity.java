@@ -244,15 +244,7 @@ public class LecturersActivity extends AppCompatActivity
 
                 Map<String, Number> map;
 
-                if(!snapshot.exists()) {
-                    map = new HashMap<String, Number>();
-                    map.put(UID, grade1);
-
-                    Map<String, Map<String, Number>> tmpMap = new HashMap<>();
-                    tmpMap.put("grades", map);
-
-                    db.collection("Lecturers").document(lecturer).set(tmpMap);
-                } else {
+                if(snapshot.exists()) {
                     map = (Map<String, Number>) snapshot.get("grades");
 
                     if(map == null) {
@@ -267,7 +259,6 @@ public class LecturersActivity extends AppCompatActivity
                                 return null;
                             }
                         }
-
                         map.put(UID, grade1);
                     }
 
@@ -279,13 +270,12 @@ public class LecturersActivity extends AppCompatActivity
         }).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(context, "Twoja ocena została dodana", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Twoja ocena została dodana", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(context, "Błąd podczas dodawania Twojej oceny do bazy danych! Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
             }
         });
     }
@@ -359,16 +349,19 @@ public class LecturersActivity extends AppCompatActivity
                                 if(gradesMap!=null) {
                                     model.gradesMapSize = gradesMap.size();
 
-                                    if(gradesMap.containsKey(mAuth.getUid())) {
-                                        model.gradeUID = gradesMap.get(mAuth.getUid()).doubleValue();
-                                    }
+                                    if(model.gradesMapSize!=0) {
 
-                                    Collection<Number> collection = gradesMap.values();
+                                        if(gradesMap.containsKey(mAuth.getUid())) {
+                                            model.gradeUID = gradesMap.get(mAuth.getUid()).doubleValue();
+                                        }
 
-                                    for(Number n : collection) {
-                                        model.grade += n.doubleValue();
+                                        Collection<Number> collection = gradesMap.values();
+
+                                        for(Number n : collection) {
+                                            model.grade += n.doubleValue();
+                                        }
+                                        model.grade /= gradesMap.size();
                                     }
-                                    model.grade /= gradesMap.size();
                                 }
                             }
                         }
@@ -403,7 +396,7 @@ public class LecturersActivity extends AppCompatActivity
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Nie udało się pobrać ocen wybranego prowadzącego", Toast.LENGTH_LONG).show();
                     }
-                });;
+                });
             }
         });
 
@@ -453,11 +446,40 @@ public class LecturersActivity extends AppCompatActivity
 
     private void sendDataToFirebase() {
         try {
-            byte[] myBytes = SerializationUtils.serialize(model.lectutersCollection);
-            firebaseStorage = FirebaseStorage.getInstance();
-            storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
-            storageReference.putBytes(myBytes);
-            Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+            if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                byte[] myBytes = SerializationUtils.serialize(model.lectutersCollection);
+                firebaseStorage = FirebaseStorage.getInstance();
+                storageReference = firebaseStorage.getReference("Lecturers").child("lecturersCollection");
+                storageReference.putBytes(myBytes);
+                for(Lecturer l : model.lectutersCollection) {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference documentReference = db.collection("Lecturers").document(l.getName());
+
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                Map<String, Number> map;
+
+                                if (!documentSnapshot.exists()) {
+                                    map = new HashMap<String, Number>();
+
+                                    Map<String, Map<String, Number>> tmpMap = new HashMap<>();
+
+                                    tmpMap.put("grades", map);
+
+                                    db.collection("Lecturers").document(l.getName()).set(tmpMap);
+                                }
+                            }
+                        }
+                    });
+                }
+                Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Błąd podczas wysyłania zmian", Toast.LENGTH_LONG).show();
+            }
         } catch (Exception e) {
             Toast.makeText(com.mobile.usoz.LecturersActivities.LecturersActivity.this, "Błąd podczas wysyłania zmian", Toast.LENGTH_LONG).show();
         }
