@@ -132,6 +132,8 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
                 birthdayTextView.setText(birthday);
                 emailTextView.setText(email);
                 passionsTextView.setText(passions);
+                this.name = name;
+                this.lastName = lastName;
             }, (boolean isSuccess) -> {
                 Toast.makeText(UserProfileAcitivity.this,"Nie udało się pobrać danych twojego profilu!", Toast.LENGTH_SHORT).show();
         });
