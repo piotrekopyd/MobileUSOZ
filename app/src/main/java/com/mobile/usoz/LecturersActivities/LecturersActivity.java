@@ -290,7 +290,6 @@ public class LecturersActivity extends AppCompatActivity
         });
     }
 
-
     /** metoda dodajaca przycisk do menu wykladowcow
      *  przycisk jest odpowiednio utworzonym layoutem
      */

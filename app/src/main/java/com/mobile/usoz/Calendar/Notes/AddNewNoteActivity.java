@@ -1,6 +1,8 @@
 package com.mobile.usoz.Calendar.Notes;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.DatabaseManager.AddNoteDatabaseManager;
 import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.NoteDataDatabaseKeyValues;
 import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.NotesDatabaseKeyValues;
@@ -75,7 +78,11 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
             @Override
             public void onClick(View v) {
                 if(daySpinner.getSelectedItemPosition() > 0 && monthSpinner.getSelectedItemPosition() > 0 && !mNoteContentEditText.getText().toString().matches("")) {
-                    databaseManager.saveNote(mNoteContentEditText.getText().toString(), model.day, model.month);
+                    if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                        databaseManager.saveNote(mNoteContentEditText.getText().toString(), model.day, model.month);
+                    } else {
+                        Toast.makeText(AddNewNoteActivity.this, "Nie udało się zapisać Twojego wpisu!", Toast.LENGTH_SHORT).show();
+                    }
                     Intent intent = new Intent(AddNewNoteActivity.this, CalendarActivity.class);
                     startActivity(intent);
                 } else {

@@ -1,7 +1,9 @@
 package com.mobile.usoz.Calendar.Calendar;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.usoz.Calendar.Notes.DisplayNotesActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.R;
 
 import java.text.SimpleDateFormat;
@@ -88,18 +92,22 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                if(mContext instanceof CalendarActivity){
-                    intent = new Intent(mContext, DatesActivity.class);
-                    String s = formatMonthToNumber(data.get(position));
-                    intent.putExtra(CALENDAR_EXTRA_TEXT, s);
-                } else {
-                    intent = new Intent(mContext, DisplayNotesActivity.class);
-                    intent.putExtra(DATES_DAY_EXTRA_TEXT, data.get(position));
-                    intent.putExtra(DATES_MONTH_EXTRA_TEXT, month);
-                }
+                if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                    Intent intent;
+                    if(mContext instanceof CalendarActivity){
+                        intent = new Intent(mContext, DatesActivity.class);
+                        String s = formatMonthToNumber(data.get(position));
+                        intent.putExtra(CALENDAR_EXTRA_TEXT, s);
+                    } else {
+                        intent = new Intent(mContext, DisplayNotesActivity.class);
+                        intent.putExtra(DATES_DAY_EXTRA_TEXT, data.get(position));
+                        intent.putExtra(DATES_MONTH_EXTRA_TEXT, month);
+                    }
 
-                mContext.startActivity(intent);
+                    mContext.startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, "Wystąpił błąd podczas pobierania danych", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

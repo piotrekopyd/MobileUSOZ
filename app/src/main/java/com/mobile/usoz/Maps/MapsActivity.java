@@ -244,11 +244,15 @@ public class MapsActivity extends AppCompatActivity
                     break;
                 case (R.id.map_settings_send):
                     try { //UPLOAD MARKERS TO FIREBASE
-                        byte[] myBytes = SerializationUtils.serialize(model.myMarkersCollection);
-                        firebaseStorage = FirebaseStorage.getInstance();
-                        storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
-                        storageReference.putBytes(myBytes);
-                        Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+                        if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                            byte[] myBytes = SerializationUtils.serialize(model.myMarkersCollection);
+                            firebaseStorage = FirebaseStorage.getInstance();
+                            storageReference = firebaseStorage.getReference("Markers").child("myMarkers");
+                            storageReference.putBytes(myBytes);
+                            Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Zmiany zostały wysłane", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
+                        }
                     } catch (Exception e) {
                         Toast.makeText(com.mobile.usoz.Maps.MapsActivity.this, "Wystąpił błąd podczas zapisywania zmian do bazy danych!", Toast.LENGTH_LONG).show();
                     }
