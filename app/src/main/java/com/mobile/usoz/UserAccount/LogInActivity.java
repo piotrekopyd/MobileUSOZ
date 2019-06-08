@@ -19,6 +19,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -70,13 +72,14 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         createAccountButton.setOnClickListener(this);
         logInButton.setOnClickListener(this);
 
-        mAuth = FirebaseAuth.getInstance();
+
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         facebookLoginButton = findViewById(R.id.fbLogin_button);
         prepareFacebookLogin();
 
+        mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -185,6 +188,8 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
     // ------------------------------------------- FACEBOOK LOGIN ----------------------------------------------------
 
     private void prepareFacebookLogin(){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         facebookLoginButton.setReadPermissions("email", "public_profile");
         facebookLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -219,7 +224,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
