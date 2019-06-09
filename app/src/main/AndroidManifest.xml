@@ -48,24 +48,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".UserActivities.EditUserDataActivities.ChangeUserBackgroundPhoto"
-            android:label="ChangeUserBackgroundPhoto"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".UserActivities.EditUserDataActivities.ChangeUserProfilePhoto"
-            android:label="EditUserData"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
-            android:name=".UserActivities.EditUserDataActivities.EditDataMenu"
-            android:label="EditDataMenu"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
             android:name=".Maps.MapsActivity"
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait"

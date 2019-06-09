@@ -143,43 +143,12 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         startActivity(intent);
     }
 
-//    private void createSignInIntent(){
-//        List<AuthUI.IdpConfig> providers = Arrays.asList(
-//                new AuthUI.IdpConfig.EmailBuilder().build(),
-//                new AuthUI.IdpConfig.FacebookBuilder().build());
-//
-//        startActivityForResult(
-//                AuthUI.getInstance()
-//                        .createSignInIntentBuilder()
-//                        .setAvailableProviders(providers)
-//                        .build(),
-//                RC_SIGN_IN);
-//    }
-
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-
-        //email/psswd login
-//        if (requestCode == RC_SIGN_IN) {
-//            IdpResponse response = IdpResponse.fromResultIntent(data);
-//
-//            if (resultCode == RESULT_OK) {
-//                // Successfully signed in
-//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                // ...
-//            } else {
-//                // Sign in failed. If response is null the user canceled the
-//                // sign-in flow using the back button. Otherwise check
-//                // response.getError().getErrorCode() and handle the error.
-//                // ...
-//            }
-//        }
         //google login
         if(requestCode == GOOGLE_SIGN_IN_REQUEST_CODE){
             // The Task returned from this call is always completed, no need to attach
@@ -224,6 +193,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             // Logowanie powiodlo sie
                             Log.d(TAG, "signInWithCredential:success");
@@ -319,9 +289,6 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
                         }
 
                         // [START_EXCLUDE]
-//                        if (!task.isSuccessful()) {
-//                            mStatusTextView.setText(R.string.auth_failed);
-//                        }
                         progressBar.setVisibility(View.GONE);
                         // [END_EXCLUDE]
                     }

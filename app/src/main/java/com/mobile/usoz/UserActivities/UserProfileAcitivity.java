@@ -19,24 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
 import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.UserDataDatabaseKeyValues;
-import com.mobile.usoz.DatabaseManager.Protocols.UserProfileRetrieveDataInterface;
-import com.mobile.usoz.DatabaseManager.Protocols.UserProfileShowToastDatabaseManagrInterface;
 import com.mobile.usoz.DatabaseManager.UserProfileDatabaseManager;
 import com.mobile.usoz.LecturersActivities.LecturersActivity;
 import com.mobile.usoz.UserAccount.LogInActivity;
 import com.mobile.usoz.Maps.MapsActivity;
 import com.mobile.usoz.R;
-import com.mobile.usoz.UserActivities.EditUserDataActivities.EditDataMenu;
 import com.mobile.usoz.UserActivities.EditUserDataActivities.EditUserDataActivity;
 
 public class UserProfileAcitivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener, UserDataDatabaseKeyValues {
@@ -95,6 +85,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         editUserDataIV.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent newIntent = new Intent(UserProfileAcitivity.this, EditUserDataActivity.class);
+                // Pass data to next Activity
                 newIntent.putExtra(USER_PROFILE_EXTRA_NAME, name);
                 newIntent.putExtra(USER_PROFILE_EXTRA_LASTNAME, lastName);
                 newIntent.putExtra(USER_PROFILE_EXTRA_UNIVERSITY, universityTextView.getText().toString());
