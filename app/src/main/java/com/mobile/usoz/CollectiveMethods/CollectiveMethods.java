@@ -7,10 +7,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.mobile.usoz.LecturersActivities.LecturersActivity;
+import com.mobile.usoz.Maps.MapsActivity;
+
 public class CollectiveMethods {
     public static BroadcastReceiver setupReciever(final CollectiveMethodsCallback callback,
                                      final ConnectivityManager connectivityManager,
-                                     final Object modelReference) {
+                                     final Object modelReference,
+    final Context context) {
         BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -20,7 +24,11 @@ public class CollectiveMethods {
                         callback.onDownload(true);
                     }
                 } else if (modelReference == null) {
-                    Toast.makeText(context, "Wystąpił błąd podczas pobierania. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+                    if(context instanceof MapsActivity) {
+                        Toast.makeText(context, "Wystąpił błąd podczas ładowania listy miejsc. Spróbuj ponownie za chwilę", Toast.LENGTH_LONG).show();
+                    } else if(context instanceof LecturersActivity){
+                        Toast.makeText(context, "Nie udało się pobrać listy prowadzących", Toast.LENGTH_LONG).show();
+                    }
                 }
                 callback.onDownload(false);
             }
@@ -35,7 +43,11 @@ public class CollectiveMethods {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
         if(!isAvailable) {
-            Toast.makeText(context, "Brak połączenia z siecią", Toast.LENGTH_SHORT).show();
+            if(context instanceof LecturersActivity) {
+                Toast.makeText(context, "Nie udało się pobrać ocen wybranego prowadzącego", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Brak połączenia z siecią", Toast.LENGTH_SHORT).show();
+            }
         }
         return isAvailable;
     }
