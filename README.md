@@ -48,7 +48,30 @@ wymagania sprzętowe i systemowe:
     minimalna ilość miejsca na dysku: 200MB
 
 opis specjalnych poleceń dla użytkownika:
+Ekran logowania:
+Zaloguj - po wpisaniu loginu i hasła loguje nas do firebase 
+Zarejestruj - pozwala zarejestrować nowe konto użytkownika przy pomocy email'a i hasła
+Sign In(Google) -  logowanie  przy pomocy konta Google.
+Continue with Facebook - logowanie przy pomocy konta Facebook
+Menu:
+Profil - przenosi nas do  profilu użytkownika
+Kalendarz - pozwala przenieść nas do kalendarza gdzie możemy odczytać/dodać swoje notatki lub wydarzenia
+Wykładowcy - przenosi nas do bazy danych wykładowców gdzie możemy odczytać ocene wykładowców
+Mapa - pokazuje nam mapę naszej okolicy gdzie są zaznaczone ważne miejsca lub wydarzenia
+Wyloguj - wylogowywuje nasze konto z aplikacji
+Ekran Profilu użytkownika:
+Obraz ołówka obok profilu - pozwala zmienić swoje dane osobowe
+Ekran zmiany danych osobowych:
+Zapisz - nadpisuje stare dane nowowprowadzonymi 
+Kalendarz:
+Dodaj Notatkę - pozwala na dodanie nowej notatki przez użytkownika
+Ekran dodawania nowej notatki:
+Zapisz - zapisuje w bazie danych nową notatkę
+Wykładowcy:
+Oceń prowadzącego - Dodaje nową ocene do bazy danych, ocena może być dodana tylko raz
+
    pokaż/ukryj pinezki - ukrycie lub pokazywanie pinezek podczas wyświelania mapy
+   
 
 autor i data powstania (data modyfikacji/numer wersji):
     Autorzy:
