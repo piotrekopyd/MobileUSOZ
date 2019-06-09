@@ -67,10 +67,12 @@ Kalendarz:
 Dodaj Notatkę - pozwala na dodanie nowej notatki przez użytkownika
 Ekran dodawania nowej notatki:
 Zapisz - zapisuje w bazie danych nową notatkę
+Ekran wyświetlenia notatek w danym dniu:
+"X" - Usuwa notatkę. Jeśli nie ma notatek oraz wydarzeń przenosi do widoku miesięcy
 Wykładowcy:
 Oceń prowadzącego - Dodaje nową ocene do bazy danych, ocena może być dodana tylko raz
-
-   pokaż/ukryj pinezki - ukrycie lub pokazywanie pinezek podczas wyświelania mapy
+Mapa:
+Pokaż/ukryj pinezki - ukrycie lub pokazywanie pinezek podczas wyświelania mapy
    
 
 autor i data powstania (data modyfikacji/numer wersji):
