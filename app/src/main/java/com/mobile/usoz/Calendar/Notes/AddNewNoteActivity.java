@@ -80,6 +80,7 @@ public class AddNewNoteActivity extends AppCompatActivity implements NotesDataba
                 if(daySpinner.getSelectedItemPosition() > 0 && monthSpinner.getSelectedItemPosition() > 0 && !mNoteContentEditText.getText().toString().matches("")) {
                     if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
                         databaseManager.saveNote(mNoteContentEditText.getText().toString(), model.day, model.month);
+                        Toast.makeText(AddNewNoteActivity.this, "Wpis został dodany", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(AddNewNoteActivity.this, "Nie udało się zapisać Twojego wpisu!", Toast.LENGTH_SHORT).show();
                     }

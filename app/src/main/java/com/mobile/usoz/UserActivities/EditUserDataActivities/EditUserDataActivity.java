@@ -1,6 +1,8 @@
 package com.mobile.usoz.UserActivities.EditUserDataActivities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.DatabaseManager.UserProfileDatabaseManager;
 import com.mobile.usoz.R;
 import com.mobile.usoz.UserActivities.UserProfileAcitivity;
@@ -53,15 +56,19 @@ public class EditUserDataActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.saveUserDataButton:
-                    dataDatabaseManager.saveData(nameTextView.getText().toString(), lastNameTextView.getText().toString(), universityTextView.getText().toString(),
-                            birthdayTextView.getText().toString(), passionsTextView.getText().toString(), (boolean isSuccess) -> {
-                                if(!isSuccess){
-                                    Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(EditUserDataActivity.this, "Dane Twojego profilu zostały zapisane", Toast.LENGTH_SHORT).show();
-                                    goToEditUserProfileActivity();
-                                }
-                            });
+                    if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                        dataDatabaseManager.saveData(nameTextView.getText().toString(), lastNameTextView.getText().toString(), universityTextView.getText().toString(),
+                                birthdayTextView.getText().toString(), passionsTextView.getText().toString(), (boolean isSuccess) -> {
+                                    if(!isSuccess){
+                                        Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(EditUserDataActivity.this, "Dane Twojego profilu zostały zapisane", Toast.LENGTH_SHORT).show();
+                                        goToEditUserProfileActivity();
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(EditUserDataActivity.this, "Błąd podczas zapisywania informacji o twoim profilu do bazy danych", Toast.LENGTH_SHORT).show();
+                    }
         }
     }
 

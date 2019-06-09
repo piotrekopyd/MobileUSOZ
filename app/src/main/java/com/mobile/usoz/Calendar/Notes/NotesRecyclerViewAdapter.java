@@ -2,6 +2,7 @@ package com.mobile.usoz.Calendar.Notes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.usoz.Calendar.Calendar.CalendarActivity;
+import com.mobile.usoz.CollectiveMethods.CollectiveMethods;
 import com.mobile.usoz.DatabaseManager.FirebaseKeyValues.NotesDatabaseKeyValues;
 import com.mobile.usoz.DatabaseManager.NotesRecyclerViewAdapterDatabaseManager;
 import com.mobile.usoz.DatabaseManager.Protocols.NotesRecyclerViewAdapterDatabaseManagerDeleteDateInterface;
@@ -72,8 +74,12 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
             deleteNoteImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = getPosition();
-                    deleteNote(position);
+                    if(CollectiveMethods.isNetworkAvailable((ConnectivityManager) v.getContext().getSystemService(Context.CONNECTIVITY_SERVICE))) {
+                        int position = getPosition();
+                        deleteNote(position);
+                    } else {
+                        Toast.makeText(mContext, "Wystąpił błąd podczas usuwania Twojego wpisu!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -93,6 +99,7 @@ public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecycler
                                 backToCalendar();
                         }
                     });
+                    Toast.makeText(mContext , "Wpis został usunięty", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "Błąd podczas usuwania", Toast.LENGTH_SHORT).show();
                 }
