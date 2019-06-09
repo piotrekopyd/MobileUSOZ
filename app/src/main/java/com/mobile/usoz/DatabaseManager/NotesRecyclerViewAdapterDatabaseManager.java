@@ -72,6 +72,7 @@ public class NotesRecyclerViewAdapterDatabaseManager extends DatabaseManager imp
                                 callback.backToCalendarView(false);
                             }
                         } else {
+                            db.collection(NOTES_COLLECTION_PATH).document(user.getUid()).collection(month).document(KEY_NUMBERS_OF_DAY_DOCUMENT).update(KEY_NOTE, FieldValue.arrayRemove(day));te
                             callback.backToCalendarView(true);
                         }
                     }
