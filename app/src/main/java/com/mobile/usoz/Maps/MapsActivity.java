@@ -159,17 +159,20 @@ public class MapsActivity extends AppCompatActivity
                     downloadMarkers();
                 }
             }
-        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.myMarkersCollection);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.myMarkersCollection, MapsActivity.this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(networkChangeReceiver);
+        } catch (Exception e) {}
     }
 
     private void setupSpinner() {
@@ -413,7 +416,9 @@ public class MapsActivity extends AppCompatActivity
                         model.myMarkersCollection) {
                     googleMap.addMarker(e.getMarkerOptions());
                 }
-                unregisterReceiver(networkChangeReceiver);
+                try {
+                    unregisterReceiver(networkChangeReceiver);
+                } catch (Exception e) {}
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

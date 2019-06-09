@@ -181,16 +181,7 @@ public class LecturersActivity extends AppCompatActivity
                     downloadLecturers();
                 }
             }
-        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.lectutersCollection);
-    }
-
-    /**
-     * rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
-     */
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        }, (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE), model.lectutersCollection, LecturersActivity.this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -198,6 +189,17 @@ public class LecturersActivity extends AppCompatActivity
         registerReceiver(networkChangeReceiver, intentFilter);
     }
 
+    /**
+     * rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
+     */
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(networkChangeReceiver);
+        } catch (Exception e) {}
+    }
 
     /** metoda pobierajaca informacje o wykladowcach z bazy danych
      */
@@ -215,7 +217,9 @@ public class LecturersActivity extends AppCompatActivity
                         model.lectutersCollection) {
                     addLecturer(l.getFirstName(), l.getSurname(), l.getUniversity());
                 }
-                unregisterReceiver(networkChangeReceiver);
+                try {
+                    unregisterReceiver(networkChangeReceiver);
+                } catch (Exception e) {}
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
