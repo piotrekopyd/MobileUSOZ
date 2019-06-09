@@ -162,6 +162,7 @@ public class CalendarActivity extends AppCompatActivity
         }
         if(intent!=null) {
             startActivity(intent);
+            finish();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;

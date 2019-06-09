@@ -615,6 +615,7 @@ public class LecturersActivity extends AppCompatActivity
 
         if(intent!=null) {
             startActivity(intent);
+            finish();
         }
 
         drawer.closeDrawer(GravityCompat.START);

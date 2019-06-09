@@ -215,6 +215,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         }
         if(intent != null) {
             startActivity(intent);
+            finish();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
