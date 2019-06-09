@@ -44,7 +44,6 @@
         <activity
             android:name=".UserActivities.UserProfileAcitivity"
             android:label="@string/title_activity_profile"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -74,13 +73,11 @@
         <activity
             android:name=".UserAccount.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".UserAccount.LogInActivity"
             android:label="@string/title_activity_log_in"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >
 
 

@@ -2,6 +2,7 @@ package com.mobile.usoz.UserAccount;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         registerButton = (Button) findViewById(R.id.registerButton);
         emailTextView = (TextView) findViewById(R.id.createEmailTextView);
         pswdTextView = (TextView) findViewById(R.id.PswdTextView);

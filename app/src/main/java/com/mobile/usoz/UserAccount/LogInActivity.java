@@ -2,6 +2,7 @@ package com.mobile.usoz.UserAccount;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -57,7 +58,6 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
 
     private Toolbar toolbar;
     // Configure Google Sign In
-
     private GoogleSignInClient mGoogleSignInClient;
 
 
@@ -66,7 +66,7 @@ public class LogInActivity extends AppCompatActivity  implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
-
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         createAccountButton = findViewById(R.id.createAccountButton);
         logInButton = findViewById(R.id.logInButton);
         loginTextView = findViewById(R.id.loginTextView);

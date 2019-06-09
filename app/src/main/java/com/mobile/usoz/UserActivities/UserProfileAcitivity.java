@@ -1,6 +1,7 @@
 package com.mobile.usoz.UserActivities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
@@ -64,7 +65,7 @@ public class UserProfileAcitivity extends AppCompatActivity  implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         findViewById(R.id.included_exit_layout).setVisibility(View.INVISIBLE);
-
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
