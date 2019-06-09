@@ -189,10 +189,6 @@ public class LecturersActivity extends AppCompatActivity
         registerReceiver(networkChangeReceiver, intentFilter);
     }
 
-    /**
-     * rejestracja reciever'a z zamiarem sledzenia zmiany polaczenia internetowego
-     */
-
     @Override
     protected void onPause() {
         super.onPause();

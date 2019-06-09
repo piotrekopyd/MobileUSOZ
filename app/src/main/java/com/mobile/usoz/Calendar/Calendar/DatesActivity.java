@@ -21,6 +21,7 @@ import com.mobile.usoz.DatabaseManager.Protocols.DatesDatabaseManagerInterface;
 import com.mobile.usoz.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DatesActivity extends AppCompatActivity implements NotesDatabaseKeyValues {
 

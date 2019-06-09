@@ -20,6 +20,7 @@ import com.mobile.usoz.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +63,16 @@ public class CalendarRecyclerViewAdapter extends RecyclerView.Adapter<CalendarRe
                 data.add(s);
             }
         }
+        Integer[] integers = new Integer[data.size()];
+        for(int i=0; i<data.size(); i++) {
+            integers[i] = Integer.valueOf(data.get(i));
+        }
+        Arrays.sort(integers);
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(int i=0; i<data.size(); i++) {
+            arrayList.add(String.valueOf(integers[i]));
+        }
+        data = arrayList;
     }
 
     // Przypisanie ViewHoldera który będzie spinał recyclerView
